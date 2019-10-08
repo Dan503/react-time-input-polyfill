@@ -23,11 +23,9 @@
     "url": "https://github.com/Dan503/react-time-input-polyfill/issues"
   },
   "homepage": "https://github.com/Dan503/react-time-input-polyfill#readme",
-
   "dependencies": {
-    "time-input-polyfill": "*"
+    "time-input-polyfill": "latest"
   },
-
   "devDependencies": {
     "@babel/core": "7.6.0",
     "@svgr/webpack": "4.3.2",
