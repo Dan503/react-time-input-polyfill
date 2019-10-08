@@ -7,7 +7,7 @@ function App() {
     <div className="App">
       <label>
         <span>Time input</span>
-        <TimeInput />
+        <TimeInput onChange={x => console.log(x)} />
       </label>
     </div>
   );

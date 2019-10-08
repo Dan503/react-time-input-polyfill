@@ -27,11 +27,32 @@ document.addEventListener("DOMContentLoaded", function() {
 export default class TimeInput extends React.Component {
 	constructor(props){
 		super(props)
-		this.input = React.createRef();
-		events.on('polyfill_loaded', polyfill => new polyfill(this.input.current))
+		this.$input = React.createRef();
+		events.on('polyfill_loaded', polyfill => new polyfill(this.$input.current))
+	}
+
+	onTimeChange(event){
+		if (this.props.onChange) {
+			this.props.onChange({
+				value: supportsTime ? this.$input.current.value : this.$input.current.dataset.value,
+				element: this.$input.current,
+				event
+			})
+		}
+	}
+
+	componentDidUpdate(){
+		if (!supportsTime) {
+			this.$input.current.polyfill.update()
+		}
 	}
 
 	render(){
-		return React.createElement('input', {ref: this.input, type:'time', ...this.props}, null)
+		return React.createElement('input', {
+			...this.props,
+			onChange: e => this.onTimeChange(e),
+			ref: this.$input,
+			type:'time',
+		}, null)
 	}
 }
