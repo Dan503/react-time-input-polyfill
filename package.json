@@ -1,0 +1,35 @@
+{
+  "name": "react-time-input-polyfill",
+  "version": "1.0.0",
+  "description": "A simple React component that produces an input[type=time] element with a built in polyfill for Safari and IE support.",
+  "main": "index.js",
+  "dependencies": {
+    "time-input-polyfill": "*"
+  },
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "cd test-environment && npm run test && cd ../"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Dan503/react-time-input-polyfill.git"
+  },
+  "keywords": [
+    "React",
+    "time",
+    "input",
+    "polyfill",
+    "IE",
+    "accessible",
+    "accessibility",
+    "a11y"
+  ],
+  "author": "Daniel Tonon",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Dan503/react-time-input-polyfill/issues"
+  },
+  "homepage": "https://github.com/Dan503/react-time-input-polyfill#readme",
+}
