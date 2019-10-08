@@ -22,7 +22,7 @@
   "bugs": {
     "url": "https://github.com/Dan503/react-time-input-polyfill/issues"
   },
-  "homepage": "https://github.com/Dan503/react-time-input-polyfill#readme",
+  "homepage": "https://dan503.github.io/react-time-input-polyfill/",
   "dependencies": {
     "time-input-polyfill": "latest",
     "react": "^16.10.2"
