@@ -28,31 +28,71 @@ export default class TimeInput extends React.Component {
 	constructor(props){
 		super(props)
 		this.$input = React.createRef();
-		events.on('polyfill_loaded', polyfill => new polyfill(this.$input.current))
+		events.on('polyfill_loaded', polyfill => {
+			new polyfill(this.$input.current)
+		})
+		this.state = {
+			value: props.value || ''
+		}
+	}
+
+	componentDidMount(){
+		if (this.props.value) this.$input.current.value = this.props.value
+	}
+
+	getInputValue () {
+		const $input = this.$input.current
+		return supportsTime ? $input.value : $input.dataset.value
 	}
 
 	onTimeChange(event){
 		if (this.props.onChange) {
+			const value = this.getInputValue()
 			this.props.onChange({
-				value: supportsTime ? this.$input.current.value : this.$input.current.dataset.value,
+				value,
 				element: this.$input.current,
 				event
 			})
+
+			this.setState({ value })
 		}
 	}
 
-	componentDidUpdate(){
+	componentDidUpdate(prevProps){
+
+		const propsHaveUpdated = prevProps.value !== this.props.value && this.props.value !== this.state.value
+
+		const $input = this.$input.current
+
+		if (propsHaveUpdated) {
+			$input.value = this.props.value
+			setTimeout(()=> this.onTimeChange('props update'), 0 )
+		}
+
 		if (!supportsTime) {
+			if ($input.dataset.value !== this.state.value) {
+				this.setState({ value: $input.dataset.value })
+			}
+
 			this.$input.current.polyfill.update()
 		}
 	}
 
 	render(){
+		const {value, ...props} = this.props
 		return React.createElement('input', {
-			...this.props,
-			onChange: e => this.onTimeChange(e),
+			...props,
+			onBlur: e => {
+				// The only way to get IE to fire the props onChange event without breaking the base polyfill functionality
+				this.onTimeChange(e)
+				this.props.onBlur(e)
+			},
+			onChange: e => this.onTimeChange(e), // only works in non-ie browsers
+			// onInput: e => this.onTimeChange(e), // Can't use this because it breaks the selection functionality
 			ref: this.$input,
 			type:'time',
+			'data-state-value': this.state.value,
+			'data-props-value': value,
 		}, null)
 	}
 }
