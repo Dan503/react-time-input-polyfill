@@ -85,7 +85,7 @@ export default class TimeInput extends React.Component {
 			onBlur: e => {
 				// The only way to get IE to fire the props onChange event without breaking the base polyfill functionality
 				this.onTimeChange(e)
-				this.props.onBlur(e)
+				if (this.props.onBlur) this.props.onBlur(e)
 			},
 			onChange: e => this.onTimeChange(e), // only works in non-ie browsers
 			// onInput: e => this.onTimeChange(e), // Can't use this because it breaks the selection functionality
