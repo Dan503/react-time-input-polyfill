@@ -1,6 +1,6 @@
 {
   "name": "react-time-input-polyfill",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "A simple React component that produces an input[type=time] element with a built in polyfill for Safari and IE support.",
   "main": "index.js",
   "repository": {
