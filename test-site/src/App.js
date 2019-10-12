@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import './App.css';
-import TimeInput from '../index'
+import TimeInput from '../../index'
 
 function App() {
   const [value, setValue] = useState('20:30')
