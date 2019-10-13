@@ -40,25 +40,45 @@ export default class TimeInput extends React.Component {
 		this.$input = React.createRef()
 		events.on('polyfill_loaded', polyfill => {
 			this.polyfill = polyfill
+			console.log('polyfill', polyfill)
+
+			this.setState({
+				value12hr: props.value
+					? polyfill.convert_to_12hr_time(props.value)
+					: '--:-- --',
+			})
 		})
 		this.state = {
 			value24hr: props.value || '',
+			value12hr: '',
 		}
 	}
 
 	componentDidMount() {}
 
-	componentDidUpdate(prevProps) {}
+	componentDidUpdate(prevProps) {
+		this.onTimeChange()
+	}
 
-	onTimeChange(event) {
+	onTimeChange() {
 		if (this.props.onChange) {
 			this.props.onChange({
 				value: this.state.value24hr,
 				value12hr: this.state.value12hr,
 				element: this.$input.current,
-				event,
 			})
 		}
+	}
+
+	handleChange(e) {
+		const value24hr = hasPolyfill ? this.state.value24hr : e.target.value
+		const value12hr = this.polyfill
+			? this.polyfill.convert_to_12hr_time(value24hr)
+			: ''
+		this.setState({
+			value24hr,
+			value12hr,
+		})
 	}
 
 	render() {
@@ -67,12 +87,10 @@ export default class TimeInput extends React.Component {
 			'input',
 			{
 				...props,
-				onInput: () =>
-					!hasPolyfill &&
-					this.setState({ value24hr: this.$input.current.value }),
+				onChange: e => this.handleChange(e),
 				ref: this.$input,
 				type: hasPolyfill ? 'text' : 'time',
-				value: hasPolyfill ? this.state.value12hr : this.state.value24hr,
+				value: this.state.value24hr,
 			},
 			null,
 		)
