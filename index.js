@@ -2,6 +2,10 @@ import React from 'react'
 import supportsTime from 'time-input-polyfill/core/helpers/supportsTime'
 import loadJS from 'time-input-polyfill/core/helpers/loadJS'
 
+const debugMode = true
+
+const hasPolyfill = !supportsTime || debugMode
+
 class EventBus {
 	constructor() {
 		this.calls = {}
@@ -17,9 +21,11 @@ class EventBus {
 const events = new EventBus()
 
 document.addEventListener('DOMContentLoaded', function() {
-	if (!supportsTime) {
+	if (hasPolyfill) {
 		loadJS(
-			'https://cdn.jsdelivr.net/npm/time-input-polyfill/dist/time-input-polyfill.min.js',
+			debugMode
+				? './timePolyfillHelpers.js'
+				: 'https://cdn.jsdelivr.net/npm/time-input-polyfill/dist/time-input-polyfill.min.js',
 			function() {
 				events.emit('polyfill_loaded', window.TimePolyfill)
 			},
@@ -96,7 +102,7 @@ export default class TimeInput extends React.Component {
 				onChange: e => this.onTimeChange(e), // only works in non-ie browsers
 				// onInput: e => this.onTimeChange(e), // Can't use this because it breaks the selection functionality
 				ref: this.$input,
-				type: 'time',
+				type: hasPolyfill ? 'tel' : 'time',
 				'data-state-value': this.state.value,
 				'data-props-value': value,
 			},
