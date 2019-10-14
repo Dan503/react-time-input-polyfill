@@ -2,10 +2,15 @@ import React from 'react'
 import supportsTime from 'time-input-polyfill/core/helpers/supportsTime'
 import loadJS from 'time-input-polyfill/core/helpers/loadJS'
 
-// const debugMode = true
-const debugMode = false
+const debugMode = true
+// const debugMode = false
 
 const hasPolyfill = !supportsTime || debugMode
+
+let shiftKey = false
+
+window.addEventListener('keyup', e => (shiftKey = e.shiftKey))
+window.addEventListener('keydown', e => (shiftKey = e.shiftKey))
 
 class EventBus {
 	constructor() {
@@ -40,6 +45,7 @@ export default class TimeInput extends React.Component {
 	constructor(props) {
 		super(props)
 		this.$input = React.createRef()
+		this.focused_via_click = false
 		events.on('polyfill_loaded', polyfill => {
 			this.polyfill = polyfill
 			console.log('polyfill', polyfill)
@@ -95,6 +101,31 @@ export default class TimeInput extends React.Component {
 		this.setState({ value24hr: e.target.value })
 	}
 
+	handleMouseDown(e) {
+		this.props.onMouseDown && this.props.onMouseDown(e)
+		this.focused_via_click = true
+	}
+
+	handleClick(e) {
+		this.props.onClick && this.props.onClick(e)
+		if (!hasPolyfill) return null
+		this.polyfill.select_cursor_segment(this.$input.current)
+	}
+
+	handleFocus(e) {
+		this.props.onFocus && this.props.onFocus(e)
+		if (!hasPolyfill) return null
+		if (!this.focused_via_click) {
+			const segment = shiftKey ? 'mode' : 'hrs'
+			this.polyfill.select_segment(this.$input.current, segment)
+		}
+	}
+
+	handleBlur(e) {
+		this.props.onBlur && this.props.onBlur(e)
+		this.focused_via_click = false
+	}
+
 	render() {
 		const { value, ...props } = this.props
 		return React.createElement(
@@ -102,9 +133,13 @@ export default class TimeInput extends React.Component {
 			{
 				...props,
 				onChange: e => this.handleChange(e),
+				onFocus: e => this.handleFocus(e),
+				onBlur: e => this.handleBlur(e),
+				onMouseDown: e => this.handleMouseDown(e),
+				onClick: e => this.handleClick(e),
 				ref: this.$input,
 				type: hasPolyfill ? 'text' : 'time',
-				value: this.state.value24hr,
+				value: hasPolyfill ? this.state.value12hr : this.state.value24hr,
 			},
 			null,
 		)
