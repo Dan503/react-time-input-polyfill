@@ -42,7 +42,7 @@ gulp.task('browserify', () => {
 		.bundle()
 		.pipe(source('timePolyfillHelpers.js'))
 		.pipe(buffer())
-		.pipe(uglify())
+		// .pipe(uglify())
 		.pipe(gulp.dest('./dist'))
 		.pipe(gulp.dest('./test-site/public'))
 })
