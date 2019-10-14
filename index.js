@@ -156,12 +156,13 @@ export default class TimeInput extends React.Component {
 	}
 
 	handleKeyDown(e) {
+		if (!hasPolyfill) return null
+		e.preventDefault()
 		const key = keyName(e)
 		const $input = this.$input.current
-
 		const actions = {
-			ArrowRight: () => this.polyfill.next_segment(this.$input.current),
-			ArrowLeft: () => this.polyfill.prev_segment(this.$input.current),
+			ArrowRight: () => this.polyfill.next_segment($input),
+			ArrowLeft: () => this.polyfill.prev_segment($input),
 		}
 		actions[key]()
 	}
