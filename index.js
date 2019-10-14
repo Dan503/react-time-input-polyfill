@@ -2,8 +2,8 @@ import React from 'react'
 import supportsTime from 'time-input-polyfill/core/helpers/supportsTime'
 import loadJS from 'time-input-polyfill/core/helpers/loadJS'
 
-const debugMode = true
-// const debugMode = false
+// const debugMode = true
+const debugMode = false
 
 const hasPolyfill = !supportsTime || debugMode
 
@@ -34,6 +34,8 @@ document.addEventListener('DOMContentLoaded', function() {
 	}
 })
 
+const blank12hr = '--:-- --'
+
 export default class TimeInput extends React.Component {
 	constructor(props) {
 		super(props)
@@ -45,19 +47,37 @@ export default class TimeInput extends React.Component {
 			this.setState({
 				value12hr: props.value
 					? polyfill.convert_to_12hr_time(props.value)
-					: '--:-- --',
+					: blank12hr,
 			})
 		})
 		this.state = {
 			value24hr: props.value || '',
-			value12hr: '',
+			value12hr: blank12hr,
 		}
 	}
 
 	componentDidMount() {}
 
-	componentDidUpdate(prevProps) {
-		this.onTimeChange()
+	componentDidUpdate(prevProps, prevState) {
+		const hasNewPropsValue = prevProps.value !== this.props.value
+		const hasNewStateValue = prevState.value24hr !== this.state.value24hr
+
+		if (!hasNewPropsValue && !hasNewStateValue) return null
+
+		if (hasNewStateValue) {
+			this.onTimeChange()
+		} else if (hasNewPropsValue) {
+			this.setState({
+				value24hr: this.props.value,
+				value12hr: this.convert_to_12hr(this.props.value),
+			})
+		}
+	}
+
+	convert_to_12hr(time24hr) {
+		return hasPolyfill
+			? this.polyfill.convert_to_12hr_time(time24hr)
+			: blank12hr
 	}
 
 	onTimeChange() {
@@ -72,11 +92,7 @@ export default class TimeInput extends React.Component {
 
 	handleChange(e) {
 		if (hasPolyfill) return null
-
-		this.setState({
-			value24hr: e.target.value,
-			value12hr: '',
-		})
+		this.setState({ value24hr: e.target.value })
 	}
 
 	render() {
