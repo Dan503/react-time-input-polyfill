@@ -71,13 +71,11 @@ export default class TimeInput extends React.Component {
 	}
 
 	handleChange(e) {
-		const value24hr = hasPolyfill ? this.state.value24hr : e.target.value
-		const value12hr = this.polyfill
-			? this.polyfill.convert_to_12hr_time(value24hr)
-			: ''
+		if (hasPolyfill) return null
+
 		this.setState({
-			value24hr,
-			value12hr,
+			value24hr: e.target.value,
+			value12hr: '',
 		})
 	}
 
