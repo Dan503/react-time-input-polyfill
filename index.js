@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		loadJS(
 			debugMode
 				? './timePolyfillHelpers.js'
-				: 'https://cdn.jsdelivr.net/npm/time-input-polyfill/dist/time-input-polyfill.min.js',
+				: 'https://cdn.jsdelivr.net/npm/react-time-input-polyfill/dist/timePolyfillHelpers.js',
 			function() {
 				events.emit('polyfill_loaded', window.timePolyfillHelpers)
 			},
