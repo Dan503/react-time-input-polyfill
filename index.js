@@ -12,6 +12,17 @@ let shiftKey = false
 window.addEventListener('keyup', e => (shiftKey = e.shiftKey))
 window.addEventListener('keydown', e => (shiftKey = e.shiftKey))
 
+// IE doesn't support event.key properly
+const keyName = e =>
+	({
+		8: 'Backspace',
+		9: 'Tab',
+		37: 'ArrowLeft',
+		38: 'ArrowUp',
+		39: 'ArrowRight',
+		40: 'ArrowDown',
+	}[e.which])
+
 class EventBus {
 	constructor() {
 		this.calls = {}
@@ -40,6 +51,8 @@ document.addEventListener('DOMContentLoaded', function() {
 })
 
 const blank12hr = '--:-- --'
+let accessibility_block_created = false
+let $a11y
 
 export default class TimeInput extends React.Component {
 	constructor(props) {
@@ -48,13 +61,19 @@ export default class TimeInput extends React.Component {
 		this.focused_via_click = false
 		events.on('polyfill_loaded', polyfill => {
 			this.polyfill = polyfill
-			console.log('polyfill', polyfill)
 
 			this.setState({
 				value12hr: props.value
 					? polyfill.convert_to_12hr_time(props.value)
 					: blank12hr,
 			})
+
+			if (!accessibility_block_created) {
+				$a11y = polyfill.create_a11y_block()
+				accessibility_block_created = true
+			}
+
+			events.emit('polyfill_ready', polyfill)
 		})
 		this.state = {
 			value24hr: props.value || '',
@@ -62,7 +81,17 @@ export default class TimeInput extends React.Component {
 		}
 	}
 
-	componentDidMount() {}
+	componentDidMount() {
+		if (!hasPolyfill) return null
+
+		events.on('polyfill_ready', () => {
+			const $input = this.$input.current
+			$input.polyfill = {
+				label: this.polyfill.get_label($input),
+				$a11y,
+			}
+		})
+	}
 
 	componentDidUpdate(prevProps, prevState) {
 		const hasNewPropsValue = prevProps.value !== this.props.value
@@ -126,6 +155,17 @@ export default class TimeInput extends React.Component {
 		this.focused_via_click = false
 	}
 
+	handleKeyDown(e) {
+		const key = keyName(e)
+		const $input = this.$input.current
+
+		const actions = {
+			ArrowRight: () => this.polyfill.next_segment(this.$input.current),
+			ArrowLeft: () => this.polyfill.prev_segment(this.$input.current),
+		}
+		actions[key]()
+	}
+
 	render() {
 		const { value, ...props } = this.props
 		return React.createElement(
@@ -137,6 +177,7 @@ export default class TimeInput extends React.Component {
 				onBlur: e => this.handleBlur(e),
 				onMouseDown: e => this.handleMouseDown(e),
 				onClick: e => this.handleClick(e),
+				onKeyDown: e => this.handleKeyDown(e),
 				ref: this.$input,
 				type: hasPolyfill ? 'text' : 'time',
 				value: hasPolyfill ? this.state.value12hr : this.state.value24hr,
