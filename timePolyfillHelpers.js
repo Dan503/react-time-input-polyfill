@@ -11,6 +11,10 @@ var prev_segment = require('time-input-polyfill/core/selectors/prev_segment')
 // getters
 var get_label = require('time-input-polyfill/core/getters/get_label')
 
+// setters
+var increment_current_segment = require('time-input-polyfill/core/setters/increment_current_segment')
+var decrement_current_segment = require('time-input-polyfill/core/setters/decrement_current_segment')
+
 // a11y
 var create_a11y_block = require('time-input-polyfill/core/accessibility/create_a11y_block')
 
@@ -22,5 +26,7 @@ window.timePolyfillHelpers = {
 	next_segment,
 	prev_segment,
 	get_label,
+	increment_current_segment,
+	decrement_current_segment,
 	create_a11y_block,
 }

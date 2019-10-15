@@ -163,6 +163,15 @@ export default class TimeInput extends React.Component {
 		const actions = {
 			ArrowRight: () => this.polyfill.next_segment($input),
 			ArrowLeft: () => this.polyfill.prev_segment($input),
+			ArrowUp: () => {
+				this.polyfill.increment_current_segment($input)
+				const time12hr = `${$input.value}`
+				this.setState({
+					time12hr,
+					time24hr: this.polyfill.convert_to_24hr_time(time12hr),
+				})
+			},
+			ArrowDown: () => this.polyfill.decrement_current_segment($input),
 		}
 		actions[key]()
 	}
