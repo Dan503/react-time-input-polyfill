@@ -6,9 +6,10 @@ const debugMode = true
 // const debugMode = false
 
 let polyfillLoadCalled = false
-let polyfill
 
 let shiftKey = false
+
+const timeInputs = []
 
 const leading_zero = number => {
 	if (isNaN(number)) return number
@@ -30,28 +31,16 @@ const keyName = e =>
 		40: 'ArrowDown',
 	}[e.which])
 
-class EventBus {
-	constructor() {
-		this.calls = {}
-	}
-	on(string, callback) {
-		this.calls[string] = callback
-	}
-	emit(string, ...props) {
-		return this.calls[string](...props)
-	}
-}
-
-const events = new EventBus()
-
 const loadPolyfill = () => {
 	polyfillLoadCalled = true
 	loadJS(
 		debugMode
 			? './timePolyfillHelpers.js'
 			: 'https://cdn.jsdelivr.net/npm/react-time-input-polyfill/dist/timePolyfillHelpers.js',
-		function() {
-			events.emit('polyfill_loaded', window.timePolyfillHelpers)
+		() => {
+			timeInputs.forEach(input =>
+				input.onPolyfillLoad(window.timePolyfillHelpers),
+			)
 		},
 	)
 }
@@ -66,31 +55,7 @@ export default class TimeInput extends React.Component {
 		this.$input = React.createRef()
 		this.focused_via_click = false
 
-		events.on('polyfill_loaded', loadedPolyfill => {
-			polyfill = loadedPolyfill
-
-			this.setState({
-				usePolyfill: true,
-				value12hr: props.value
-					? polyfill.convert_to_12hr_time(props.value)
-					: blank12hr,
-			})
-
-			if (!accessibility_block_created) {
-				$a11y = polyfill.create_a11y_block()
-				accessibility_block_created = true
-			}
-
-			events.emit('polyfill_ready', polyfill)
-		})
-
-		events.on('polyfill_ready', () => {
-			const $input = this.$input.current
-			$input.polyfill = {
-				label: polyfill.get_label($input),
-				$a11y,
-			}
-		})
+		timeInputs.push(this)
 
 		this.state = {
 			value24hr: props.value || '',
@@ -101,6 +66,28 @@ export default class TimeInput extends React.Component {
 
 		if ((props.forcePolyfill || !supportsTime) && !polyfillLoadCalled) {
 			loadPolyfill()
+		}
+	}
+
+	onPolyfillLoad(loadedPolyfill) {
+		this.polyfill = loadedPolyfill
+
+		this.setState({
+			usePolyfill: true,
+			value12hr: this.props.value
+				? this.polyfill.convert_to_12hr_time(this.props.value)
+				: blank12hr,
+		})
+
+		if (!accessibility_block_created) {
+			$a11y = this.polyfill.create_a11y_block()
+			accessibility_block_created = true
+		}
+
+		const $input = this.$input.current
+		$input.polyfill = {
+			label: this.polyfill.get_label($input),
+			$a11y,
 		}
 	}
 
@@ -122,12 +109,12 @@ export default class TimeInput extends React.Component {
 
 	convert_to_12hr(time24hr) {
 		return this.state.usePolyfill
-			? polyfill.convert_to_12hr_time(time24hr)
+			? this.polyfill.convert_to_12hr_time(time24hr)
 			: blank12hr
 	}
 
 	nudge_current_segment(direction) {
-		const segment = polyfill.get_current_segment(this.$input.current)
+		const segment = this.polyfill.get_current_segment(this.$input.current)
 
 		const current_values = this.get_current_values(this.$input.current)
 		let time = {}
@@ -138,7 +125,7 @@ export default class TimeInput extends React.Component {
 			var current_time = () => new Date()
 			time = {
 				hrs: () =>
-					polyfill.convert_hours_to_12hr_time(current_time().getHours()),
+					this.polyfill.convert_hours_to_12hr_time(current_time().getHours()),
 				min: () => current_time().getMinutes(),
 				mode: () => current_time().getHours() > 11,
 			}
@@ -149,7 +136,9 @@ export default class TimeInput extends React.Component {
 			}
 			time = {
 				hrs: () =>
-					polyfill.convert_hours_to_12hr_time(current_values.hrs + modifier),
+					this.polyfill.convert_hours_to_12hr_time(
+						current_values.hrs + modifier,
+					),
 				min: () => minutes[direction],
 				mode: () => (current_values.mode === 'AM' ? 'PM' : 'AM'),
 			}
@@ -167,12 +156,12 @@ export default class TimeInput extends React.Component {
 			' ',
 			values.mode,
 		].join('')
-		const value24hr = polyfill.convert_to_24hr_time(value12hr)
+		const value24hr = this.polyfill.convert_to_24hr_time(value12hr)
 		this.setState({ value12hr, value24hr, currentSegment: segment })
 	}
 
 	traverse_segments(direction) {
-		const { segments } = polyfill
+		const { segments } = this.polyfill
 		const modifier = direction == 'left' ? -1 : 1
 		const newIndex = segments.indexOf(this.state.currentSegment) + modifier
 		const finalIndex = newIndex <= 0 ? 0 : newIndex >= 2 ? 2 : newIndex
@@ -187,7 +176,7 @@ export default class TimeInput extends React.Component {
 	}
 
 	get_current_values() {
-		return polyfill.get_values(this.$input.current)
+		return this.polyfill.get_values(this.$input.current)
 	}
 
 	onTimeChange() {
@@ -213,9 +202,9 @@ export default class TimeInput extends React.Component {
 	handleClick(e) {
 		this.props.onClick && this.props.onClick(e)
 		if (!this.state.usePolyfill) return null
-		polyfill.select_cursor_segment(this.$input.current)
+		this.polyfill.select_cursor_segment(this.$input.current)
 		this.setState({
-			currentSegment: polyfill.get_current_segment(this.$input.current),
+			currentSegment: this.polyfill.get_current_segment(this.$input.current),
 		})
 	}
 
@@ -251,7 +240,10 @@ export default class TimeInput extends React.Component {
 		const { value, forcePolyfill, ...props } = this.props
 
 		if (this.state.usePolyfill && this.state.currentSegment !== null) {
-			polyfill.select_segment(this.$input.current, this.state.currentSegment)
+			this.polyfill.select_segment(
+				this.$input.current,
+				this.state.currentSegment,
+			)
 		}
 
 		return React.createElement(
