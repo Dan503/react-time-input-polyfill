@@ -5,8 +5,6 @@ import loadJS from 'time-input-polyfill/core/helpers/loadJS'
 const debugMode = true
 // const debugMode = false
 
-let polyfillLoadCalled = false
-
 let shiftKey = false
 
 const timeInputs = []
@@ -31,8 +29,12 @@ const keyName = e =>
 		40: 'ArrowDown',
 	}[e.which])
 
+let polyfillLoadCalled = false
+
 const loadPolyfill = () => {
+	if (polyfillLoadCalled) return null
 	polyfillLoadCalled = true
+
 	loadJS(
 		debugMode
 			? './timePolyfillHelpers.js'
@@ -55,8 +57,6 @@ export default class TimeInput extends React.Component {
 		this.$input = React.createRef()
 		this.focused_via_click = false
 
-		timeInputs.push(this)
-
 		this.state = {
 			value24hr: props.value || '',
 			value12hr: blank12hr,
@@ -64,7 +64,8 @@ export default class TimeInput extends React.Component {
 			usePolyfill: !supportsTime,
 		}
 
-		if ((props.forcePolyfill || !supportsTime) && !polyfillLoadCalled) {
+		if (props.forcePolyfill || !supportsTime) {
+			timeInputs.push(this)
 			loadPolyfill()
 		}
 	}
