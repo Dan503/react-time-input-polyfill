@@ -27,6 +27,7 @@ const keyName = e =>
 		38: 'ArrowUp',
 		39: 'ArrowRight',
 		40: 'ArrowDown',
+		46: 'Delete',
 	}[e.which])
 
 let polyfillLoadCalled = false
@@ -47,7 +48,6 @@ const loadPolyfill = () => {
 	)
 }
 
-const blank12hr = '--:-- --'
 let accessibility_block_created = false
 let $a11y
 
@@ -58,8 +58,12 @@ export default class TimeInput extends React.Component {
 		this.focused_via_click = false
 
 		this.state = {
+			time: {
+				hrs: '--',
+				min: '--',
+				mode: '--',
+			},
 			value24hr: props.value || '',
-			value12hr: blank12hr,
 			currentSegment: null,
 			usePolyfill: !supportsTime,
 		}
@@ -75,9 +79,7 @@ export default class TimeInput extends React.Component {
 
 		this.setState({
 			usePolyfill: true,
-			value12hr: this.props.value
-				? this.polyfill.convert_to_12hr_time(this.props.value)
-				: blank12hr,
+			time: this.polyfill.get_values_from_24hr(this.state.value24hr),
 		})
 
 		if (!accessibility_block_created) {
@@ -102,22 +104,18 @@ export default class TimeInput extends React.Component {
 			this.onTimeChange()
 		} else if (hasNewPropsValue) {
 			this.setState({
+				time: this.state.usePolyfill
+					? this.polyfill.get_values_from_24hr(this.props.value)
+					: null,
 				value24hr: this.props.value,
-				value12hr: this.convert_to_12hr(this.props.value),
 			})
 		}
 	}
 
-	convert_to_12hr(time24hr) {
-		return this.state.usePolyfill
-			? this.polyfill.convert_to_12hr_time(time24hr)
-			: blank12hr
-	}
-
 	nudge_current_segment(direction) {
-		const segment = this.polyfill.get_current_segment(this.$input.current)
+		const segment = this.state.currentSegment
 
-		const current_values = this.get_current_values(this.$input.current)
+		const current_values = this.state.time
 		let time = {}
 
 		const modifier = direction === 'up' ? 1 : -1
@@ -147,18 +145,32 @@ export default class TimeInput extends React.Component {
 		this.set_segment(segment, time[segment]())
 	}
 
+	get_12hr_value(timeObj) {
+		const time = timeObj || this.state.time
+		return !time
+			? ''
+			: [
+					leading_zero(time.hrs),
+					':',
+					leading_zero(time.min),
+					' ',
+					time.mode,
+			  ].join('')
+	}
+
 	set_segment(segment, value) {
-		const values = this.get_current_values()
-		values[segment] = value
-		const value12hr = [
-			leading_zero(values.hrs),
-			':',
-			leading_zero(values.min),
-			' ',
-			values.mode,
-		].join('')
+		const time = {
+			...this.state.time,
+			[segment]: this.polyfill.convert_number(value),
+		}
+
+		const value12hr = this.get_12hr_value(time)
 		const value24hr = this.polyfill.convert_to_24hr_time(value12hr)
-		this.setState({ value12hr, value24hr, currentSegment: segment })
+
+		this.setState({
+			time,
+			value24hr,
+		})
 	}
 
 	traverse_segments(direction) {
@@ -176,15 +188,11 @@ export default class TimeInput extends React.Component {
 		this.traverse_segments('left')
 	}
 
-	get_current_values() {
-		return this.polyfill.get_values(this.$input.current)
-	}
-
 	onTimeChange() {
 		if (this.props.onChange) {
 			this.props.onChange({
 				value: this.state.value24hr,
-				value12hr: this.state.value12hr,
+				time: this.state.time,
 				element: this.$input.current,
 			})
 		}
@@ -226,25 +234,31 @@ export default class TimeInput extends React.Component {
 
 	handleKeyDown(e) {
 		if (!this.state.usePolyfill) return null
-		e.preventDefault()
 		const key = keyName(e)
 		const actions = {
 			ArrowRight: () => this.next_segment(),
 			ArrowLeft: () => this.prev_segment(),
+
 			ArrowUp: () => this.nudge_current_segment('up'),
 			ArrowDown: () => this.nudge_current_segment('down'),
 		}
-		actions[key]()
+
+		if (actions[key]) {
+			e.preventDefault()
+			actions[key]()
+		}
 	}
 
 	render() {
 		const { value, forcePolyfill, ...props } = this.props
+		const { usePolyfill, value24hr, currentSegment } = this.state
 
-		if (this.state.usePolyfill && this.state.currentSegment !== null) {
-			this.polyfill.select_segment(
-				this.$input.current,
-				this.state.currentSegment,
-			)
+		const value12hr = usePolyfill ? this.get_12hr_value() : null
+
+		if (usePolyfill && currentSegment !== null) {
+			const highlightSegment = () =>
+				this.polyfill.select_segment(this.$input.current, currentSegment)
+			setTimeout(highlightSegment, 0)
 		}
 
 		return React.createElement(
@@ -258,10 +272,8 @@ export default class TimeInput extends React.Component {
 				onClick: e => this.handleClick(e),
 				onKeyDown: e => this.handleKeyDown(e),
 				ref: this.$input,
-				type: this.state.usePolyfill ? 'text' : 'time',
-				value: this.state.usePolyfill
-					? this.state.value12hr
-					: this.state.value24hr,
+				type: usePolyfill ? 'text' : 'time',
+				value: usePolyfill ? value12hr : value24hr,
 			},
 			null,
 		)

@@ -5,6 +5,7 @@ var segments = require('time-input-polyfill/core/static-values/segments')
 var convert_to_12hr_time = require('time-input-polyfill/core/converters/convert_to_12hr_time')
 var convert_to_24hr_time = require('time-input-polyfill/core/converters/convert_to_24hr_time')
 var convert_hours_to_12hr_time = require('time-input-polyfill/core/converters/convert_hours_to_12hr_time')
+var convert_number = require('time-input-polyfill/core/converters/convert_number')
 
 //selectors
 var select_cursor_segment = require('time-input-polyfill/core/selectors/select_cursor_segment')
@@ -17,6 +18,11 @@ var get_label = require('time-input-polyfill/core/getters/get_label')
 var get_current_segment = require('time-input-polyfill/core/getters/get_current_segment')
 var get_values = require('time-input-polyfill/core/getters/get_values')
 
+var get_values_from_24hr = value24hr => {
+	const value12hr = convert_to_12hr_time(value24hr)
+	return get_values(null, value12hr)
+}
+
 // a11y
 var create_a11y_block = require('time-input-polyfill/core/accessibility/create_a11y_block')
 
@@ -25,6 +31,7 @@ window.timePolyfillHelpers = {
 	convert_to_12hr_time,
 	convert_to_24hr_time,
 	convert_hours_to_12hr_time,
+	convert_number,
 	select_cursor_segment,
 	select_segment,
 	next_segment,
@@ -32,5 +39,6 @@ window.timePolyfillHelpers = {
 	get_label,
 	get_current_segment,
 	get_values,
+	get_values_from_24hr,
 	create_a11y_block,
 }
