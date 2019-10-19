@@ -24,7 +24,7 @@ const ExampleBlock = ({ label, Input }) => {
 			</p>
 
 			<p>
-				{label} returned value: {value}
+				{label} returned value: "{value}"
 			</p>
 		</div>
 	)
