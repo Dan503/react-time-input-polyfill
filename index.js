@@ -105,7 +105,9 @@ export default class TimeInput extends React.Component {
 		} else if (hasNewPropsValue) {
 			this.setState({
 				time: this.state.usePolyfill
-					? this.polyfill.get_values_from_24hr(this.props.value)
+					? this.props.value
+						? this.polyfill.get_values_from_24hr(this.props.value)
+						: this.state.time
 					: null,
 				value24hr: this.props.value,
 			})
