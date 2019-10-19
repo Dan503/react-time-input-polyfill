@@ -188,6 +188,10 @@ export default class TimeInput extends React.Component {
 		this.traverse_segments('left')
 	}
 
+	clear_current_segment() {
+		this.set_segment(this.state.currentSegment, '--')
+	}
+
 	onTimeChange() {
 		if (this.props.onChange) {
 			this.props.onChange({
@@ -241,6 +245,9 @@ export default class TimeInput extends React.Component {
 
 			ArrowUp: () => this.nudge_current_segment('up'),
 			ArrowDown: () => this.nudge_current_segment('down'),
+
+			Delete: () => this.clear_current_segment(),
+			Backspace: () => this.clear_current_segment(),
 		}
 
 		if (actions[key]) {
