@@ -128,7 +128,7 @@ export default class TimeInput extends React.Component {
 				hrs: () =>
 					this.polyfill.convert_hours_to_12hr_time(current_time().getHours()),
 				min: () => current_time().getMinutes(),
-				mode: () => current_time().getHours() > 11,
+				mode: () => (current_time().getHours() > 11 ? 'PM' : 'AM'),
 			}
 		} else {
 			var minutes = {
