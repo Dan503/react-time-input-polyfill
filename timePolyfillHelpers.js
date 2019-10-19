@@ -5,7 +5,6 @@ var segments = require('time-input-polyfill/core/static-values/segments')
 var convert_to_12hr_time = require('time-input-polyfill/core/converters/convert_to_12hr_time')
 var convert_to_24hr_time = require('time-input-polyfill/core/converters/convert_to_24hr_time')
 var convert_hours_to_12hr_time = require('time-input-polyfill/core/converters/convert_hours_to_12hr_time')
-var convert_number = require('time-input-polyfill/core/converters/convert_number')
 
 //selectors
 var select_cursor_segment = require('time-input-polyfill/core/selectors/select_cursor_segment')
@@ -31,7 +30,6 @@ window.timePolyfillHelpers = {
 	convert_to_12hr_time,
 	convert_to_24hr_time,
 	convert_hours_to_12hr_time,
-	convert_number,
 	select_cursor_segment,
 	select_segment,
 	next_segment,

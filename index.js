@@ -161,7 +161,7 @@ export default class TimeInput extends React.Component {
 	set_segment(segment, value) {
 		const time = {
 			...this.state.time,
-			[segment]: this.polyfill.convert_number(value),
+			[segment]: isNaN(value) ? value : parseInt(value),
 		}
 
 		const value12hr = this.get_12hr_value(time)
