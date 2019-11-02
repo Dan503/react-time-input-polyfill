@@ -114,15 +114,15 @@ export default class TimeInput extends React.Component {
 	}
 
 	set_time(time24hr) {
-			this.setState({
-				time: this.state.usePolyfill
+		this.setState({
+			time: this.state.usePolyfill
 				? time24hr
 					? this.polyfill.get_values_from_24hr(time24hr)
-						: this.state.time
-					: null,
+					: this.state.time
+				: null,
 			value24hr: time24hr,
-			})
-		}
+		})
+	}
 
 	nudge_current_segment(direction) {
 		const segment = this.state.currentSegment
@@ -136,14 +136,19 @@ export default class TimeInput extends React.Component {
 			var current_time = () => new Date()
 			time = {
 				hrs: () =>
-					this.polyfill.convert_hours_to_12hr_time(current_time().getHours()),
+					this.polyfill.convert_hours_to_12hr_time(
+						current_time().getHours(),
+					),
 				min: () => current_time().getMinutes(),
 				mode: () => (current_time().getHours() > 11 ? 'PM' : 'AM'),
 			}
 		} else {
 			var minutes = {
 				up: current_values.min < 59 ? current_values.min + modifier : 0,
-				down: current_values.min === 0 ? 59 : current_values.min + modifier,
+				down:
+					current_values.min === 0
+						? 59
+						: current_values.min + modifier,
 			}
 			time = {
 				hrs: () =>
@@ -229,7 +234,9 @@ export default class TimeInput extends React.Component {
 		if (!this.state.usePolyfill) return null
 		this.polyfill.select_cursor_segment(this.$input.current)
 		this.setState({
-			currentSegment: this.polyfill.get_current_segment(this.$input.current),
+			currentSegment: this.polyfill.get_current_segment(
+				this.$input.current,
+			),
 		})
 	}
 
@@ -276,7 +283,10 @@ export default class TimeInput extends React.Component {
 
 		if (usePolyfill && currentSegment !== null) {
 			const highlightSegment = () =>
-				this.polyfill.select_segment(this.$input.current, currentSegment)
+				this.polyfill.select_segment(
+					this.$input.current,
+					currentSegment,
+				)
 			setTimeout(highlightSegment, 0)
 		}
 
