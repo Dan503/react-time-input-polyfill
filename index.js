@@ -51,6 +51,12 @@ const loadPolyfill = () => {
 let accessibility_block_created = false
 let $a11y
 
+const polyfillClassName = 'react-time-input-polyfill-target'
+
+const customStyles = document.createElement('style')
+customStyles.innerHTML = `.${polyfillClassName}::-ms-clear { display: none; }`
+document.getElementsByTagName('head')[0].appendChild(customStyles)
+
 export default class TimeInput extends React.Component {
 	constructor(props) {
 		super(props)
@@ -263,7 +269,7 @@ export default class TimeInput extends React.Component {
 	}
 
 	render() {
-		const { value, forcePolyfill, ...props } = this.props
+		const { value, forcePolyfill, className, ...props } = this.props
 		const { usePolyfill, value24hr, currentSegment } = this.state
 
 		const value12hr = usePolyfill ? this.get_12hr_value() : null
@@ -273,6 +279,8 @@ export default class TimeInput extends React.Component {
 				this.polyfill.select_segment(this.$input.current, currentSegment)
 			setTimeout(highlightSegment, 0)
 		}
+
+		const polyfillClass = this.state.usePolyfill ? polyfillClassName : ''
 
 		return React.createElement(
 			'input',
@@ -287,6 +295,9 @@ export default class TimeInput extends React.Component {
 				ref: this.$input,
 				type: usePolyfill ? 'text' : 'time',
 				value: usePolyfill ? value12hr : value24hr,
+				className:
+					[className || '', polyfillClass].join(' ').trim() ||
+					undefined,
 			},
 			null,
 		)

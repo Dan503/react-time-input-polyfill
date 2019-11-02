@@ -11,7 +11,11 @@ const ExampleBlock = ({ label, Input }) => {
 
 			<label style={{ display: 'block' }}>
 				<span style={{ marginRight: '0.5em' }}>{label} time input</span>
-				<Input currentValue={value} setValue={setValue} />
+				<Input
+					currentValue={value}
+					setValue={setValue}
+					className="exampleClass"
+				/>
 			</label>
 
 			<p>
@@ -37,32 +41,35 @@ function App() {
 
 			<ExampleBlock
 				label="Non-forced polyfill"
-				Input={({ currentValue, setValue }) => (
+				Input={({ currentValue, setValue, className }) => (
 					<TimeInput
 						value={currentValue}
 						onChange={({ value }) => setValue(value)}
+						className={className}
 					/>
 				)}
 			/>
 
 			<ExampleBlock
 				label="Forced polyfill"
-				Input={({ currentValue, setValue }) => (
+				Input={({ currentValue, setValue, className }) => (
 					<TimeInput
 						value={currentValue}
 						onChange={({ value }) => setValue(value)}
 						forcePolyfill={true}
+						className={className}
 					/>
 				)}
 			/>
 
 			<ExampleBlock
 				label="Non-polyfill"
-				Input={({ currentValue, setValue }) => (
+				Input={({ currentValue, setValue, className }) => (
 					<input
 						type="time"
 						value={currentValue}
 						onChange={e => setValue(e.target.value)}
+						className={className}
 					/>
 				)}
 			/>
