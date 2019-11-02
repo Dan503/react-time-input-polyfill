@@ -18,18 +18,6 @@ const leading_zero = number => {
 window.addEventListener('keyup', e => (shiftKey = e.shiftKey))
 window.addEventListener('keydown', e => (shiftKey = e.shiftKey))
 
-// IE doesn't support event.key properly
-const keyName = e =>
-	({
-		8: 'Backspace',
-		9: 'Tab',
-		37: 'ArrowLeft',
-		38: 'ArrowUp',
-		39: 'ArrowRight',
-		40: 'ArrowDown',
-		46: 'Delete',
-	}[e.which])
-
 let polyfillLoadCalled = false
 
 const loadPolyfill = () => {
@@ -91,6 +79,11 @@ export default class TimeInput extends React.Component {
 		if (!accessibility_block_created) {
 			$a11y = this.polyfill.create_a11y_block()
 			accessibility_block_created = true
+		}
+
+		this.manual_entry_log = {
+			hrs: new this.polyfill.manual_entry_log(),
+			min: new this.polyfill.manual_entry_log(),
 		}
 
 		const $input = this.$input.current
@@ -193,7 +186,15 @@ export default class TimeInput extends React.Component {
 		const modifier = direction == 'left' ? -1 : 1
 		const newIndex = segments.indexOf(this.state.currentSegment) + modifier
 		const finalIndex = newIndex <= 0 ? 0 : newIndex >= 2 ? 2 : newIndex
+		this.clear_entry_log()
 		this.setState({ currentSegment: segments[finalIndex] })
+	}
+
+	clear_entry_log() {
+		const { currentSegment } = this.state
+		if (currentSegment !== 'mode') {
+			this.manual_entry_log[currentSegment].clear()
+		}
 	}
 
 	next_segment() {
@@ -255,7 +256,7 @@ export default class TimeInput extends React.Component {
 
 	handleKeyDown(e) {
 		if (!this.state.usePolyfill) return null
-		const key = keyName(e)
+		const key = e.key
 		const actions = {
 			ArrowRight: () => this.next_segment(),
 			ArrowLeft: () => this.prev_segment(),
@@ -265,11 +266,60 @@ export default class TimeInput extends React.Component {
 
 			Delete: () => this.clear_current_segment(),
 			Backspace: () => this.clear_current_segment(),
+
+			// I don't want to prevent the default escape key functionality
+			Escape: () => {},
+
+			numberKey: () => this.enter_number(e.key),
+			A_or_P: () => this.enter_A_or_P(e.key),
 		}
+
+		const isNumberKey = /\d/.test(e.key)
+		const is_A_or_P = /[ap]/i.test(e.key)
 
 		if (actions[key]) {
 			e.preventDefault()
 			actions[key]()
+		} else if (isNumberKey) {
+			actions.numberKey()
+		} else if (is_A_or_P) {
+			actions.A_or_P()
+		} else {
+			e.preventDefault()
+		}
+	}
+
+	enter_A_or_P(key) {
+		const isA = /a/i.test(key)
+		this.set_segment('mode', isA ? 'AM' : 'PM')
+	}
+
+	enter_number(key) {
+		const segment = this.state.currentSegment
+		const number = parseInt(key)
+		const entry_log = this.manual_entry_log[segment]
+		const entry_count = entry_log.items.length
+		const upper_limits = {
+			hrs: [1, 2],
+			min: [5, 9],
+		}
+		const limit = upper_limits[segment][entry_count]
+
+		if (entry_count < 2) {
+			entry_log.add(number)
+		}
+
+		const full_limit = parseInt(upper_limits[segment].join(''))
+		const full_entry = parseInt(entry_log.items.join(''))
+
+		if (full_limit >= full_entry) {
+			this.set_segment(segment, full_entry)
+		}
+
+		const at_limit = number > limit || entry_log.items.length === 2
+
+		if (at_limit) {
+			this.next_segment()
 		}
 	}
 
