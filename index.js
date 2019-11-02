@@ -103,16 +103,20 @@ export default class TimeInput extends React.Component {
 		if (hasNewStateValue) {
 			this.onTimeChange()
 		} else if (hasNewPropsValue) {
-			this.setState({
-				time: this.state.usePolyfill
-					? this.props.value
-						? this.polyfill.get_values_from_24hr(this.props.value)
-						: this.state.time
-					: null,
-				value24hr: this.props.value,
-			})
+			this.set_time(this.props.value)
 		}
 	}
+
+	set_time(time24hr) {
+			this.setState({
+				time: this.state.usePolyfill
+				? time24hr
+					? this.polyfill.get_values_from_24hr(time24hr)
+						: this.state.time
+					: null,
+			value24hr: time24hr,
+			})
+		}
 
 	nudge_current_segment(direction) {
 		const segment = this.state.currentSegment
