@@ -116,9 +116,7 @@ export default class TimeInput extends React.Component {
 	set_time(time24hr) {
 		this.setState({
 			time: this.state.usePolyfill
-				? time24hr
-					? this.polyfill.get_values_from_24hr(time24hr)
-					: this.state.time
+				? this.polyfill.get_values_from_24hr(time24hr || '')
 				: null,
 			value24hr: time24hr,
 		})
