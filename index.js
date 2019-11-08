@@ -93,6 +93,11 @@ export default class TimeInput extends React.Component {
 		}
 	}
 
+	update_a11y(announcementArray) {
+		if (!this.state.usePolyfill) return null
+		this.polyfill.update_a11y(this.$input.current, announcementArray)
+	}
+
 	componentDidUpdate(prevProps, prevState) {
 		const hasNewPropsValue = prevProps.value !== this.props.value
 		const hasNewStateValue = prevState.value24hr !== this.state.value24hr
@@ -186,8 +191,12 @@ export default class TimeInput extends React.Component {
 		const modifier = direction == 'left' ? -1 : 1
 		const newIndex = segments.indexOf(this.state.currentSegment) + modifier
 		const finalIndex = newIndex <= 0 ? 0 : newIndex >= 2 ? 2 : newIndex
+		const currentSegment = segments[finalIndex]
 		this.clear_entry_log()
-		this.setState({ currentSegment: segments[finalIndex] })
+		this.setState({ currentSegment })
+		setTimeout(() => {
+			this.update_a11y(['select'])
+		}, 0)
 	}
 
 	clear_entry_log() {
@@ -216,6 +225,9 @@ export default class TimeInput extends React.Component {
 				element: this.$input.current,
 			})
 		}
+		setTimeout(() => {
+			this.update_a11y(['update'])
+		}, 0)
 	}
 
 	handleChange(e) {
@@ -226,6 +238,10 @@ export default class TimeInput extends React.Component {
 	handleMouseDown(e) {
 		this.props.onMouseDown && this.props.onMouseDown(e)
 		this.focused_via_click = true
+
+		if (this.$input.current.matches(':focus')) {
+			this.update_a11y(['select'])
+		}
 	}
 
 	handleClick(e) {
@@ -242,10 +258,11 @@ export default class TimeInput extends React.Component {
 	handleFocus(e) {
 		this.props.onFocus && this.props.onFocus(e)
 		if (!this.state.usePolyfill) return null
+		const segment = shiftKey ? 'mode' : 'hrs'
 		if (!this.focused_via_click) {
-			const segment = shiftKey ? 'mode' : 'hrs'
 			this.setState({ currentSegment: segment })
 		}
+		this.update_a11y(['initial', 'select'])
 	}
 
 	handleBlur(e) {

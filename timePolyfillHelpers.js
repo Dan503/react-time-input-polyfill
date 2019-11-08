@@ -35,6 +35,7 @@ var get_values_from_24hr = value24hr => {
 
 // a11y
 var create_a11y_block = require('time-input-polyfill/core/accessibility/create_a11y_block')
+var update_a11y = require('time-input-polyfill/core/accessibility/update_a11y')
 
 window.timePolyfillHelpers = {
 	segments,
@@ -50,5 +51,6 @@ window.timePolyfillHelpers = {
 	get_values,
 	get_values_from_24hr,
 	create_a11y_block,
+	update_a11y,
 	manual_entry_log,
 }
