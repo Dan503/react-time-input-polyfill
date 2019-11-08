@@ -267,9 +267,6 @@ export default class TimeInput extends React.Component {
 			Delete: () => this.clear_current_segment(),
 			Backspace: () => this.clear_current_segment(),
 
-			// I don't want to prevent the default escape key functionality
-			Escape: () => {},
-
 			numberKey: () => this.enter_number(e.key),
 			A_or_P: () => this.enter_A_or_P(e.key),
 		}
@@ -284,7 +281,7 @@ export default class TimeInput extends React.Component {
 			actions.numberKey()
 		} else if (is_A_or_P) {
 			actions.A_or_P()
-		} else {
+		} else if (key !== 'Escape') {
 			e.preventDefault()
 		}
 	}
