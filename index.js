@@ -271,6 +271,16 @@ export default class TimeInput extends React.Component {
 		this.setState({ currentSegment: null })
 	}
 
+	handleTab(e) {
+		if (e.shiftKey && this.state.currentSegment !== 'hrs') {
+			e.preventDefault()
+			this.prev_segment()
+		} else if (!e.shiftKey && this.state.currentSegment !== 'mode') {
+			e.preventDefault()
+			this.next_segment()
+		}
+	}
+
 	handleKeyDown(e) {
 		if (!this.state.usePolyfill) return null
 		const key = e.key
@@ -291,7 +301,9 @@ export default class TimeInput extends React.Component {
 		const isNumberKey = /\d/.test(e.key)
 		const is_A_or_P = /[ap]/i.test(e.key)
 
-		if (actions[key]) {
+		if (key === 'Tab') {
+			this.handleTab(e)
+		} else if (actions[key]) {
 			e.preventDefault()
 			actions[key]()
 		} else if (isNumberKey) {
