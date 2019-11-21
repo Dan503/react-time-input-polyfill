@@ -221,7 +221,6 @@ export default class TimeInput extends React.Component {
 		if (this.props.onChange) {
 			this.props.onChange({
 				value: this.state.value24hr,
-				time: this.state.time,
 				element: this.$input.current,
 			})
 		}
