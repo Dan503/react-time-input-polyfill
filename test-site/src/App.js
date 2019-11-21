@@ -35,6 +35,8 @@ const ExampleBlock = ({ label, Input }) => {
 }
 
 function App() {
+	let [addedLater, setAddedLater] = useState(false)
+	setTimeout(() => setAddedLater(true), 2000)
 	return (
 		<div className="App">
 			<h1>React Time Input Polyfill</h1>
@@ -73,6 +75,20 @@ function App() {
 					/>
 				)}
 			/>
+
+			{addedLater && (
+				<ExampleBlock
+					label="Delayed forced polyfill"
+					Input={({ currentValue, setValue, className }) => (
+						<TimeInput
+							value={currentValue}
+							onChange={({ value }) => setValue(value)}
+							forcePolyfill={true}
+							className={className}
+						/>
+					)}
+				/>
+			)}
 		</div>
 	)
 }
