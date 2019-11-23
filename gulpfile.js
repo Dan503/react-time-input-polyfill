@@ -28,7 +28,10 @@ gulp.task('webpack', done => {
 })
 
 gulp.task('watch', done => {
-	gulp.watch('./timePolyfillHelpers.js').on('change', gulp.series('browserify'))
+	gulp.watch('./timePolyfillHelpers.js').on(
+		'change',
+		gulp.series('browserify'),
+	)
 	done()
 })
 
@@ -42,7 +45,7 @@ gulp.task('browserify', () => {
 		.bundle()
 		.pipe(source('timePolyfillHelpers.js'))
 		.pipe(buffer())
-		// .pipe(uglify())
+		.pipe(uglify())
 		.pipe(gulp.dest('./dist'))
 		.pipe(gulp.dest('./test-site/public'))
 })
