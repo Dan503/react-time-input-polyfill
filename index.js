@@ -2,8 +2,8 @@ import React from 'react'
 import supportsTime from 'time-input-polyfill/core/helpers/supportsTime'
 import loadJS from 'time-input-polyfill/core/helpers/loadJS'
 
-const debugMode = true
-// const debugMode = false
+// const debugMode = true
+const debugMode = false
 
 let shiftKey = false
 
@@ -27,7 +27,7 @@ const loadPolyfill = () => {
 	loadJS(
 		debugMode
 			? './timePolyfillHelpers.js'
-			: 'https://cdn.jsdelivr.net/npm/react-time-input-polyfill/dist/timePolyfillHelpers.js',
+			: 'https://cdn.jsdelivr.net/npm/react-time-input-polyfill@1/dist/timePolyfillHelpers.js',
 		() => {
 			timeInputs.forEach(input =>
 				input.onPolyfillLoad(window.timePolyfillHelpers),
