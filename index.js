@@ -106,16 +106,28 @@ export default class TimeInput extends React.Component {
 
 		if (hasNewStateValue) {
 			this.onTimeChange()
-		} else if (hasNewPropsValue) {
+		} else if (hasNewPropsValue && !this.state.usePolyfill) {
 			this.set_time(this.props.value)
 		}
 	}
 
 	set_time(time24hr) {
+		const [hrs, min] = time24hr
+			.split(':')
+			.map(value => (isNaN(value) ? value : parseInt(value)))
+
+		const newTimeValues = this.state.usePolyfill
+			? {
+					hrs: this.polyfill.convert_hours_to_12hr_time(hrs),
+					min,
+					mode: hrs > 12 ? 'PM' : 'AM',
+			  }
+			: null
+
 		this.setState({
 			time: this.state.usePolyfill
 				? time24hr
-					? this.polyfill.get_values_from_24hr(time24hr)
+					? newTimeValues
 					: this.state.time
 				: null,
 			value24hr: time24hr,
