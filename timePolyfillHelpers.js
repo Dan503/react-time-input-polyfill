@@ -1,3 +1,6 @@
+Element.prototype.matches =
+	Element.prototype.matches || Element.prototype.msMatchesSelector
+
 //static-values
 var segments = require('time-input-polyfill/core/static-values/segments')
 
