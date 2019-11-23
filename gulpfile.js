@@ -50,7 +50,10 @@ gulp.task('browserify', () => {
 		.pipe(gulp.dest('./test-site/public'))
 })
 
-gulp.task('compile', gulp.parallel('watch', 'webpack', 'browserify'))
+gulp.task('compile', gulp.parallel('webpack', 'browserify'))
 
-gulp.task('default', gulp.series('set_dev_env', 'compile'))
+gulp.task(
+	'default',
+	gulp.series('set_dev_env', gulp.parallel('watch', 'compile')),
+)
 gulp.task('build', gulp.series('set_prod_env', 'compile'))
