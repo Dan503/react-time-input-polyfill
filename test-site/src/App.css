@@ -7,3 +7,33 @@
 	max-width: 50rem;
 	margin: 2em auto !important;
 }
+
+.code.centered {
+	text-align: center !important;
+}
+
+a {
+	color: hsl(30, 20%, 40%);
+}
+
+a:hover,
+a:focus {
+	text-decoration: none;
+}
+
+button {
+	transition: 0.3s;
+	cursor: pointer;
+	background: #4d4033;
+	color: #fff;
+	border: 3px solid #7a6652;
+	padding: 5px 10px;
+	margin: 3px;
+	border-radius: 0.5em;
+	box-shadow: black 1px 1px 0.5em inset, hsl(30, 20%, 30%) 0 0 0 1px;
+}
+
+button:hover,
+button:focus {
+	border-color: hsl(30, 20%, 70%);
+}

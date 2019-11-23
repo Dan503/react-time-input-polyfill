@@ -58,9 +58,21 @@ function App() {
 		<div className="App">
 			<h1>React Time Input Polyfill</h1>
 
+			<p>Code examples are simplified guides, not exact code replicas.</p>
+
+			<SyntaxHighlighter
+				style={dark}
+				className="code centered"
+				language="text"
+				showLineNumbers={false}
+			>
+				npm install react-time-input-polyfill
+			</SyntaxHighlighter>
+
 			<p>
-				Code examples are simplified guides,{' '}
-				<strong>not exact code replicas</strong>.
+				<a href="https://github.com/Dan503/react-time-input-polyfill#react-time-input-polyfill">
+					Visit me on GitHub
+				</a>
 			</p>
 
 			<ExampleBlock
