@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/react-time-input-polyfill/precache-manifest.dc2dd3a64ba9aead96ccf623f6d06594.js"
+  "/react-time-input-polyfill/precache-manifest.8534ea64c2dd5c2dd45813169414c739.js"
 );
 
 self.addEventListener('message', (event) => {
