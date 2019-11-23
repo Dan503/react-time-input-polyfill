@@ -8,7 +8,10 @@ const ExampleBlock = ({ label, Input, codeString }) => {
 	const [value, setValue] = useState('20:30')
 
 	return (
-		<div style={{ marginBottom: '2em' }}>
+		<form
+			style={{ marginBottom: '2em' }}
+			onSubmit={e => e.preventDefault()}
+		>
 			<h2>{label} time input</h2>
 
 			<label style={{ display: 'inline-block' }}>
@@ -43,7 +46,7 @@ const ExampleBlock = ({ label, Input, codeString }) => {
 					{codeString.replace(/^\n/, '')}
 				</SyntaxHighlighter>
 			)}
-		</div>
+		</form>
 	)
 }
 
