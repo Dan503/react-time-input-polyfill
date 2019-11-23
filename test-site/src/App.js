@@ -157,7 +157,7 @@ const TimeInput = ({ label, currentValue, onInputChange }) => {
 
 				onChange={({ value, element }) => {
 					onInputChange(value)
-				}
+				}}
 			/>
 		</label>
 	)
