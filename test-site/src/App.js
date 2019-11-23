@@ -1,11 +1,8 @@
 import React, { useState } from 'react'
 import './App.css'
 import TimeInput from '../../index'
-// import SyntaxHighlighter from 'react-syntax-highlighter'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { dark } from 'react-syntax-highlighter/dist/esm/styles/prism'
-
-console.table(SyntaxHighlighter.supportedLanguages)
 
 const ExampleBlock = ({ label, Input, codeString }) => {
 	const [value, setValue] = useState('20:30')
