@@ -4,58 +4,6 @@ import TimeInput from '../../index'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { dark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 
-// import React, { useState } from 'react'
-// import TimeInputPolyfill from 'react-time-input-polyfill'
-
-const TimeInputExample = ({ label, currentValue, onInputChange }) => {
-	return (
-		<label>
-			<span>{label}</span>
-			<TimeInput
-				// set the value through props
-				value={currentValue}
-				// onChange will run every time the value is updated
-				onChange={({ value, element }) => {
-					console.log({
-						// The current value in 24 hour time format
-						value,
-
-						// The <input> HTML element
-						element,
-					})
-
-					// Export the new value to the parent component
-					onInputChange(value)
-				}}
-			/>
-		</label>
-	)
-}
-
-//////////////////////////////////////
-
-const ExampleForm = () => {
-	// Use state to keep track of the value
-	const [inputValue, setInputValue] = useState('20:30') // default to 8:30 PM
-
-	const onSubmit = e => {
-		e.preventDefault()
-	}
-
-	return (
-		<form onSubmit={onSubmit}>
-			<TimeInputExample
-				label="Label text"
-				// Use the state value to set the time
-				currentValue={inputValue}
-				// Use the set state function to update the time when it changes
-				onInputChange={newValue => setInputValue(newValue)}
-			/>
-			<button type="submit">Submit</button>
-		</form>
-	)
-}
-
 const ExampleBlock = ({ label, Input, codeString }) => {
 	const [value, setValue] = useState('20:30')
 
@@ -114,8 +62,6 @@ function App() {
 				Code examples are simplified guides,{' '}
 				<strong>not exact code replicas</strong>.
 			</p>
-
-			<ExampleForm></ExampleForm>
 
 			<ExampleBlock
 				label="Non-forced polyfill"
