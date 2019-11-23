@@ -1,16 +1,21 @@
-# react-time-input-polyfill (failed experiment)
+# react-time-input-polyfill
 
-This was my attempt at building a simple React component that produces an input[type=time] element with a built in Polyfill for Safari and IE support.
+This is a pre-built, plug-and-play, fully accessible React component that will polyfill `<input type="time">` elements for you.
 
-Like it's parent module ([time-input-polyfill](https://www.npmjs.com/package/time-input-polyfill)) it only downloads the polyfill code if the browser actually needs it.
+- ✔️ Modeled after the Chrome 78 and Firefox 70 desktop implementations.
+- ✔️ Fully keyboard and screen reader accessible.
+- ✔️ Sends back the same values as real time inputs (24 hour time).
+- ✔️ Only downloads the full polyfill code in the browsers that need it
 
-You can view a demo of this react-time-input-polyfill project in action here: https://dan503.github.io/react-time-input-polyfill/
+You may have already come across the [plain JavaScript version](https://www.npmjs.com/package/time-input-polyfill). This is not just a wrapper component though. This package was built from the ground up in React, for React. It does import some functionality from the original though where it made sense to.
 
-You can view a demo of the original plain javascript version of this polyfill here: https://dan503.github.io/time-input-polyfill/
+You can [view a demo](https://dan503.github.io/react-time-input-polyfill/) of `react-time-input-polyfill` in action here: https://dan503.github.io/react-time-input-polyfill/
+
+You can view a demo of the original plain javascript version here: https://dan503.github.io/time-input-polyfill/
 
 ## Install
 
-The project needs an ES6 compatible environment to run in. It also needs React installed on the project. Take a look at [create-react-app](https://create-react-app.dev/docs/getting-started) To get started with React.
+The component needs an ES6 compatible environment to run in. It also needs React installed on the project. Take a look at [create-react-app](https://create-react-app.dev/docs/getting-started) to get started with React.
 
 You can then install this polyfill component with npm:
 
@@ -20,47 +25,99 @@ npm i react-time-input-polyfill
 
 ## Usage
 
-```js
+```jsx
+/* TimeInput.js */
+
 import React from 'react'
-import TimeInput from 'react-time-input-polyfill'
 
-// logs: { value: '20:30', element: <input/>, event: [change event] }
-const doStuff = (event)=> console.log(event)
+// Import the component into your project
+import TimeInputPolyfill from 'react-time-input-polyfill'
 
-export default ()=> (
-	<label>
-		<span>Label text</span>Label text
-		<TimeInput value="20:30" onChange={doStuff}>
-	</label>
-)
+export const TimeInput = ({ label, currentValue, onInputChange }) => {
+    return (
+        <label>
+            <span>{label}</span>
+            <TimeInputPolyfill
 
+                // set the value through props
+                value={currentValue}
+
+                // onChange will run every time the value is updated
+                onChange={({ value, element }) => {
+                    console.log({
+
+                        // The current value in 24 hour time format
+                        value,
+
+                        // The <input> HTML element
+                        element,
+
+                    })
+
+                    // Export the new value to the parent component
+                    onInputChange(value)
+                }}
+            />
+        </label>
+    )
+}
 ```
 
-Or using a for attribute
+```jsx
+/* ExampleForm.js */
 
-```js
-import React from 'react'
-import TimeInput from 'react-time-input-polyfill'
+import React, { useState } from 'react'
 
-// logs: { value: '20:30', element: <input/>, event: [change event] }
-const doStuff = (event)=> console.log(event)
+// import your local time input component into your form component
+import { TimeInput } from './TimeInput'
 
-export default ()=> (
-	<>
-		<label for="uniquID">Label text</label>
-		<TimeInput value="20:30" id="uniquID" onChange={doStuff}>
-	</>
-)
+export const ExampleForm = ()=> {
 
+    // Use state to keep track of the value
+    const [inputValue, setInputValue] = useState('20:30') // default to 8:30 PM
+
+    return (
+        <form>
+            <TimeInput
+                label="Label text"
+
+                // Use the state value to set the time
+                currentValue={inputValue}
+
+                // Use the set state function to update the time when it changes
+                onInputChange={ newValue => setInputValue(newValue) }
+            />
+            <button type="submit">Submit</button>
+        </form>
+    )
+}
 ```
 
-## Why it is a failure
+You can also force-enable the polyfill so that it is active in modern browsers that support `<input type="time">` natively. This is helpful when it comes to debugging since it gives you access to modern dev tools (just make sure to disable it again when you are done).
 
-There are some minor flaws that make the component unacceptable to use in production:
+```jsx
+/* TimeInput.js */
 
-1. In all browsers, using one of the set time buttons (a representation of setting the time using external props), then changing the time manually, then clicking the same set time button again does not apply the time like it is supposed to.
-2. onChange doesn't work properly in IE.
-3. onInput works in IE but it causes havoc on the polyfill functionality
-4. onBlur is the closest thing I could get to having it working... except almost every time it blurs, it visually switches the time from PM to AM. I have no idea why.
+import React from 'react'
+import TimeInputPolyfill from 'react-time-input-polyfill'
 
-I'm mainly posting this up as a sort of starting point to help others who might want to attempt to do this.
+export const TimeInput = ({ label, currentValue, onInputChange }) => {
+    return (
+        <label>
+            <span>{label}</span>
+            <TimeInputPolyfill
+                value={currentValue}
+
+                /*  Force browsers that support input[type=time]
+                    to use the polyfill.
+                    (useful for testing and debugging)
+                */  forcePolyfill={true}
+
+                onChange={({ value, element }) => {
+                    onInputChange(value)
+                }}
+            />
+        </label>
+    )
+}
+```
