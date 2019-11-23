@@ -45,6 +45,13 @@ const customStyles = document.createElement('style')
 customStyles.innerHTML = `.${polyfillClassName}::-ms-clear { display: none; }`
 document.getElementsByTagName('head')[0].appendChild(customStyles)
 
+const flash24hrTime = component => () => {
+	if (component.state.usePolyfill) {
+		component.setState({ forcedValue: component.state.value24hr })
+		setTimeout(() => component.setState({ forcedValue: null }), 1)
+	}
+}
+
 export default class TimeInput extends React.Component {
 	constructor(props) {
 		super(props)
@@ -60,6 +67,7 @@ export default class TimeInput extends React.Component {
 			value24hr: props.value || '',
 			currentSegment: null,
 			usePolyfill: !supportsTime,
+			forcedValue: null,
 		}
 
 		if (props.forcePolyfill || !supportsTime) {
@@ -96,6 +104,27 @@ export default class TimeInput extends React.Component {
 	update_a11y(announcementArray) {
 		if (!this.state.usePolyfill) return null
 		this.polyfill.update_a11y(this.$input.current, announcementArray)
+	}
+
+	componentDidMount() {
+		setTimeout(() => {
+			this.flash24hrTime = flash24hrTime(this)
+
+			if (this.$input.current.form) {
+				this.$input.current.form.addEventListener(
+					'submit',
+					this.flash24hrTime,
+				)
+			}
+		}, 0)
+	}
+	componentWillUnmount() {
+		if (this.$input.current.form) {
+			this.$input.current.form.removeEventListener(
+				'submit',
+				this.flash24hrTime,
+			)
+		}
 	}
 
 	componentDidUpdate(prevProps, prevState) {
@@ -364,7 +393,12 @@ export default class TimeInput extends React.Component {
 
 	render() {
 		const { value, forcePolyfill, className, ...props } = this.props
-		const { usePolyfill, value24hr, currentSegment } = this.state
+		const {
+			usePolyfill,
+			value24hr,
+			currentSegment,
+			forcedValue,
+		} = this.state
 
 		const value12hr = usePolyfill ? this.get_12hr_value() : null
 
@@ -391,7 +425,7 @@ export default class TimeInput extends React.Component {
 				onKeyDown: e => this.handleKeyDown(e),
 				ref: this.$input,
 				type: usePolyfill ? 'text' : 'time',
-				value: usePolyfill ? value12hr : value24hr,
+				value: usePolyfill ? forcedValue || value12hr : value24hr,
 				className:
 					[className || '', polyfillClass].join(' ').trim() ||
 					undefined,
