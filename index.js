@@ -324,6 +324,7 @@ export default class TimeInput extends React.Component {
 	}
 
 	handleKeyDown(e) {
+		this.props.onKeyDown && this.props.onKeyDown(e)
 		if (!this.state.usePolyfill) return null
 		const key = e.key
 		const actions = {
