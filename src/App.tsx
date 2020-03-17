@@ -1,10 +1,54 @@
 import React, { useState } from 'react'
 import './App.css'
-import TimeInput from '../index'
+import TimeInput from './TimeInputPolyFill'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { dark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 
-const ExampleBlock = ({ label, Input, codeString }) => {
+const Input = ({
+	currentValue,
+	setValue,
+	className,
+	usePolyfill = true,
+	...restProps
+}: {
+	currentValue: string
+	setValue: Function
+	className: string
+	usePolyfill?: Boolean
+	[key: string]: any
+}) => {
+	if (usePolyfill) {
+		return (
+			<TimeInput
+				value={currentValue}
+				onChange={({ value }: { value: string }) => setValue(value)}
+				className={className}
+				{...restProps}
+			/>
+		)
+	}
+
+	return (
+		<input
+			type="time"
+			value={currentValue}
+			onChange={e => setValue(e.target.value)}
+			className={className}
+		/>
+	)
+}
+
+const ExampleBlock = ({
+	label,
+	extraInputProps,
+	codeString,
+	usePolyfill,
+}: {
+	label: string
+	extraInputProps?: Object
+	codeString: string
+	usePolyfill?: Boolean
+}) => {
 	const [value, setValue] = useState('20:30')
 
 	return (
@@ -17,9 +61,11 @@ const ExampleBlock = ({ label, Input, codeString }) => {
 			<label style={{ display: 'inline-block' }}>
 				<span style={{ marginRight: '0.5em' }}>{label} time input</span>
 				<Input
+					usePolyfill={usePolyfill}
 					currentValue={value}
 					setValue={setValue}
 					className="exampleClass"
+					{...extraInputProps}
 				/>
 			</label>
 
@@ -77,13 +123,6 @@ function App() {
 
 			<ExampleBlock
 				label="Non-forced polyfill"
-				Input={({ currentValue, setValue, className }) => (
-					<TimeInput
-						value={currentValue}
-						onChange={({ value }) => setValue(value)}
-						className={className}
-					/>
-				)}
 				codeString={`
 /* TimeInput.js */
 
@@ -155,13 +194,7 @@ export const ExampleForm = ()=> {
 
 			<ExampleBlock
 				label="Forced polyfill"
-				Input={({ currentValue, setValue, className }) => (
-					<TimeInput
-						value={currentValue}
-						onChange={({ value }) => setValue(value)}
-						forcePolyfill={true}
-					/>
-				)}
+				extraInputProps={{ forcePolyfill: true }}
 				codeString={`
 /* TimeInput.js */
 
@@ -192,14 +225,7 @@ export const TimeInput = ({ label, currentValue, onInputChange }) => {
 
 			<ExampleBlock
 				label="Non-polyfill"
-				Input={({ currentValue, setValue, className }) => (
-					<input
-						type="time"
-						value={currentValue}
-						onChange={e => setValue(e.target.value)}
-						className={className}
-					/>
-				)}
+				usePolyfill={false}
 				codeString={`
 /* TimeInput.js */
 
