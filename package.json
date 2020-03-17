@@ -33,6 +33,11 @@
 		"react-dom": "^16.13.0",
 		"react-scripts": "3.4.0"
 	},
+	"scripts": {
+		"start": "node node_modules/react-scripts/scripts/start.js",
+		"build": "node node_modules/react-scripts/scripts/build.js",
+		"test": "node node_modules/react-scripts/scripts/test.js"
+	},
 	"eslintConfig": {
 		"extends": "react-app"
 	},
