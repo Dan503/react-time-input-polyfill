@@ -1,125 +1,68 @@
-# react-time-input-polyfill
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-[![hits per month badge](https://data.jsdelivr.com/v1/package/npm/react-time-input-polyfill/badge)](https://www.jsdelivr.com/package/npm/react-time-input-polyfill)
+## Available Scripts
 
-This is a pre-built, plug-and-play, fully accessible React component that will produce an `<input type="time">` element with a built in polyfill for IE and Safari support.
+In the project directory, you can run:
 
-- ✔️ Modeled after the Chrome 78 and Firefox 70 desktop implementations.
-- ✔️ Fully keyboard and screen reader accessible.
-- ✔️ Sends back the same values as real time inputs (24 hour time).
-- ✔️ Only downloads the full polyfill code in the browsers that need it
+### `npm start`
 
-You may have already come across the [plain JavaScript version](https://www.npmjs.com/package/time-input-polyfill). This is not just a wrapper component though. This package was built from the ground up in React, for React. It does import some functionality from the original though where it made sense to.
+Runs the app in the development mode.<br />
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-You can [view a demo](https://dan503.github.io/react-time-input-polyfill/) of `react-time-input-polyfill` in action here: https://dan503.github.io/react-time-input-polyfill/
+The page will reload if you make edits.<br />
+You will also see any lint errors in the console.
 
-You can view a demo of the original plain javascript version here: https://dan503.github.io/time-input-polyfill/
+### `npm test`
 
-## Install
+Launches the test runner in the interactive watch mode.<br />
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-The component needs an ES6 compatible environment to run in. It also needs React installed on the project. Take a look at [create-react-app](https://create-react-app.dev/docs/getting-started) to get started with React.
+### `npm run build`
 
-You can then install this polyfill component with npm:
+Builds the app for production to the `build` folder.<br />
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-```
-npm i react-time-input-polyfill
-```
+The build is minified and the filenames include the hashes.<br />
+Your app is ready to be deployed!
 
-## Usage
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-```jsx
-/* TimeInput.js */
+### `npm run eject`
 
-import React from 'react'
+**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-// Import the component into your project
-import TimeInputPolyfill from 'react-time-input-polyfill'
+If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-export const TimeInput = ({ label, currentValue, onInputChange }) => {
-    return (
-        <label>
-            <span>{label}</span>
-            <TimeInputPolyfill
+Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
-                // set the value through props
-                value={currentValue}
+You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-                // onChange will run every time the value is updated
-                onChange={({ value, element }) => {
-                    console.log({
+## Learn More
 
-                        // The current value in 24 hour time format
-                        value,
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-                        // The <input> HTML element
-                        element,
+To learn React, check out the [React documentation](https://reactjs.org/).
 
-                    })
+### Code Splitting
 
-                    // Export the new value to the parent component
-                    onInputChange(value)
-                }}
-            />
-        </label>
-    )
-}
-```
+This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
 
-```jsx
-/* ExampleForm.js */
+### Analyzing the Bundle Size
 
-import React, { useState } from 'react'
+This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
 
-// import your local time input component into your form component
-import { TimeInput } from './TimeInput'
+### Making a Progressive Web App
 
-export const ExampleForm = ()=> {
+This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
 
-    // Use state to keep track of the value
-    const [inputValue, setInputValue] = useState('20:30') // default to 8:30 PM
+### Advanced Configuration
 
-    return (
-        <form>
-            <TimeInput
-                label="Label text"
+This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
 
-                // Use the state value to set the time
-                currentValue={inputValue}
+### Deployment
 
-                // Use the set state function to update the time when it changes
-                onInputChange={ newValue => setInputValue(newValue) }
-            />
-            <button type="submit">Submit</button>
-        </form>
-    )
-}
-```
+This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
 
-You can also force-enable the polyfill so that it is active in modern browsers that support `<input type="time">` natively. This is helpful when it comes to debugging since it gives you access to modern dev tools (just make sure to disable it again when you are done).
+### `npm run build` fails to minify
 
-```jsx
-/* TimeInput.js */
-
-import React from 'react'
-import TimeInputPolyfill from 'react-time-input-polyfill'
-
-export const TimeInput = ({ label, currentValue, onInputChange }) => {
-    return (
-        <label>
-            <span>{label}</span>
-            <TimeInputPolyfill
-                value={currentValue}
-
-                /*  Force browsers that support input[type=time]
-                    to use the polyfill.
-                    (useful for testing and debugging)
-                */  forcePolyfill={true}
-
-                onChange={({ value, element }) => {
-                    onInputChange(value)
-                }}
-            />
-        </label>
-    )
-}
-```
+This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
