@@ -1,8 +1,34 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
+import {
+	TimeObject,
+	String24hr,
+	String12hr,
+} from 'time-input-polyfill-utils/types'
+import { supportsTime } from 'time-input-polyfill-utils/common'
+import { blankValues, convert } from 'time-input-polyfill-utils'
+
+import { loadPolyfill } from './core'
 
 const polyfillClassName = 'react-time-input-polyfill-target'
 
+const flash24hrTime = ({
+	isPolyfilled,
+	setForcedValue,
+	value24hr,
+}: {
+	isPolyfilled: boolean
+	setForcedValue: Function
+	value24hr: String24hr
+}) => () => {
+	if (isPolyfilled) {
+		setForcedValue(value24hr)
+		setTimeout(() => setForcedValue(null), 1)
+	}
+}
+
 export interface TimePolyfill {
+	value?: String24hr
+	forcePolyfill?: boolean
 	onChange: Function
 	onFocus?: Function
 	onBlur?: Function
@@ -10,11 +36,13 @@ export interface TimePolyfill {
 	onClick?: Function
 	onKeyDown?: Function
 	className?: string
-	[index: string]: any
+	[key: string]: any
 }
 
 const TimeInputPolyfill = ({
 	onChange,
+	value: valueProp24hr = '',
+	forcePolyfill = false,
 	onFocus,
 	onBlur,
 	onMouseDown,
@@ -23,12 +51,39 @@ const TimeInputPolyfill = ({
 	className,
 	...restProps
 }: TimePolyfill) => {
-	const [usePolyfill, setUsePolyfill] = useState(false)
-	const [value12hr, setValue12hr] = useState('--:-- --')
-	const [value24hr, setValue24hr] = useState('')
+	const isPolyfilled = forcePolyfill || supportsTime()
 
+	const [value12hr, setValue12hr] = useState<String12hr>(
+		blankValues.string12hr,
+	)
+	const [value24hr, setValue24hr] = useState<String24hr>(
+		blankValues.string24hr,
+	)
 	// Not sure what this is for yet
-	let forcedValue = null
+	const [forcedValue, setForcedValue] = useState<String24hr | null>(null)
+
+	const [timeObject, setTimeObject] = useState<TimeObject>(
+		blankValues.timeObject,
+	)
+
+	const { hrs12, hrs24, min, mode } = timeObject
+
+	// Do all modifications through the timeObject. React will update the other values accordingly.
+	useEffect(() => {
+		if (isPolyfilled) {
+			setValue12hr(convert.timeObject(timeObject).to12hr())
+			setValue24hr(convert.timeObject(timeObject).to24hr())
+		}
+		// React can do better static analysis against string/number values
+	}, [hrs12, hrs24, min, mode])
+
+	if (isPolyfilled) {
+		loadPolyfill(() => {
+			// TODO: URGENT need to figure out a way to apply the types to this
+			const { convert } = window.timeInputPolyfillUtils
+			setTimeObject(convert.string24hr(valueProp24hr).toTimeObject())
+		})
+	}
 
 	const $input = useRef<HTMLInputElement>(null)
 
@@ -51,7 +106,7 @@ const TimeInputPolyfill = ({
 		if (onKeyDown) onKeyDown(e)
 	}
 
-	const polyfillClass = usePolyfill ? polyfillClassName : ''
+	const polyfillClass = isPolyfilled ? polyfillClassName : ''
 
 	return (
 		<input
@@ -63,8 +118,8 @@ const TimeInputPolyfill = ({
 			onClick={handleClick}
 			onKeyDown={handleKeyDown}
 			ref={$input}
-			type={usePolyfill ? 'text' : 'time'}
-			value={usePolyfill ? forcedValue || value12hr : value24hr}
+			type={isPolyfilled ? 'text' : 'time'}
+			value={isPolyfilled ? forcedValue || value12hr : value24hr}
 			className={
 				[className || '', polyfillClass].join(' ').trim() || undefined
 			}
