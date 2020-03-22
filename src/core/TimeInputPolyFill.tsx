@@ -7,7 +7,7 @@ import {
 import { supportsTime } from 'time-input-polyfill-utils/common'
 import { blankValues, convert } from 'time-input-polyfill-utils'
 
-import { loadPolyfill } from './core'
+import { loadPolyfill } from '.'
 
 const polyfillClassName = 'react-time-input-polyfill-target'
 

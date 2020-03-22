@@ -1,1 +1,1 @@
-export { default } from './src/TimeInputPolyFill'
+export { default } from './src/core/TimeInputPolyFill'

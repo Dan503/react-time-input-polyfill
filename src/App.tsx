@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import './App.css'
-import TimeInput from './TimeInputPolyFill'
+import TimeInput from './core/TimeInputPolyFill'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { dark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 

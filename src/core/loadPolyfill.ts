@@ -10,7 +10,7 @@ export const loadPolyfill = (onPolyfillLoad: Function) => {
 	// TO DO: set up a Gulp function in the utils project to generate the polyfill package
 	loadJS('https://cdn.jsdelivr.net/npm/time-input-polyfill-utils@1',
 		() => {
-			//
+			//TO DO: Import the Window type to fix this error after releasing another beta release of the utils
 			onPolyfillLoad(window.timeInputPolyfillUtils)
 		},
 	)
