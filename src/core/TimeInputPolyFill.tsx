@@ -11,21 +11,6 @@ import { loadPolyfill } from '.'
 
 const polyfillClassName = 'react-time-input-polyfill-target'
 
-const flash24hrTime = ({
-	isPolyfilled,
-	setForcedValue,
-	value24hr,
-}: {
-	isPolyfilled: boolean
-	setForcedValue: Function
-	value24hr: String24hr
-}) => () => {
-	if (isPolyfilled) {
-		setForcedValue(value24hr)
-		setTimeout(() => setForcedValue(null), 1)
-	}
-}
-
 export interface TimePolyfill {
 	value?: String24hr
 	forcePolyfill?: boolean
@@ -60,12 +45,17 @@ const TimeInputPolyfill = ({
 	const [value24hr, setValue24hr] = useState<String24hr>(
 		blankValues.string24hr,
 	)
-	// Not sure what this is for yet
 	const [forcedValue, setForcedValue] = useState<String24hr | null>(null)
 
 	const [timeObject, setTimeObject] = useState<TimeObject>(
 		blankValues.timeObject,
 	)
+
+	// Run this on form submit incase people are submitting forms normally
+	const flash24hrTime = (value24hr: String24hr) => {
+		setForcedValue(value24hr)
+		setTimeout(() => setForcedValue(null), 1)
+	}
 
 	// const { hrs12, hrs24, min, mode } = timeObject
 
