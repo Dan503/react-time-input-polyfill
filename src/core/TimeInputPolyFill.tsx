@@ -67,7 +67,7 @@ const TimeInputPolyfill = ({
 		blankValues.timeObject,
 	)
 
-	const { hrs12, hrs24, min, mode } = timeObject
+	// const { hrs12, hrs24, min, mode } = timeObject
 
 	// Do all modifications through the timeObject. React will update the other values accordingly.
 	useEffect(() => {
@@ -76,8 +76,7 @@ const TimeInputPolyfill = ({
 			setValue12hr(convertTimeObject(timeObject).to12hr())
 			setValue24hr(convertTimeObject(timeObject).to24hr())
 		}
-		// React can do better static analysis against string/number values
-	}, [polyfill, hrs12, hrs24, isPolyfilled, min, mode, timeObject])
+	}, [polyfill, timeObject])
 
 	if (isPolyfilled) {
 		loadPolyfill((polyfillUtils: Polyfill) => {
