@@ -5,7 +5,11 @@ import {
 	String12hr,
 	Polyfill,
 } from 'time-input-polyfill-utils/types'
-import { supportsTime, blankValues } from 'time-input-polyfill-utils/common'
+
+// Avoid bulk importing from index files to be more tree-shake friendly
+import supportsTime from 'time-input-polyfill-utils/common/supportsTime'
+import { blankValues } from 'time-input-polyfill-utils/common/blankValues'
+import { ManualEntryLog } from 'time-input-polyfill-utils/core/ManualEntryLog/ManualEntryLog'
 
 import { loadPolyfill } from '.'
 
@@ -51,6 +55,10 @@ const TimeInputPolyfill = ({
 		blankValues.timeObject,
 	)
 
+	const [manualEntryLog, setManualEntryLog] = useState<ManualEntryLog | null>(
+		null,
+	)
+
 	// Run this on form submit incase people are submitting forms normally
 	const flash24hrTime = (value24hr: String24hr) => {
 		setForcedValue(value24hr)
@@ -70,9 +78,15 @@ const TimeInputPolyfill = ({
 
 	if (isPolyfilled) {
 		loadPolyfill((polyfillUtils: Polyfill) => {
-			const { convertString24hr } = polyfillUtils
+			const {
+				convertString24hr,
+				a11yCreate,
+				ManualEntryLog,
+			} = polyfillUtils
 			setPolyfill(polyfillUtils)
 			setTimeObject(convertString24hr(valueProp24hr).toTimeObject())
+			a11yCreate()
+			setManualEntryLog(new ManualEntryLog())
 		})
 	}
 
