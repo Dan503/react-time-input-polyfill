@@ -10,7 +10,7 @@ export const loadPolyfill = (onPolyfillLoad: Function) => {
 
 	// TO DO 1st: Use this when v1.0.0 is released: https://cdn.jsdelivr.net/npm/time-input-polyfill-utils@1
 	// TO DO 2nd: Create a local polyfill file that only holds the things that are needed
-	loadJS('https://cdn.jsdelivr.net/npm/time-input-polyfill-utils@1.0.0-beta.8',
+	loadJS('https://cdn.jsdelivr.net/npm/time-input-polyfill-utils',
 		() => {
 			onPolyfillLoad(window.timeInputPolyfillUtils)
 		},
