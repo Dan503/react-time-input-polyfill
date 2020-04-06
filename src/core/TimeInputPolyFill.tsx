@@ -9,9 +9,8 @@ import {
 // Avoid bulk importing from index files to be more tree-shake friendly
 import supportsTime from 'time-input-polyfill-utils/common/supportsTime'
 import { blankValues } from 'time-input-polyfill-utils/common/blankValues'
+import loadJS from 'time-input-polyfill-utils/common/loadJS'
 import { ManualEntryLog } from 'time-input-polyfill-utils/core/ManualEntryLog/ManualEntryLog'
-
-import { loadPolyfill } from '.'
 
 const polyfillClassName = 'react-time-input-polyfill-target'
 
@@ -77,13 +76,16 @@ const TimeInputPolyfill = ({
 	}, [polyfill, timeObject])
 
 	if (isPolyfilled) {
-		loadPolyfill((polyfillUtils: Polyfill) => {
+		// TO DO 1st: Use this when v1.0.0 of the utils is released: https://cdn.jsdelivr.net/npm/time-input-polyfill-utils@1
+		// TO DO 2nd: Create a local polyfill file that only holds the things that are needed
+		// Don't worry, it only downloads the polyfill once no matter how many inputs you have on the page
+		loadJS('https://cdn.jsdelivr.net/npm/time-input-polyfill-utils', () => {
 			const {
 				convertString24hr,
 				a11yCreate,
 				ManualEntryLog,
-			} = polyfillUtils
-			setPolyfill(polyfillUtils)
+			} = window.timeInputPolyfillUtils
+			setPolyfill(window.timeInputPolyfillUtils)
 			setTimeObject(convertString24hr(valueProp24hr).toTimeObject())
 			a11yCreate()
 			setManualEntryLog(new ManualEntryLog())
