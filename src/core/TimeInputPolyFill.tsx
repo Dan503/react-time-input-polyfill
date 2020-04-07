@@ -122,6 +122,42 @@ const TimeInputPolyfill = ({
 	}
 	const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
 		if (onKeyDown) onKeyDown(e)
+		if (polyfill) {
+			const key = e.key
+
+			const {
+				// modifyTimeObject,
+				selectNextSegment,
+				selectPrevSegment,
+			} = polyfill
+
+			if (key === 'ArrowUp') {
+				e.preventDefault()
+				// TO DO: finish work on new modify functions
+				// setTimeObject(
+				// 	modifyTimeObject(timeObject).increment.currentSegment(
+				// 		$input.current,
+				// 	),
+				// )
+			}
+			if (key === 'ArrowDown') {
+				e.preventDefault()
+				// TO DO: finish work on new modify functions
+				// setTimeObject(
+				// 	modifyTimeObject(timeObject).decrement.currentSegment(
+				// 		$input.current,
+				// 	),
+				// )
+			}
+			if (key === 'ArrowLeft') {
+				e.preventDefault()
+				selectPrevSegment($input.current)
+			}
+			if (key === 'ArrowRight') {
+				e.preventDefault()
+				selectNextSegment($input.current)
+			}
+		}
 	}
 
 	const polyfillClass = isPolyfilled ? polyfillClassName : ''
