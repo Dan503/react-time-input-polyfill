@@ -21,6 +21,7 @@ export interface TimePolyfill {
 	onFocus?: Function
 	onBlur?: Function
 	onMouseDown?: Function
+	onMouseUp?: Function
 	onClick?: Function
 	onKeyDown?: Function
 	className?: string
@@ -34,6 +35,7 @@ const TimeInputPolyfill = ({
 	onFocus,
 	onBlur,
 	onMouseDown,
+	onMouseUp,
 	onClick,
 	onKeyDown,
 	className,
@@ -99,12 +101,21 @@ const TimeInputPolyfill = ({
 	}
 	const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
 		if (onFocus) onFocus(e)
+		if (polyfill) {
+			polyfill.selectCursorSegment($input.current)
+		}
 	}
 	const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
 		if (onBlur) onBlur(e)
 	}
 	const handleMouseDown = (e: React.MouseEvent<HTMLInputElement>) => {
 		if (onMouseDown) onMouseDown(e)
+	}
+	const handleMouseUp = (e: React.MouseEvent<HTMLInputElement>) => {
+		if (onMouseUp) onMouseUp(e)
+		if (polyfill) {
+			polyfill.selectCursorSegment($input.current)
+		}
 	}
 	const handleClick = (e: React.MouseEvent<HTMLInputElement>) => {
 		if (onClick) onClick(e)
@@ -127,6 +138,7 @@ const TimeInputPolyfill = ({
 			onFocus={handleFocus}
 			onBlur={handleBlur}
 			onMouseDown={handleMouseDown}
+			onMouseUp={handleMouseUp}
 			onClick={handleClick}
 			onKeyDown={handleKeyDown}
 			ref={$input}
