@@ -39,15 +39,14 @@ const TimeInputPolyfill = ({
 	className,
 	...restProps
 }: TimePolyfill) => {
-	const isPolyfilled = forcePolyfill || supportsTime
+	const isPolyfilled = forcePolyfill || !supportsTime
 	const [polyfill, setPolyfill] = useState<Polyfill | null>(null)
 
 	const [value12hr, setValue12hr] = useState<String12hr>(
 		blankValues.string12hr,
 	)
-	const [value24hr, setValue24hr] = useState<String24hr>(
-		blankValues.string24hr,
-	)
+
+	const [value24hr, setValue24hr] = useState<String24hr>(valueProp24hr)
 	const [forcedValue, setForcedValue] = useState<String24hr | null>(null)
 
 	const [timeObject, setTimeObject] = useState<TimeObject>(
