@@ -37,6 +37,7 @@ const TimeInputPolyfill = ({
 	onClick,
 	onKeyDown,
 	className,
+	style,
 	...restProps
 }: TimePolyfill) => {
 	const isPolyfilled = forcePolyfill || !supportsTime
@@ -114,6 +115,11 @@ const TimeInputPolyfill = ({
 
 	const polyfillClass = isPolyfilled ? polyfillClassName : ''
 
+	const styles = {
+		fontFamily: 'monospace',
+		...style,
+	}
+
 	return (
 		<input
 			{...restProps}
@@ -126,6 +132,7 @@ const TimeInputPolyfill = ({
 			ref={$input}
 			type={isPolyfilled ? 'text' : 'time'}
 			value={isPolyfilled ? forcedValue || value12hr : value24hr}
+			style={styles}
 			className={
 				[className || '', polyfillClass].join(' ').trim() || undefined
 			}
