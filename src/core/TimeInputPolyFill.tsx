@@ -14,6 +14,11 @@ import { ManualEntryLog } from 'time-input-polyfill-utils/core/ManualEntryLog/Ma
 
 const polyfillClassName = 'react-time-input-polyfill-target'
 
+// Needed for the sake of IE to work
+interface Element {
+	msMatchesSelector(selectors: string): boolean
+}
+
 export interface TimePolyfill {
 	value?: String24hr
 	forcePolyfill?: boolean
@@ -66,14 +71,20 @@ const TimeInputPolyfill = ({
 		setTimeout(() => setForcedValue(null), 1)
 	}
 
-	// const { hrs12, hrs24, min, mode } = timeObject
-
 	// Do all modifications through the timeObject. React will update the other values accordingly.
 	useEffect(() => {
 		if (polyfill) {
-			const { convertTimeObject } = polyfill
+			const {
+				convertTimeObject,
+				getCursorSegment,
+				selectSegment,
+			} = polyfill
+			const cursorSegment = getCursorSegment($input.current)
 			setValue12hr(convertTimeObject(timeObject).to12hr())
 			setValue24hr(convertTimeObject(timeObject).to24hr())
+			setTimeout(() => {
+				selectSegment($input.current, cursorSegment)
+			})
 		}
 	}, [polyfill, timeObject])
 
@@ -126,28 +137,26 @@ const TimeInputPolyfill = ({
 			const key = e.key
 
 			const {
-				// modifyTimeObject,
+				modifyTimeObject,
 				selectNextSegment,
 				selectPrevSegment,
 			} = polyfill
 
 			if (key === 'ArrowUp') {
 				e.preventDefault()
-				// TO DO: finish work on new modify functions
-				// setTimeObject(
-				// 	modifyTimeObject(timeObject).increment.currentSegment(
-				// 		$input.current,
-				// 	),
-				// )
+				setTimeObject(
+					modifyTimeObject(timeObject)
+						.increment.currentSegment($input.current)
+						.isolated(),
+				)
 			}
 			if (key === 'ArrowDown') {
 				e.preventDefault()
-				// TO DO: finish work on new modify functions
-				// setTimeObject(
-				// 	modifyTimeObject(timeObject).decrement.currentSegment(
-				// 		$input.current,
-				// 	),
-				// )
+				setTimeObject(
+					modifyTimeObject(timeObject)
+						.decrement.currentSegment($input.current)
+						.isolated(),
+				)
 			}
 			if (key === 'ArrowLeft') {
 				e.preventDefault()
