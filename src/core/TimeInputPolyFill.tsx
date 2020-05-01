@@ -4,6 +4,7 @@ import {
 	String24hr,
 	String12hr,
 	Polyfill,
+	Segment,
 } from 'time-input-polyfill-utils/types'
 
 // Avoid bulk importing from index files to be more tree-shake friendly
@@ -61,6 +62,11 @@ const TimeInputPolyfill = ({
 		blankValues.timeObject,
 	)
 
+	const [cursorSegment, setCursorSegment] = useState<Segment | null>(null)
+	const [allowSegmentSelection, setAllowSegmentSelection] = useState<boolean>(
+		false,
+	)
+
 	const [manualEntryLog, setManualEntryLog] = useState<ManualEntryLog | null>(
 		null,
 	)
@@ -79,14 +85,16 @@ const TimeInputPolyfill = ({
 				getCursorSegment,
 				selectSegment,
 			} = polyfill
-			const cursorSegment = getCursorSegment($input.current)
+			const segment = cursorSegment || getCursorSegment($input.current)
 			setValue12hr(convertTimeObject(timeObject).to12hr())
 			setValue24hr(convertTimeObject(timeObject).to24hr())
-			setTimeout(() => {
-				selectSegment($input.current, cursorSegment)
-			})
+			if (allowSegmentSelection) {
+				setTimeout(() => {
+					selectSegment($input.current, segment)
+				})
+			}
 		}
-	}, [polyfill, timeObject])
+	}, [allowSegmentSelection, cursorSegment, polyfill, timeObject])
 
 	if (isPolyfilled) {
 		// TO DO 1st: Use this when v1.0.0 of the utils is released: https://cdn.jsdelivr.net/npm/time-input-polyfill-utils@1
@@ -116,11 +124,13 @@ const TimeInputPolyfill = ({
 	const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
 		if (onFocus) onFocus(e)
 		if (polyfill) {
+			setAllowSegmentSelection(true)
 			polyfill.selectCursorSegment($input.current)
 		}
 	}
 	const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
 		if (onBlur) onBlur(e)
+		setAllowSegmentSelection(false)
 	}
 	const handleMouseDown = (e: React.MouseEvent<HTMLInputElement>) => {
 		if (onMouseDown) onMouseDown(e)
@@ -141,33 +151,34 @@ const TimeInputPolyfill = ({
 
 			const {
 				modifyTimeObject,
-				selectNextSegment,
-				selectPrevSegment,
+				getCursorSegment,
+				getNextSegment,
+				getPrevSegment,
 			} = polyfill
 
+			const segment = cursorSegment || getCursorSegment($input.current)
+
 			if (key === 'ArrowUp') {
+				if (!cursorSegment) setCursorSegment(segment)
 				e.preventDefault()
 				setTimeObject(
-					modifyTimeObject(timeObject)
-						.increment.currentSegment($input.current)
-						.isolated(),
+					modifyTimeObject(timeObject).increment[segment].isolated(),
 				)
 			}
 			if (key === 'ArrowDown') {
+				if (!cursorSegment) setCursorSegment(segment)
 				e.preventDefault()
 				setTimeObject(
-					modifyTimeObject(timeObject)
-						.decrement.currentSegment($input.current)
-						.isolated(),
+					modifyTimeObject(timeObject).decrement[segment].isolated(),
 				)
 			}
 			if (key === 'ArrowLeft') {
 				e.preventDefault()
-				selectPrevSegment($input.current)
+				setCursorSegment(getPrevSegment(cursorSegment))
 			}
 			if (key === 'ArrowRight') {
 				e.preventDefault()
-				selectNextSegment($input.current)
+				setCursorSegment(getNextSegment(cursorSegment))
 			}
 		}
 	}
