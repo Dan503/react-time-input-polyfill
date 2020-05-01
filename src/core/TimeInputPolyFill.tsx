@@ -92,17 +92,20 @@ const TimeInputPolyfill = ({
 		// TO DO 1st: Use this when v1.0.0 of the utils is released: https://cdn.jsdelivr.net/npm/time-input-polyfill-utils@1
 		// TO DO 2nd: Create a local polyfill file that only holds the things that are needed
 		// Don't worry, it only downloads the polyfill once no matter how many inputs you have on the page
-		loadJS('https://cdn.jsdelivr.net/npm/time-input-polyfill-utils', () => {
-			const {
-				convertString24hr,
-				a11yCreate,
-				ManualEntryLog,
-			} = window.timeInputPolyfillUtils
-			setPolyfill(window.timeInputPolyfillUtils)
-			setTimeObject(convertString24hr(valueProp24hr).toTimeObject())
-			a11yCreate()
-			setManualEntryLog(new ManualEntryLog())
-		})
+		loadJS(
+			'https://cdn.jsdelivr.net/npm/time-input-polyfill-utils@latest',
+			() => {
+				const {
+					convertString24hr,
+					a11yCreate,
+					ManualEntryLog,
+				} = window.timeInputPolyfillUtils
+				setPolyfill(window.timeInputPolyfillUtils)
+				setTimeObject(convertString24hr(valueProp24hr).toTimeObject())
+				a11yCreate()
+				setManualEntryLog(new ManualEntryLog())
+			},
+		)
 	}
 
 	const $input = useRef<HTMLInputElement>(null)
