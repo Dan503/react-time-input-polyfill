@@ -101,7 +101,7 @@ const TimeInputPolyfill = ({
 		// TO DO 2nd: Create a local polyfill file that only holds the things that are needed
 		// Don't worry, it only downloads the polyfill once no matter how many inputs you have on the page
 		loadJS(
-			'https://cdn.jsdelivr.net/npm/time-input-polyfill-utils@latest',
+			'https://cdn.jsdelivr.net/npm/time-input-polyfill-utils@1.0.0-beta.22/time-input-polyfill-utils.min.js',
 			() => {
 				const {
 					convertString24hr,
