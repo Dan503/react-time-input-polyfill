@@ -12,6 +12,7 @@ import supportsTime from 'time-input-polyfill-utils/common/supportsTime'
 import { blankValues } from 'time-input-polyfill-utils/common/blankValues'
 import loadJS from 'time-input-polyfill-utils/common/loadJS'
 import { ManualEntryLog } from 'time-input-polyfill-utils/core/ManualEntryLog/ManualEntryLog'
+import { isShiftHeldDown } from 'time-input-polyfill-utils/core/is/is'
 
 const polyfillClassName = 'react-time-input-polyfill-target'
 
@@ -189,6 +190,18 @@ const TimeInputPolyfill = ({
 			if (key === 'ArrowRight') {
 				e.preventDefault()
 				setCursorSegment(getNextSegment(cursorSegment))
+			}
+			if (key === 'Tab') {
+				const isNormal =
+					(isShiftHeldDown && cursorSegment === 'hrs12') ||
+					(!isShiftHeldDown && cursorSegment === 'mode')
+				if (!isNormal) {
+					e.preventDefault()
+					const theNextSegment = isShiftHeldDown
+						? getPrevSegment(cursorSegment)
+						: getNextSegment(cursorSegment)
+					setCursorSegment(theNextSegment)
+				}
 			}
 		}
 	}
