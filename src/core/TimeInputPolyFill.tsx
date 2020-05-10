@@ -51,6 +51,8 @@ const TimeInputPolyfill = ({
 	const isPolyfilled = forcePolyfill || !supportsTime
 	const [polyfill, setPolyfill] = useState<Polyfill | null>(null)
 
+	const [focusedViaClick, setFocusedViaClick] = useState<boolean>(false)
+
 	const [value12hr, setValue12hr] = useState<String12hr>(
 		blankValues.string12hr,
 	)
@@ -125,15 +127,23 @@ const TimeInputPolyfill = ({
 		if (onFocus) onFocus(e)
 		if (polyfill) {
 			setAllowSegmentSelection(true)
-			polyfill.selectCursorSegment($input.current)
+			const { isShiftHeldDown, getCursorSegment } = polyfill
+
+			if (focusedViaClick) {
+				setCursorSegment(getCursorSegment($input.current))
+			} else {
+				setCursorSegment(isShiftHeldDown ? 'mode' : 'hrs12')
+			}
 		}
 	}
 	const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
 		if (onBlur) onBlur(e)
 		setAllowSegmentSelection(false)
+		setFocusedViaClick(false)
 	}
 	const handleMouseDown = (e: React.MouseEvent<HTMLInputElement>) => {
 		if (onMouseDown) onMouseDown(e)
+		setFocusedViaClick(true)
 	}
 	const handleMouseUp = (e: React.MouseEvent<HTMLInputElement>) => {
 		if (onMouseUp) onMouseUp(e)
