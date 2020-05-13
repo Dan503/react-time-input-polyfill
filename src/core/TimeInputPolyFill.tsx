@@ -5,7 +5,7 @@ import {
 	String12hr,
 	Polyfill,
 	Segment,
-} from 'time-input-polyfill-utils/types'
+} from 'time-input-polyfill-utils/types/index'
 
 // Avoid bulk importing from index files to be more tree-shake friendly
 import supportsTime from 'time-input-polyfill-utils/common/supportsTime'
@@ -104,7 +104,7 @@ const TimeInputPolyfill = ({
 		// TO DO 2nd: Create a local polyfill file that only holds the things that are needed
 		// Don't worry, it only downloads the polyfill once no matter how many inputs you have on the page
 		loadJS(
-			'https://cdn.jsdelivr.net/npm/time-input-polyfill-utils@1.0.0-beta.22/time-input-polyfill-utils.min.js',
+			'https://cdn.jsdelivr.net/npm/time-input-polyfill-utils@1.0.0-beta.24/time-input-polyfill-utils.min.js',
 			() => {
 				const {
 					convertString24hr,
@@ -201,6 +201,14 @@ const TimeInputPolyfill = ({
 						? getPrevSegment(cursorSegment)
 						: getNextSegment(cursorSegment)
 					setCursorSegment(theNextSegment)
+				}
+			}
+			if (['Backspace', 'Delete'].includes(key)) {
+				e.preventDefault()
+				if (cursorSegment) {
+					setTimeObject(
+						modifyTimeObject(timeObject).clear[cursorSegment](),
+					)
 				}
 			}
 		}
