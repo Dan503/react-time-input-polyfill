@@ -16,14 +16,11 @@ const leading_zero = number => {
 window.addEventListener('keyup', e => (shiftKey = e.shiftKey))
 window.addEventListener('keydown', e => (shiftKey = e.shiftKey))
 
-let polyfillLoadCalled = false
-
 const loadPolyfill = (callback) => {
-	if (polyfillLoadCalled) {
+	if (window.timePolyfillHelpers) {
 		callback();
 		return null;
 	}
-	polyfillLoadCalled = true;
 
 	loadJS(
 		debugMode
