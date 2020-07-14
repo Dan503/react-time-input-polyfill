@@ -135,7 +135,7 @@ export default class TimeInput extends React.Component {
 
 		if (hasNewStateValue) {
 			this.onTimeChange()
-		} else if (hasNewPropsValue && !this.state.usePolyfill) {
+		} else if (hasNewPropsValue) {
 			this.set_time(this.props.value)
 		}
 	}
