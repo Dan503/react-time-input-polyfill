@@ -7,8 +7,6 @@ const debugMode = false
 
 let shiftKey = false
 
-const timeInputs = []
-
 const leading_zero = number => {
 	if (isNaN(number)) return number
 	const purified = parseInt(number)
@@ -18,21 +16,17 @@ const leading_zero = number => {
 window.addEventListener('keyup', e => (shiftKey = e.shiftKey))
 window.addEventListener('keydown', e => (shiftKey = e.shiftKey))
 
-let polyfillLoadCalled = false
-
-const loadPolyfill = () => {
-	if (polyfillLoadCalled) return null
-	polyfillLoadCalled = true
+const loadPolyfill = (callback) => {
+	if (window.timePolyfillHelpers) {
+		callback();
+		return null;
+	}
 
 	loadJS(
 		debugMode
 			? './timePolyfillHelpers.js'
 			: 'https://cdn.jsdelivr.net/npm/react-time-input-polyfill@1/dist/timePolyfillHelpers.js',
-		() => {
-			timeInputs.forEach(input =>
-				input.onPolyfillLoad(window.timePolyfillHelpers),
-			)
-		},
+		callback
 	)
 }
 
@@ -68,11 +62,6 @@ export default class TimeInput extends React.Component {
 			currentSegment: null,
 			usePolyfill: !supportsTime,
 			forcedValue: null,
-		}
-
-		if (props.forcePolyfill || !supportsTime) {
-			timeInputs.push(this)
-			loadPolyfill()
 		}
 	}
 
@@ -117,6 +106,12 @@ export default class TimeInput extends React.Component {
 				)
 			}
 		}, 0)
+
+		if (this.props.forcePolyfill || !supportsTime) {
+			loadPolyfill(() => {
+				this.onPolyfillLoad(window.timePolyfillHelpers)
+			})
+		}
 	}
 	componentWillUnmount() {
 		if (this.$input.current.form) {
