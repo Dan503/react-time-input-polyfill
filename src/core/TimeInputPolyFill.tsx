@@ -23,13 +23,13 @@ interface Element {
 export interface TimePolyfill {
 	value?: String24hr
 	forcePolyfill?: boolean
-	onChange: Function
-	onFocus?: Function
-	onBlur?: Function
-	onMouseDown?: Function
-	onMouseUp?: Function
-	onClick?: Function
-	onKeyDown?: Function
+	onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+	onFocus?: (e: React.FocusEvent<HTMLInputElement>) => void
+	onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void
+	onMouseDown?: (e: React.MouseEvent<HTMLInputElement>) => void
+	onMouseUp?: (e: React.MouseEvent<HTMLInputElement>) => void
+	onClick?: (e: React.MouseEvent<HTMLInputElement>) => void
+	onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void
 	className?: string
 	[key: string]: any
 }
