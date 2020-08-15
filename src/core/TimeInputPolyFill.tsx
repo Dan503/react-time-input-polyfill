@@ -147,6 +147,7 @@ const TimeInputPolyfill = ({
 			'https://cdn.jsdelivr.net/npm/time-input-polyfill-utils@1.0.0-beta.35/npm/time-input-polyfill-utils.min.js',
 			() => {
 				const {
+					convertString12hr,
 					convertString24hr,
 					a11yCreate,
 					ManualEntryLog,
@@ -155,11 +156,31 @@ const TimeInputPolyfill = ({
 				const timeObject = convertString24hr(value24hr).toTimeObject()
 				setTimeObject(timeObject)
 				a11yCreate()
-				setManualEntryLog(new ManualEntryLog(timeObject))
+				setManualEntryLog(
+					// TO DO: if entry log has reached it's limit, go to next segment
+					new ManualEntryLog(timeObject, ({ fullValue12hr }) => {
+						const timeObj = convertString12hr(
+							fullValue12hr,
+						).toTimeObject()
+						setTimeObject(timeObj)
+					}),
+				)
 				setHasInitialised(true)
 			},
 		)
 	}
+
+	const resetSegmentEntryLog = () => {
+		if (manualEntryLog && cursorSegment) {
+			manualEntryLog[cursorSegment].reset()
+		}
+	}
+
+	//Reset entry log cursor segmet
+	useEffect(() => {
+		resetSegmentEntryLog()
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [cursorSegment, manualEntryLog])
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		if (onChange) onChange(e)
@@ -176,6 +197,7 @@ const TimeInputPolyfill = ({
 			} else {
 				setCursorSegment(isShiftHeldDown ? 'mode' : 'hrs12')
 			}
+			resetSegmentEntryLog()
 		}
 	}
 	const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
@@ -207,6 +229,7 @@ const TimeInputPolyfill = ({
 				getNextSegment,
 				getPrevSegment,
 				isShiftHeldDown,
+				regex,
 			} = polyfill
 
 			const segment = cursorSegment || getCursorSegment($input.current)
@@ -217,23 +240,19 @@ const TimeInputPolyfill = ({
 				setTimeObject(
 					modifyTimeObject(timeObject).increment[segment].isolated(),
 				)
-			}
-			if (key === 'ArrowDown') {
+			} else if (key === 'ArrowDown') {
 				if (!cursorSegment) setCursorSegment(segment)
 				e.preventDefault()
 				setTimeObject(
 					modifyTimeObject(timeObject).decrement[segment].isolated(),
 				)
-			}
-			if (key === 'ArrowLeft') {
+			} else if (key === 'ArrowLeft') {
 				e.preventDefault()
 				setCursorSegment(getPrevSegment(cursorSegment))
-			}
-			if (key === 'ArrowRight') {
+			} else if (key === 'ArrowRight') {
 				e.preventDefault()
 				setCursorSegment(getNextSegment(cursorSegment))
-			}
-			if (key === 'Tab') {
+			} else if (key === 'Tab') {
 				const isNormal =
 					(isShiftHeldDown && cursorSegment === 'hrs12') ||
 					(!isShiftHeldDown && cursorSegment === 'mode')
@@ -244,14 +263,16 @@ const TimeInputPolyfill = ({
 						: getNextSegment(cursorSegment)
 					setCursorSegment(theNextSegment)
 				}
-			}
-			if (['Backspace', 'Delete'].includes(key)) {
+			} else if (['Backspace', 'Delete'].includes(key)) {
 				e.preventDefault()
 				if (cursorSegment) {
 					setTimeObject(
 						modifyTimeObject(timeObject).clear[cursorSegment](),
 					)
 				}
+			} else if (regex.alphaNumericKeyName.test(key) && manualEntryLog) {
+				e.preventDefault()
+				manualEntryLog[segment].add(key)
 			}
 		}
 	}
