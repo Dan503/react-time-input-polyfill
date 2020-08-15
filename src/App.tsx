@@ -1,18 +1,18 @@
 import React, { useState } from 'react'
 import './App.css'
-import TimeInput from './core/TimeInputPolyFill'
+import TimeInput, { SetValue } from './core/TimeInputPolyFill'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { dark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 
 const Input = ({
-	currentValue,
+	value,
 	setValue,
 	className,
 	usePolyfill = true,
 	...restProps
 }: {
-	currentValue: string
-	setValue: Function
+	value: string
+	setValue: SetValue
 	className: string
 	usePolyfill?: Boolean
 	[key: string]: any
@@ -20,8 +20,8 @@ const Input = ({
 	if (usePolyfill) {
 		return (
 			<TimeInput
-				value={currentValue}
-				onChange={({ value }: { value: string }) => setValue(value)}
+				value={value}
+				setValue={setValue}
 				className={className}
 				{...restProps}
 			/>
@@ -31,8 +31,8 @@ const Input = ({
 	return (
 		<input
 			type="time"
-			value={currentValue}
-			onChange={e => setValue(e.target.value)}
+			value={value}
+			onChange={(e) => setValue(e.target.value)}
 			className={className}
 		/>
 	)
@@ -54,7 +54,7 @@ const ExampleBlock = ({
 	return (
 		<form
 			style={{ marginBottom: '2em' }}
-			onSubmit={e => e.preventDefault()}
+			onSubmit={(e) => e.preventDefault()}
 		>
 			<h2>{label} time input</h2>
 
@@ -62,7 +62,7 @@ const ExampleBlock = ({
 				<span style={{ marginRight: '0.5em' }}>{label} time input</span>
 				<Input
 					usePolyfill={usePolyfill}
-					currentValue={value}
+					value={value}
 					setValue={setValue}
 					className="exampleClass"
 					{...extraInputProps}
@@ -131,14 +131,14 @@ import React from 'react'
 // Import the component into your project
 import TimeInputPolyfill from 'react-time-input-polyfill'
 
-export const TimeInput = ({ label, currentValue, onInputChange }) => {
+export const TimeInput = ({ label, value, onInputChange }) => {
 	return (
 		<label>
 			<span>{label}</span>
 			<TimeInputPolyfill
 
 				// set the value through props
-				value={currentValue}
+				value={value}
 
 				// onChange will run every time the value is updated
 				onChange={({ value, element }) => {
@@ -180,7 +180,7 @@ export const ExampleForm = ()=> {
 				label="Label text"
 
 				// Use the state value to set the time
-				currentValue={inputValue}
+				value={inputValue}
 
 				// Use the set state function to update the time when it changes
 				onInputChange={ newValue => setInputValue(newValue) }
@@ -201,12 +201,12 @@ export const ExampleForm = ()=> {
 import React from 'react'
 import TimeInputPolyfill from 'react-time-input-polyfill'
 
-export const TimeInput = ({ label, currentValue, onInputChange }) => {
+export const TimeInput = ({ label, value, onInputChange }) => {
 	return (
 		<label>
 			<span>{label}</span>
 			<TimeInputPolyfill
-				value={currentValue}
+				value={value}
 
 				/*  Force browsers that support input[type=time]
 				    to use the polyfill.
@@ -234,13 +234,13 @@ export const TimeInput = ({ label, currentValue, onInputChange }) => {
 
 import React from 'react'
 
-export const TimeInput = ({ label, currentValue, onInputChange }) => {
+export const TimeInput = ({ label, value, onInputChange }) => {
 	return (
 		<label>
 			<span>{label}</span>
 			<input
 				type="time"
-				value={currentValue}
+				value={value}
 				onChange={(e) => {
 					console.log(e) // the default browser event
 					onInputChange(e.target.value)
@@ -254,9 +254,9 @@ export const TimeInput = ({ label, currentValue, onInputChange }) => {
 			{/* {addedLater && (
 				<ExampleBlock
 					label="Delayed forced polyfill"
-					Input={({ currentValue, setValue, className }) => (
+					Input={({ value, setValue, className }) => (
 						<TimeInput
-							value={currentValue}
+							value={value}
 							onChange={({ value }) => setValue(value)}
 							forcePolyfill={true}
 							className={className}

@@ -20,10 +20,13 @@ interface Element {
 	msMatchesSelector(selectors: string): boolean
 }
 
+export type SetValue = React.Dispatch<React.SetStateAction<String24hr | null>>
+
 export interface TimePolyfill {
 	value?: String24hr
+	setValue: SetValue
 	forcePolyfill?: boolean
-	onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+	onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
 	onFocus?: (e: React.FocusEvent<HTMLInputElement>) => void
 	onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void
 	onMouseDown?: (e: React.MouseEvent<HTMLInputElement>) => void
@@ -36,7 +39,8 @@ export interface TimePolyfill {
 
 const TimeInputPolyfill = ({
 	onChange,
-	value: valueProp24hr = '',
+	value: value24hr = '',
+	setValue: setValue24hr,
 	forcePolyfill = false,
 	onFocus,
 	onBlur,
@@ -50,6 +54,7 @@ const TimeInputPolyfill = ({
 }: TimePolyfill) => {
 	const isPolyfilled = forcePolyfill || !supportsTime
 	const [polyfill, setPolyfill] = useState<Polyfill | null>(null)
+	const [hasInitialised, setHasInitialised] = useState(false)
 
 	const [focusedViaClick, setFocusedViaClick] = useState<boolean>(false)
 
@@ -57,7 +62,6 @@ const TimeInputPolyfill = ({
 		blankValues.string12hr,
 	)
 
-	const [value24hr, setValue24hr] = useState<String24hr>(valueProp24hr)
 	const [forcedValue, setForcedValue] = useState<String24hr | null>(null)
 
 	const [timeObject, setTimeObject] = useState<TimeObject>(
@@ -96,14 +100,34 @@ const TimeInputPolyfill = ({
 				})
 			}
 		}
-	}, [allowSegmentSelection, cursorSegment, polyfill, timeObject])
+	}, [
+		allowSegmentSelection,
+		cursorSegment,
+		polyfill,
+		timeObject,
+		setValue24hr,
+	])
+
+	useEffect(() => {
+		if (polyfill) {
+			const { convertString24hr, matchesTimeObject } = polyfill
+			const newTimeObject = convertString24hr(value24hr).toTimeObject()
+			if (
+				!matchesTimeObject(newTimeObject, timeObject) &&
+				hasInitialised
+			) {
+				setTimeObject(newTimeObject)
+			}
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [value24hr, polyfill])
 
 	if (isPolyfilled) {
 		// TO DO 1st: Use this when v1.0.0 of the utils is released: https://cdn.jsdelivr.net/npm/time-input-polyfill-utils@1
 		// TO DO 2nd: Create a local polyfill file that only holds the things that are needed
 		// Don't worry, it only downloads the polyfill once no matter how many inputs you have on the page
 		loadJS(
-			'https://cdn.jsdelivr.net/npm/time-input-polyfill-utils@1.0.0-beta.29/npm/time-input-polyfill-utils.min.js',
+			'https://cdn.jsdelivr.net/npm/time-input-polyfill-utils@1.0.0-beta.30/npm/time-input-polyfill-utils.min.js',
 			() => {
 				const {
 					convertString24hr,
@@ -111,12 +135,11 @@ const TimeInputPolyfill = ({
 					ManualEntryLog,
 				} = window.timeInputPolyfillUtils
 				setPolyfill(window.timeInputPolyfillUtils)
-				const timeObject = convertString24hr(
-					valueProp24hr,
-				).toTimeObject()
+				const timeObject = convertString24hr(value24hr).toTimeObject()
 				setTimeObject(timeObject)
 				a11yCreate()
 				setManualEntryLog(new ManualEntryLog(timeObject))
+				setHasInitialised(true)
 			},
 		)
 	}
