@@ -133,30 +133,17 @@ import React from 'react'
 // Import the component into your project
 import TimeInputPolyfill from 'react-time-input-polyfill'
 
-export const TimeInput = ({ label, value, onInputChange }) => {
+export const TimeInput = ({ label, value, setValue }) => {
 	return (
 		<label>
 			<span>{label}</span>
 			<TimeInputPolyfill
 
-				// set the value through props
+				// Set the value through props
 				value={value}
 
-				// onChange will run every time the value is updated
-				onChange={({ value, element }) => {
-					console.log({
-
-						// The current value in 24 hour time format
-						value,
-
-						// The <input> HTML element
-						element,
-
-					})
-
-					// Export the new value to the parent component
-					onInputChange(value)
-				}}
+				// Pass the state setter
+				setValue={setValue}
 			/>
 		</label>
 	)
@@ -184,8 +171,8 @@ export const ExampleForm = ()=> {
 				// Use the state value to set the time
 				value={inputValue}
 
-				// Use the set state function to update the time when it changes
-				onInputChange={ newValue => setInputValue(newValue) }
+				// Pass the state setter function into the component
+				setValue={setInputValue}
 			/>
 			<button type="submit">Submit</button>
 		</form>
@@ -203,21 +190,18 @@ export const ExampleForm = ()=> {
 import React from 'react'
 import TimeInputPolyfill from 'react-time-input-polyfill'
 
-export const TimeInput = ({ label, value, onInputChange }) => {
+export const TimeInput = ({ label, value, setValue }) => {
 	return (
 		<label>
 			<span>{label}</span>
 			<TimeInputPolyfill
 				value={value}
+				setValue={setValue}
 
 				/*  Force browsers that support input[type=time]
 				    to use the polyfill.
 				    (useful for testing and debugging)
 				*/  forcePolyfill={true}
-
-				onChange={({ value, element }) => {
-					onInputChange(value)
-				}}
 			/>
 		</label>
 	)
@@ -236,7 +220,7 @@ export const TimeInput = ({ label, value, onInputChange }) => {
 
 import React from 'react'
 
-export const TimeInput = ({ label, value, onInputChange }) => {
+export const TimeInput = ({ label, value, setValue }) => {
 	return (
 		<label>
 			<span>{label}</span>
@@ -245,8 +229,8 @@ export const TimeInput = ({ label, value, onInputChange }) => {
 				value={value}
 				onChange={(e) => {
 					console.log(e) // the default browser event
-					onInputChange(e.target.value)
-				}}
+					setValue(e.target.value)
+				}
 			/>
 		</label>
 	)
