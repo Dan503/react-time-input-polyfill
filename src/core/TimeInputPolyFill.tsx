@@ -53,6 +53,9 @@ const TimeInputPolyfill = ({
 	...restProps
 }: TimePolyfill) => {
 	const isPolyfilled = forcePolyfill || !supportsTime
+
+	const $input = useRef<HTMLInputElement>(null)
+
 	const [polyfill, setPolyfill] = useState<Polyfill | null>(null)
 	const [hasInitialised, setHasInitialised] = useState(false)
 
@@ -61,8 +64,6 @@ const TimeInputPolyfill = ({
 	const [value12hr, setValue12hr] = useState<String12hr>(
 		blankValues.string12hr,
 	)
-
-	const [forcedValue, setForcedValue] = useState<String24hr | null>(null)
 
 	const [timeObject, setTimeObject] = useState<TimeObject>(
 		blankValues.timeObject,
@@ -77,11 +78,27 @@ const TimeInputPolyfill = ({
 		null,
 	)
 
-	// Run this on form submit incase people are submitting forms normally
-	const flash24hrTime = (value24hr: String24hr) => {
-		setForcedValue(value24hr)
-		setTimeout(() => setForcedValue(null), 1)
-	}
+	/*
+		<Forced override value code>
+
+		If a developer for some reason wants to use normal submit functionality
+		This will quickly switch IE form inputs to 24 hour time before submitting
+		then switch back afterwards so the user doesn't notice
+	*/
+	const [forcedValue, setForcedValue] = useState<String24hr | null>(null)
+	// Watch for form submission events and override the displayed time value on submit
+	useEffect(() => {
+		const overrideTime = () => {
+			setForcedValue(value24hr)
+			setTimeout(() => setForcedValue(null), 1)
+		}
+		const $inputElement = $input.current
+		$inputElement?.form?.addEventListener('submit', overrideTime)
+		return () => {
+			$inputElement?.form?.removeEventListener('submit', overrideTime)
+		}
+	}, [value24hr])
+	/* </Forced override value code>	*/
 
 	// Do all modifications through the timeObject. React will update the other values accordingly.
 	useEffect(() => {
@@ -143,8 +160,6 @@ const TimeInputPolyfill = ({
 			},
 		)
 	}
-
-	const $input = useRef<HTMLInputElement>(null)
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		if (onChange) onChange(e)
