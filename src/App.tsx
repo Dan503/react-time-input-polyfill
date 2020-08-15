@@ -14,7 +14,7 @@ const Input = ({
 	value: string
 	setValue: SetValue
 	className: string
-	usePolyfill?: Boolean
+	usePolyfill?: boolean
 	[key: string]: any
 }) => {
 	if (usePolyfill) {
@@ -45,9 +45,11 @@ const ExampleBlock = ({
 	usePolyfill,
 }: {
 	label: string
-	extraInputProps?: Object
 	codeString: string
-	usePolyfill?: Boolean
+	usePolyfill?: boolean
+	extraInputProps?: {
+		[prop: string]: any
+	}
 }) => {
 	const [value, setValue] = useState('20:30')
 
