@@ -163,7 +163,7 @@ const TimeInputPolyfill = ({
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		if (onChange) onChange(e)
-		setValue24hr(e.target.value)
+		if (!isPolyfilled) setValue24hr(e.target.value)
 	}
 	const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
 		if (onFocus) onFocus(e)
