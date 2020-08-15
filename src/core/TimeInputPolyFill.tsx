@@ -5,14 +5,13 @@ import {
 	String12hr,
 	Polyfill,
 	Segment,
-} from 'time-input-polyfill-utils/types/index'
+} from 'time-input-polyfill-utils/npm/types/index'
 
 // Avoid bulk importing from index files to be more tree-shake friendly
-import supportsTime from 'time-input-polyfill-utils/common/supportsTime'
-import { blankValues } from 'time-input-polyfill-utils/common/blankValues'
-import loadJS from 'time-input-polyfill-utils/common/loadJS'
-import { ManualEntryLog } from 'time-input-polyfill-utils/core/ManualEntryLog/ManualEntryLog'
-import { isShiftHeldDown } from 'time-input-polyfill-utils/core/is/is'
+import supportsTime from 'time-input-polyfill-utils/npm/common/supportsTime'
+import { blankValues } from 'time-input-polyfill-utils/npm/common/blankValues'
+import loadJS from 'time-input-polyfill-utils/npm/common/loadJS'
+import { ManualEntryLog } from 'time-input-polyfill-utils/npm/core/ManualEntryLog/ManualEntryLog'
 
 const polyfillClassName = 'react-time-input-polyfill-target'
 
@@ -104,7 +103,7 @@ const TimeInputPolyfill = ({
 		// TO DO 2nd: Create a local polyfill file that only holds the things that are needed
 		// Don't worry, it only downloads the polyfill once no matter how many inputs you have on the page
 		loadJS(
-			'https://cdn.jsdelivr.net/npm/time-input-polyfill-utils@1.0.0-beta.24/time-input-polyfill-utils.min.js',
+			'https://cdn.jsdelivr.net/npm/time-input-polyfill-utils@1.0.0-beta.29/npm/time-input-polyfill-utils.min.js',
 			() => {
 				const {
 					convertString24hr,
@@ -112,9 +111,12 @@ const TimeInputPolyfill = ({
 					ManualEntryLog,
 				} = window.timeInputPolyfillUtils
 				setPolyfill(window.timeInputPolyfillUtils)
-				setTimeObject(convertString24hr(valueProp24hr).toTimeObject())
+				const timeObject = convertString24hr(
+					valueProp24hr,
+				).toTimeObject()
+				setTimeObject(timeObject)
 				a11yCreate()
-				setManualEntryLog(new ManualEntryLog())
+				setManualEntryLog(new ManualEntryLog(timeObject))
 			},
 		)
 	}
@@ -165,6 +167,7 @@ const TimeInputPolyfill = ({
 				getCursorSegment,
 				getNextSegment,
 				getPrevSegment,
+				isShiftHeldDown,
 			} = polyfill
 
 			const segment = cursorSegment || getCursorSegment($input.current)

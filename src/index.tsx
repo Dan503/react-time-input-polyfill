@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import './index.css'
 import App from './App'
 import * as serviceWorker from './serviceWorker'
-import loadJS from 'time-input-polyfill-utils/common/loadJS'
+import loadJS from 'time-input-polyfill-utils/npm/common/loadJS'
 
 loadJS(
 	// Promise and object.assign polyfills are only needed because of the syntax highlighter package
