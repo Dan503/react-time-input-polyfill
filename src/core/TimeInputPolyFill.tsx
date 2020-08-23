@@ -1,17 +1,18 @@
 import React, { useRef, useState, useEffect } from 'react'
+import loadJS from '@dan503/load-js'
+
 import {
 	TimeObject,
 	String24hr,
 	String12hr,
 	Polyfill,
 	Segment,
-} from 'time-input-polyfill-utils/npm/types/index'
+} from '@time-input-polyfill/utils/npm/types/index'
 
 // Avoid bulk importing from index files to be more tree-shake friendly
-import supportsTime from 'time-input-polyfill-utils/npm/common/supportsTime'
-import { blankValues } from 'time-input-polyfill-utils/npm/common/blankValues'
-import loadJS from 'time-input-polyfill-utils/npm/common/loadJS'
-import { ManualEntryLog } from 'time-input-polyfill-utils/npm/core/ManualEntryLog/ManualEntryLog'
+import supportsTime from '@time-input-polyfill/utils/npm/common/supportsTime'
+import { blankValues } from '@time-input-polyfill/utils/npm/common/blankValues'
+import { ManualEntryLog } from '@time-input-polyfill/utils/npm/core/ManualEntryLog/ManualEntryLog'
 
 const polyfillClassName = 'react-time-input-polyfill-target'
 
@@ -140,11 +141,11 @@ const TimeInputPolyfill = ({
 	}, [value24hr, polyfill])
 
 	if (isPolyfilled) {
-		// TO DO 1st: Use this when v1.0.0 of the utils is released: https://cdn.jsdelivr.net/npm/time-input-polyfill-utils@1
+		// TO DO 1st: Use this when v1.0.0 of the utils is released: https://cdn.jsdelivr.net/npm/@time-input-polyfill/utils@1
 		// TO DO 2nd: Create a local polyfill file that only holds the things that are needed
 		// Don't worry, it only downloads the polyfill once no matter how many inputs you have on the page
 		loadJS(
-			'https://cdn.jsdelivr.net/npm/time-input-polyfill-utils@1.0.0-beta.35/npm/time-input-polyfill-utils.min.js',
+			'https://cdn.jsdelivr.net/npm/@time-input-polyfill/utils@1.0.0-beta.35/npm/@time-input-polyfill/utils.min.js',
 			() => {
 				const {
 					convertString12hr,
