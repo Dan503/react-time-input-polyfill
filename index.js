@@ -2,9 +2,6 @@ import React from 'react'
 import supportsTime from 'time-input-polyfill/core/helpers/supportsTime'
 import loadJS from 'time-input-polyfill/core/helpers/loadJS'
 
-// const debugMode = true
-const debugMode = false
-
 let shiftKey = false
 
 const leading_zero = number => {
@@ -16,14 +13,14 @@ const leading_zero = number => {
 window.addEventListener('keyup', e => (shiftKey = e.shiftKey))
 window.addEventListener('keydown', e => (shiftKey = e.shiftKey))
 
-const loadPolyfill = (callback) => {
+const loadPolyfill = (callback, useLocalHelpers) => {
 	if (window.timePolyfillHelpers) {
 		callback();
 		return null;
 	}
 
 	loadJS(
-		debugMode
+    useLocalHelpers
 			? './timePolyfillHelpers.js'
 			: 'https://cdn.jsdelivr.net/npm/react-time-input-polyfill@1/dist/timePolyfillHelpers.js',
 		callback
@@ -110,7 +107,7 @@ export default class TimeInput extends React.Component {
 		if (this.props.forcePolyfill || !supportsTime) {
 			loadPolyfill(() => {
 				this.onPolyfillLoad(window.timePolyfillHelpers)
-			})
+			}, this.props.useLocalHelpers)
 		}
 	}
 	componentWillUnmount() {
@@ -388,7 +385,7 @@ export default class TimeInput extends React.Component {
 	}
 
 	render() {
-		const { value, forcePolyfill, className, ...props } = this.props
+		const { value, forcePolyfill, className, useLocalHelpers = false, ...props } = this.props
 		const {
 			usePolyfill,
 			value24hr,
