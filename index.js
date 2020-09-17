@@ -2,9 +2,6 @@ import React from 'react'
 import supportsTime from 'time-input-polyfill/core/helpers/supportsTime'
 import loadJS from 'time-input-polyfill/core/helpers/loadJS'
 
-// const debugMode = true
-const debugMode = false
-
 let shiftKey = false
 
 const leading_zero = (number) => {
@@ -22,12 +19,10 @@ const loadPolyfill = (polyfillSource, callback) => {
 		return null
 	}
 
-	const pathToPolyfill =
-		polyfillSource || debugMode
-			? './timePolyfillHelpers.js'
-			: 'https://cdn.jsdelivr.net/npm/react-time-input-polyfill@1/dist/timePolyfillHelpers.js'
+	const cdn =
+		'https://cdn.jsdelivr.net/npm/react-time-input-polyfill@1/dist/timePolyfillHelpers.js'
 
-	loadJS(pathToPolyfill, callback)
+	loadJS(polyfillSource || cdn, callback)
 }
 
 let accessibility_block_created = false
@@ -388,7 +383,13 @@ export default class TimeInput extends React.Component {
 	}
 
 	render() {
-		const { value, forcePolyfill, className, ...props } = this.props
+		const {
+			value,
+			forcePolyfill,
+			className,
+			polyfillSource,
+			...props
+		} = this.props
 		const {
 			usePolyfill,
 			value24hr,
