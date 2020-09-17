@@ -24,8 +24,8 @@
 	},
 	"homepage": "https://dan503.github.io/react-time-input-polyfill/",
 	"dependencies": {
-		"time-input-polyfill": "latest",
-		"react": "^16.10.2"
+		"react": "^16.10.2",
+		"time-input-polyfill": "^1.0.9"
 	},
 	"devDependencies": {
 		"@babel/core": "7.6.0",
@@ -82,13 +82,13 @@
 		"sass-loader": "7.2.0",
 		"semver": "6.3.0",
 		"style-loader": "1.0.0",
-		"terser-webpack-plugin": "1.4.1",
+		"terser-webpack-plugin": "^1.4.1",
 		"ts-pnp": "1.1.4",
 		"url-loader": "2.1.0",
 		"vinyl-buffer": "^1.0.1",
 		"vinyl-source-stream": "^2.0.0",
 		"webpack": "4.41.0",
-		"webpack-dev-server": "3.2.1",
+		"webpack-dev-server": "^3.11.0",
 		"webpack-manifest-plugin": "2.1.1",
 		"workbox-webpack-plugin": "4.3.1"
 	},
