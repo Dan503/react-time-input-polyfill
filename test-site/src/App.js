@@ -4,13 +4,16 @@ import TimeInput from '../../index'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { dark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 
+// const debugMode = true
+const debugMode = false
+
 const ExampleBlock = ({ label, Input, codeString }) => {
 	const [value, setValue] = useState('20:30')
 
 	return (
 		<form
 			style={{ marginBottom: '2em' }}
-			onSubmit={e => e.preventDefault()}
+			onSubmit={(e) => e.preventDefault()}
 		>
 			<h2>{label} time input</h2>
 
@@ -82,6 +85,7 @@ function App() {
 						value={currentValue}
 						onChange={({ value }) => setValue(value)}
 						className={className}
+						polyfillSource={debugMode && './timePolyfillHelpers.js'}
 					/>
 				)}
 				codeString={`
@@ -160,6 +164,7 @@ export const ExampleForm = ()=> {
 						value={currentValue}
 						onChange={({ value }) => setValue(value)}
 						forcePolyfill={true}
+						polyfillSource={debugMode && './timePolyfillHelpers.js'}
 					/>
 				)}
 				codeString={`
@@ -196,7 +201,7 @@ export const TimeInput = ({ label, currentValue, onInputChange }) => {
 					<input
 						type="time"
 						value={currentValue}
-						onChange={e => setValue(e.target.value)}
+						onChange={(e) => setValue(e.target.value)}
 						className={className}
 					/>
 				)}
