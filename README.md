@@ -123,3 +123,37 @@ export const TimeInput = ({ label, currentValue, onInputChange }) => {
     )
 }
 ```
+
+## Content Security Policy (CSP) work around
+
+The way that the polyfill avoids downloading the full polyfill code in modern browsers is by injecting the following script tag onto the page:
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/react-time-input-polyfill@1/dist/timePolyfillHelpers.js"></script>
+```
+
+That downloads the extra helper functions that the polyfill needs to function.
+
+Your CSP might not allow for this.
+
+To work around the issue, first create a `timePolyfillHelpers.js` file and ensure that whatever you are using to compile your JS also compiles this file as it's own separate thing. Don't import it into your main js file.
+
+```js
+// timePolyfillHelpers.js
+
+// ES5
+require('react-time-input-polyfill/timePolyfillHelpers.js')
+
+// ES6
+import 'react-time-input-polyfill/timePolyfillHelpers.js'
+```
+
+Then when using the component, add a `polyfillSource` prop that points to the compiled helpers file on your server.
+
+```jsx
+<TimeInput
+    value={currentValue}
+    onChange={({ value }) => setCurrentValue(value)}
+    polyfillSource="/path/to/timePolyfillHelpers.js"
+/>
+```

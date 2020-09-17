@@ -2,32 +2,27 @@ import React from 'react'
 import supportsTime from 'time-input-polyfill/core/helpers/supportsTime'
 import loadJS from 'time-input-polyfill/core/helpers/loadJS'
 
-// const debugMode = true
-const debugMode = false
-
 let shiftKey = false
 
-const leading_zero = number => {
+const leading_zero = (number) => {
 	if (isNaN(number)) return number
 	const purified = parseInt(number)
 	return purified < 10 ? '0' + purified : number
 }
 
-window.addEventListener('keyup', e => (shiftKey = e.shiftKey))
-window.addEventListener('keydown', e => (shiftKey = e.shiftKey))
+window.addEventListener('keyup', (e) => (shiftKey = e.shiftKey))
+window.addEventListener('keydown', (e) => (shiftKey = e.shiftKey))
 
-const loadPolyfill = (callback) => {
+const loadPolyfill = (polyfillSource, callback) => {
 	if (window.timePolyfillHelpers) {
-		callback();
-		return null;
+		callback()
+		return null
 	}
 
-	loadJS(
-		debugMode
-			? './timePolyfillHelpers.js'
-			: 'https://cdn.jsdelivr.net/npm/react-time-input-polyfill@1/dist/timePolyfillHelpers.js',
-		callback
-	)
+	const cdn =
+		'https://cdn.jsdelivr.net/npm/react-time-input-polyfill@1/dist/timePolyfillHelpers.js'
+
+	loadJS(polyfillSource || cdn, callback)
 }
 
 let accessibility_block_created = false
@@ -39,7 +34,7 @@ const customStyles = document.createElement('style')
 customStyles.innerHTML = `.${polyfillClassName}::-ms-clear { display: none; }`
 document.getElementsByTagName('head')[0].appendChild(customStyles)
 
-const flash24hrTime = component => () => {
+const flash24hrTime = (component) => () => {
 	if (component.state.usePolyfill) {
 		component.setState({ forcedValue: component.state.value24hr })
 		setTimeout(() => component.setState({ forcedValue: null }), 1)
@@ -108,7 +103,7 @@ export default class TimeInput extends React.Component {
 		}, 0)
 
 		if (this.props.forcePolyfill || !supportsTime) {
-			loadPolyfill(() => {
+			loadPolyfill(this.props.polyfillSource, () => {
 				this.onPolyfillLoad(window.timePolyfillHelpers)
 			})
 		}
@@ -138,7 +133,7 @@ export default class TimeInput extends React.Component {
 	set_time(time24hr) {
 		const [hrs, min] = time24hr
 			.split(':')
-			.map(value => (isNaN(value) ? value : parseInt(value)))
+			.map((value) => (isNaN(value) ? value : parseInt(value)))
 
 		const newTimeValues = this.state.usePolyfill
 			? {
@@ -388,7 +383,13 @@ export default class TimeInput extends React.Component {
 	}
 
 	render() {
-		const { value, forcePolyfill, className, ...props } = this.props
+		const {
+			value,
+			forcePolyfill,
+			className,
+			polyfillSource,
+			...props
+		} = this.props
 		const {
 			usePolyfill,
 			value24hr,
@@ -413,12 +414,12 @@ export default class TimeInput extends React.Component {
 			'input',
 			{
 				...props,
-				onChange: e => this.handleChange(e),
-				onFocus: e => this.handleFocus(e),
-				onBlur: e => this.handleBlur(e),
-				onMouseDown: e => this.handleMouseDown(e),
-				onClick: e => this.handleClick(e),
-				onKeyDown: e => this.handleKeyDown(e),
+				onChange: (e) => this.handleChange(e),
+				onFocus: (e) => this.handleFocus(e),
+				onBlur: (e) => this.handleBlur(e),
+				onMouseDown: (e) => this.handleMouseDown(e),
+				onClick: (e) => this.handleClick(e),
+				onKeyDown: (e) => this.handleKeyDown(e),
 				ref: this.$input,
 				type: usePolyfill ? 'text' : 'time',
 				value: usePolyfill ? forcedValue || value12hr : value24hr,
