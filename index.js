@@ -147,7 +147,11 @@ export default class TimeInput extends React.Component {
 			time: this.state.usePolyfill
 				? time24hr
 					? newTimeValues
-					: this.state.time
+					: {
+							hrs: '--',
+							min: '--',
+							mode: '--',
+					  }
 				: null,
 			value24hr: time24hr,
 		})
