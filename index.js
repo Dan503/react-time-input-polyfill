@@ -378,7 +378,7 @@ export default class TimeInput extends React.Component {
 		if (segment === 'hrs' && entry_log.items.join('') === '00') {
 			entry_log.items = [1, 2]
 		}
-		
+
 		const full_limit = parseInt(upper_limits[segment].join(''))
 		const full_entry = parseInt(entry_log.items.join(''))
 
