@@ -372,6 +372,13 @@ export default class TimeInput extends React.Component {
 			entry_log.add(number)
 		}
 
+		// Can't be 00 in hours.
+		// If the user sets hours to 00 the input automatically changes hours to 12
+		// The same behaviour like default input[type="time"].
+		if (segment === 'hrs' && entry_log.items.join('') === '00') {
+			entry_log.items = [1, 2]
+		}
+
 		const full_limit = parseInt(upper_limits[segment].join(''))
 		const full_entry = parseInt(entry_log.items.join(''))
 
