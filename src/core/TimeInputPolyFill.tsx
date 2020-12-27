@@ -71,6 +71,7 @@ const TimeInputPolyfill = ({
 	)
 
 	const [cursorSegment, setCursorSegment] = useState<Segment | null>(null)
+	const cursorSegmentRef = useRef(cursorSegment)
 	const [allowSegmentSelection, setAllowSegmentSelection] = useState<boolean>(
 		false,
 	)
@@ -152,13 +153,13 @@ const TimeInputPolyfill = ({
 					convertString24hr,
 					a11yCreate,
 					ManualEntryLog,
+					getNextSegment,
 				} = window.timeInputPolyfillUtils
 				setPolyfill(window.timeInputPolyfillUtils)
 				const timeObject = convertString24hr(value24hr).toTimeObject()
 				setTimeObject(timeObject)
 				a11yCreate()
 				setManualEntryLog(
-					// TO DO: if entry log has reached it's limit, go to next segment
 					new ManualEntryLog({
 						timeObject,
 						onUpdate({ fullValue12hr }) {
@@ -166,6 +167,11 @@ const TimeInputPolyfill = ({
 								fullValue12hr,
 							).toTimeObject()
 							setTimeObject(timeObj)
+						},
+						onLimitHit() {
+							setCursorSegment(
+								getNextSegment(cursorSegmentRef.current),
+							)
 						},
 					}),
 				)
@@ -179,6 +185,10 @@ const TimeInputPolyfill = ({
 			manualEntryLog[cursorSegment].reset()
 		}
 	}
+
+	useEffect(() => {
+		cursorSegmentRef.current = cursorSegment
+	}, [cursorSegment])
 
 	//Reset entry log cursor segmet
 	useEffect(() => {
