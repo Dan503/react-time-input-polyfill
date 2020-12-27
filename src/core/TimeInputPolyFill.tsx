@@ -238,12 +238,14 @@ const TimeInputPolyfill = ({
 			if (key === 'ArrowUp') {
 				if (!cursorSegment) setCursorSegment(segment)
 				e.preventDefault()
+				resetSegmentEntryLog()
 				setTimeObject(
 					modifyTimeObject(timeObject).increment[segment].isolated(),
 				)
 			} else if (key === 'ArrowDown') {
 				if (!cursorSegment) setCursorSegment(segment)
 				e.preventDefault()
+				resetSegmentEntryLog()
 				setTimeObject(
 					modifyTimeObject(timeObject).decrement[segment].isolated(),
 				)
