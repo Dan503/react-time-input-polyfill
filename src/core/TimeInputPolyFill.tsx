@@ -145,7 +145,7 @@ const TimeInputPolyfill = ({
 		// TO DO 2nd: Create a local polyfill file that only holds the things that are needed
 		// Don't worry, it only downloads the polyfill once no matter how many inputs you have on the page
 		loadJS(
-			'https://cdn.jsdelivr.net/npm/@time-input-polyfill/utils@1.0.0-beta.40/npm/time-input-polyfill-utils.min.js',
+			'https://cdn.jsdelivr.net/npm/@time-input-polyfill/utils@1.0.0-beta.43/npm/time-input-polyfill-utils.min.js',
 			() => {
 				const {
 					convertString12hr,
@@ -159,11 +159,14 @@ const TimeInputPolyfill = ({
 				a11yCreate()
 				setManualEntryLog(
 					// TO DO: if entry log has reached it's limit, go to next segment
-					new ManualEntryLog(timeObject, ({ fullValue12hr }) => {
-						const timeObj = convertString12hr(
-							fullValue12hr,
-						).toTimeObject()
-						setTimeObject(timeObj)
+					new ManualEntryLog({
+						timeObject,
+						onUpdate({ fullValue12hr }) {
+							const timeObj = convertString12hr(
+								fullValue12hr,
+							).toTimeObject()
+							setTimeObject(timeObj)
+						},
 					}),
 				)
 				setHasInitialised(true)
