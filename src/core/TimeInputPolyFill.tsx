@@ -141,6 +141,8 @@ const TimeInputPolyfill = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [value24hr, polyfill])
 
+	// TO DO: a11y block doesn't seem to be auto updating
+	// TO DO: Try to build in backwards compatibility with the old onChange callback
 	if (isPolyfilled) {
 		// TO DO 1st: Use this when v1.0.0 of the utils is released: https://cdn.jsdelivr.net/npm/@time-input-polyfill/utils@1
 		// TO DO 2nd: Create a local polyfill file that only holds the things that are needed
