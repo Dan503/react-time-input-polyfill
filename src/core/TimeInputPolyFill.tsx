@@ -129,6 +129,17 @@ const TimeInputPolyfill = ({
 
 	useEffect(() => {
 		if (polyfill) {
+			const { a11yUpdate, getA11yValue } = polyfill
+			setTimeout(() => {
+				if (getA11yValue()) {
+					a11yUpdate($input.current, ['update'])
+				}
+			})
+		}
+	}, [timeObject, polyfill])
+
+	useEffect(() => {
+		if (polyfill) {
 			const { convertString24hr, matchesTimeObject } = polyfill
 			const newTimeObject = convertString24hr(value24hr).toTimeObject()
 			if (
@@ -190,7 +201,18 @@ const TimeInputPolyfill = ({
 
 	useEffect(() => {
 		cursorSegmentRef.current = cursorSegment
-	}, [cursorSegment])
+		const hasFocus = document.activeElement === $input.current
+		if (polyfill && hasFocus) {
+			const { a11yUpdate, getA11yValue } = polyfill
+			setTimeout(() => {
+				if (getA11yValue()) {
+					a11yUpdate($input.current, ['select'])
+				} else {
+					a11yUpdate($input.current, ['initial', 'select'])
+				}
+			})
+		}
+	}, [cursorSegment, polyfill])
 
 	//Reset entry log cursor segmet
 	useEffect(() => {
@@ -220,6 +242,7 @@ const TimeInputPolyfill = ({
 		if (onBlur) onBlur(e)
 		setAllowSegmentSelection(false)
 		setFocusedViaClick(false)
+		polyfill?.a11yClear()
 	}
 	const handleMouseDown = (e: React.MouseEvent<HTMLInputElement>) => {
 		if (onMouseDown) onMouseDown(e)
