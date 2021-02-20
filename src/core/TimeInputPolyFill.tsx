@@ -165,13 +165,16 @@ const TimeInputPolyfill = ({
 					convertString12hr,
 					convertString24hr,
 					a11yCreate,
+					getA11yElement,
 					ManualEntryLog,
 					getNextSegment,
 				} = window.timeInputPolyfillUtils
 				setPolyfill(window.timeInputPolyfillUtils)
 				const timeObject = convertString24hr(value24hr).toTimeObject()
 				setTimeObject(timeObject)
-				a11yCreate()
+				if (!getA11yElement()) {
+					a11yCreate()
+				}
 				setManualEntryLog(
 					new ManualEntryLog({
 						timeObject,
