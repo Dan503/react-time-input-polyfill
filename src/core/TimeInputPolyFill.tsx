@@ -37,6 +37,8 @@ export interface TimePolyfillProps
 	 *
 	 * @default false */
 	forcePolyfill?: boolean
+	/** TO DO: Add support for `polyfillSource` prop */
+	polyfillSource?: string
 }
 
 /**
