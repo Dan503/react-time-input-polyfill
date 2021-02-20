@@ -100,20 +100,36 @@ const ExampleBlock = ({
 	)
 }
 
-class ClassBasedComponentExample extends Component<{ codeString: string }> {
+class TestClassInput extends Component<{
+	value: string
+	setValue: React.Dispatch<React.SetStateAction<string>>
+}> {
+	render() {
+		const { value, setValue } = this.props
+		return (
+			<label style={{ display: 'inline-block' }}>
+				<span style={{ marginRight: '0.5em' }}>
+					Class based version
+				</span>
+				<TimeInput value={value} setValue={setValue} forcePolyfill />
+			</label>
+		)
+	}
+}
+
+class ClassBasedComponentExample extends Component {
 	state = { value: '20:30' }
 	setValue(newValue) {
 		this.setState({ value: newValue })
 	}
 	render() {
-		const { codeString } = this.props
 		const { value } = this.state
 		return (
 			<form
 				style={{ marginBottom: '2em' }}
 				onSubmit={(e) => e.preventDefault()}
 			>
-				<h2>Class based component example</h2>
+				<h2>Class based component example (forced polyfill)</h2>
 
 				<p>
 					The time input polyfill has been optimized to work best with
@@ -121,18 +137,10 @@ class ClassBasedComponentExample extends Component<{ codeString: string }> {
 					component.
 				</p>
 
-				<label style={{ display: 'inline-block' }}>
-					<span style={{ marginRight: '0.5em' }}>
-						Class based version
-					</span>
-					<TimeInput
-						value={value}
-						setValue={(newValue) => {
-							this.setState({ value: newValue })
-						}}
-						forcePolyfill
-					/>
-				</label>
+				<TestClassInput
+					value={this.state.value}
+					setValue={(newValue) => this.setState({ value: newValue })}
+				/>
 
 				<p>
 					<button onClick={() => this.setValue('07:15')}>
@@ -145,16 +153,68 @@ class ClassBasedComponentExample extends Component<{ codeString: string }> {
 
 				<p>class based returned value: "{value}"</p>
 
-				{!!codeString && (
-					<SyntaxHighlighter
-						style={dark}
-						className="code"
-						language="javascript"
-						showLineNumbers={true}
-					>
-						{codeString.replace(/^\n/, '')}
-					</SyntaxHighlighter>
-				)}
+				<SyntaxHighlighter
+					style={dark}
+					className="code"
+					language="javascript"
+					showLineNumbers={true}
+				>
+					{`
+	/* TimeInput.js */
+
+	import React, { Component } from 'react'
+
+	// Import the component into your project
+	import TimeInputPolyfill from 'react-time-input-polyfill'
+
+	export class TimeInput extends Component {
+		render() {
+			const { value, setValue, label } = this.props
+			return (
+					<label>
+						<span>
+							{label}
+						</span>
+						<TimeInputPolyfill
+							value={value}
+							setValue={setValue}
+							forcePolyfill // Don't force in production
+						/>
+					</label>
+			)
+		}
+	}
+
+	///////////////////////////////////////////////////
+
+	/* ExampleForm.js */
+
+	import React, { Component } from 'react'
+
+	// import your local time input component into your form component
+	import { TimeInput } from './TimeInput'
+
+	export class ExampleForm extends Component {
+		state = { inputValue: '20:30' }
+		render() {
+			return (
+				<form>
+					<TimeInput
+						label="Label text"
+
+						// Use the state value to set the time
+						value={this.state.inputValue}
+
+						// Pass a state setter function into the component
+						setValue={(newValue) => this.setState({inputValue: newValue})}
+					/>
+					<button type="submit">Submit</button>
+				</form>
+			)
+		}
+	}
+`.replace(/^\n/, '')}
+				</SyntaxHighlighter>
 			</form>
 		)
 	}
@@ -299,63 +359,7 @@ export const TimeInput = ({ label, value, setValue }) => {
 }`}
 			/>
 
-			<ClassBasedComponentExample
-				codeString={`
-	/* TimeInput.js */
-
-	import React, { Component } from 'react'
-
-	// Import the component into your project
-	import TimeInputPolyfill from 'react-time-input-polyfill'
-
-	export class TimeInput extends Component {
-		render() {
-			const { value, setValue } = this.props
-			return (
-					<label>
-						<span>
-							Class based version
-						</span>
-						<TimeInputPolyfill
-							value={value}
-							setValue={setValue}
-							forcePolyfill
-						/>
-					</label>
-			)
-		}
-	}
-
-	///////////////////////////////////////////////////
-
-	/* ExampleForm.js */
-	
-	import React, { Component } from 'react'
-
-	// import your local time input component into your form component
-	import { TimeInput } from './TimeInput'
-
-	export class ExampleForm extends Component {
-		state = { inputValue: '20:30' }
-		render() {
-			return (
-				<form>
-					<TimeInput
-						label="Label text"
-
-						// Use the state value to set the time
-						value={this.state.inputValue}
-
-						// Pass a state setter function into the component
-						setValue={(newValue) => this.setState({inputValue: newValue})}
-					/>
-					<button type="submit">Submit</button>
-				</form>
-			)
-		}
-	}
-`}
-			/>
+			<ClassBasedComponentExample />
 
 			{/* {addedLater && (
 				<ExampleBlock
