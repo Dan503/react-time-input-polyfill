@@ -1,3 +1,18 @@
+/**
+ * # Full list of TO DO items
+ *
+ * - Add support for `polyfillSource` prop
+ *
+ * - Go through the full list of both closed and open issues
+ *   and check if the issue is fixed in v2 (not adding 24hr support yet though):
+ *   https://github.com/Dan503/react-time-input-polyfill/issues?q=is%3Aissue+
+ *
+ * - Use this when v1.0.0 of the utils is released: https://cdn.jsdelivr.net/npm/@time-input-polyfill/utils@1
+ *
+ * - Create a local polyfill file that only holds the things that are needed
+ *   The output should end up here: `@time-input-polyfill/react/dist/timePolyfillUtils.js`
+ */
+
 import React, { useRef, useState, useEffect } from 'react'
 import loadJS from '@dan503/load-js'
 
