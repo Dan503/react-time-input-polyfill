@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { Component, useState } from 'react'
 import './App.css'
 import TimeInput, { SetValue } from './core/TimeInputPolyFill'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
@@ -100,53 +100,64 @@ const ExampleBlock = ({
 	)
 }
 
-const V1BackwardCompatTest = ({ codeString }: { codeString: string }) => {
-	const [value, setValue] = useState('')
-	return (
-		<form
-			style={{ marginBottom: '2em' }}
-			onSubmit={(e) => e.preventDefault()}
-		>
-			<h2>v1 backwards compatibility with onChange</h2>
+class ClassBasedComponentExample extends Component<{ codeString: string }> {
+	state = { value: '20:30' }
+	setValue(newValue) {
+		this.setState({ value: newValue })
+	}
+	render() {
+		const { codeString } = this.props
+		const { value } = this.state
+		return (
+			<form
+				style={{ marginBottom: '2em' }}
+				onSubmit={(e) => e.preventDefault()}
+			>
+				<h2>Class based component example</h2>
 
-			<label style={{ display: 'inline-block' }}>
-				<span style={{ marginRight: '0.5em' }}>
-					v1 backwards compatibility with onChange
-				</span>
-				<Input
-					usePolyfill={true}
-					forcePolyfill={true}
-					value={value}
-					onChange={(props) => {
-						console.log('v1 compat', props)
-					}}
-					className="exampleClass"
-				/>
-			</label>
+				<p>
+					The time input polyfill has been optimized to work best with
+					React Hooks but you can still use it in a class based
+					component.
+				</p>
 
-			<p>
-				<button onClick={() => setValue('07:15')}>
-					Set v1 compat time to 7:15 AM
-				</button>
-				<button onClick={() => setValue('15:45')}>
-					Set v1 compat time to 3:45 PM
-				</button>
-			</p>
+				<label style={{ display: 'inline-block' }}>
+					<span style={{ marginRight: '0.5em' }}>
+						Class based version
+					</span>
+					<TimeInput
+						value={value}
+						setValue={(newValue) => {
+							this.setState({ value: newValue })
+						}}
+						forcePolyfill
+					/>
+				</label>
 
-			<p>v1 compat returned value: "{value}"</p>
+				<p>
+					<button onClick={() => this.setValue('07:15')}>
+						Set class based time to 7:15 AM
+					</button>
+					<button onClick={() => this.setValue('15:45')}>
+						Set class based time to 3:45 PM
+					</button>
+				</p>
 
-			{!!codeString && (
-				<SyntaxHighlighter
-					style={dark}
-					className="code"
-					language="javascript"
-					showLineNumbers={true}
-				>
-					{codeString.replace(/^\n/, '')}
-				</SyntaxHighlighter>
-			)}
-		</form>
-	)
+				<p>class based returned value: "{value}"</p>
+
+				{!!codeString && (
+					<SyntaxHighlighter
+						style={dark}
+						className="code"
+						language="javascript"
+						showLineNumbers={true}
+					>
+						{codeString.replace(/^\n/, '')}
+					</SyntaxHighlighter>
+				)}
+			</form>
+		)
+	}
 }
 
 function App() {
@@ -288,43 +299,61 @@ export const TimeInput = ({ label, value, setValue }) => {
 }`}
 			/>
 
-			<V1BackwardCompatTest
+			<ClassBasedComponentExample
 				codeString={`
-/* TimeInput.js */
+	/* TimeInput.js */
 
-import React from 'react'
+	import React, { Component } from 'react'
 
-// Import the component into your project
-import TimeInputPolyfill from 'react-time-input-polyfill'
+	// Import the component into your project
+	import TimeInputPolyfill from 'react-time-input-polyfill'
 
-export const TimeInput = ({ label, currentValue, onInputChange }) => {
-	return (
-		<label>
-			<span>{label}</span>
-			<TimeInputPolyfill
+	export class TimeInput extends Component {
+		render() {
+			const { value, setValue } = this.props
+			return (
+					<label>
+						<span>
+							Class based version
+						</span>
+						<TimeInputPolyfill
+							value={value}
+							setValue={setValue}
+							forcePolyfill
+						/>
+					</label>
+			)
+		}
+	}
 
-				// set the value through props
-				value={currentValue}
+	///////////////////////////////////////////////////
 
-				// onChange will run every time the value is updated
-				onChange={({ value, element }) => {
-					console.log({
+	/* ExampleForm.js */
+	
+	import React, { Component } from 'react'
 
-						// The current value in 24 hour time format
-						value,
+	// import your local time input component into your form component
+	import { TimeInput } from './TimeInput'
 
-						// The <input> HTML element
-						element,
+	export class ExampleForm extends Component {
+		state = { inputValue: '20:30' }
+		render() {
+			return (
+				<form>
+					<TimeInput
+						label="Label text"
 
-					})
+						// Use the state value to set the time
+						value={this.state.inputValue}
 
-					// Export the new value to the parent component
-					onInputChange(value)
-				}}
-			/>
-		</label>
-	)
-}
+						// Pass a state setter function into the component
+						setValue={(newValue) => this.setState({inputValue: newValue})}
+					/>
+					<button type="submit">Submit</button>
+				</form>
+			)
+		}
+	}
 `}
 			/>
 
