@@ -7,13 +7,15 @@ import { dark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 const Input = ({
 	value,
 	setValue,
+	onChange,
 	className,
 	usePolyfill = true,
 	...restProps
 }: {
 	value: string
-	setValue: SetValue
-	className: string
+	setValue?: SetValue
+	onChange?: (props: { value: string; element: HTMLInputElement }) => void
+	className?: string
 	usePolyfill?: boolean
 	[key: string]: any
 }) => {
@@ -83,6 +85,55 @@ const ExampleBlock = ({
 			<p>
 				{label} returned value: "{value}"
 			</p>
+
+			{!!codeString && (
+				<SyntaxHighlighter
+					style={dark}
+					className="code"
+					language="javascript"
+					showLineNumbers={true}
+				>
+					{codeString.replace(/^\n/, '')}
+				</SyntaxHighlighter>
+			)}
+		</form>
+	)
+}
+
+const V1BackwardCompatTest = ({ codeString }: { codeString: string }) => {
+	const [value, setValue] = useState('')
+	return (
+		<form
+			style={{ marginBottom: '2em' }}
+			onSubmit={(e) => e.preventDefault()}
+		>
+			<h2>v1 backwards compatibility with onChange</h2>
+
+			<label style={{ display: 'inline-block' }}>
+				<span style={{ marginRight: '0.5em' }}>
+					v1 backwards compatibility with onChange
+				</span>
+				<Input
+					usePolyfill={true}
+					forcePolyfill={true}
+					value={value}
+					onChange={(props) => {
+						console.log('v1 compat', props)
+					}}
+					className="exampleClass"
+				/>
+			</label>
+
+			<p>
+				<button onClick={() => setValue('07:15')}>
+					Set v1 compat time to 7:15 AM
+				</button>
+				<button onClick={() => setValue('15:45')}>
+					Set v1 compat time to 3:45 PM
+				</button>
+			</p>
+
+			<p>v1 compat returned value: "{value}"</p>
 
 			{!!codeString && (
 				<SyntaxHighlighter
@@ -235,6 +286,46 @@ export const TimeInput = ({ label, value, setValue }) => {
 		</label>
 	)
 }`}
+			/>
+
+			<V1BackwardCompatTest
+				codeString={`
+/* TimeInput.js */
+
+import React from 'react'
+
+// Import the component into your project
+import TimeInputPolyfill from 'react-time-input-polyfill'
+
+export const TimeInput = ({ label, currentValue, onInputChange }) => {
+	return (
+		<label>
+			<span>{label}</span>
+			<TimeInputPolyfill
+
+				// set the value through props
+				value={currentValue}
+
+				// onChange will run every time the value is updated
+				onChange={({ value, element }) => {
+					console.log({
+
+						// The current value in 24 hour time format
+						value,
+
+						// The <input> HTML element
+						element,
+
+					})
+
+					// Export the new value to the parent component
+					onInputChange(value)
+				}}
+			/>
+		</label>
+	)
+}
+`}
 			/>
 
 			{/* {addedLater && (
