@@ -120,13 +120,8 @@ const TimeInputPolyfill = ({
 				})
 			}
 		}
-	}, [
-		allowSegmentSelection,
-		cursorSegment,
-		polyfill,
-		timeObject,
-		setValue24hr,
-	])
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [allowSegmentSelection, cursorSegment, polyfill, timeObject])
 
 	useEffect(() => {
 		if (polyfill) {
