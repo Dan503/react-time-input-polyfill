@@ -21,7 +21,9 @@ interface Element {
 	msMatchesSelector(selectors: string): boolean
 }
 
-export type SetValue = React.Dispatch<React.SetStateAction<String24hr | null>>
+export type SetValue = React.Dispatch<
+	React.SetStateAction<String24hr | null | undefined>
+>
 
 export interface TimePolyfillProps
 	extends React.HTMLAttributes<HTMLInputElement> {
