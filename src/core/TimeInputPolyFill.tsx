@@ -35,7 +35,8 @@ export interface TimePolyfill {
 	onClick?: (e: React.MouseEvent<HTMLInputElement>) => void
 	onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void
 	className?: string
-	[key: string]: any
+	style?: React.CSSProperties
+	[key: string]: unknown
 }
 
 const TimeInputPolyfill = ({
