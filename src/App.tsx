@@ -248,58 +248,58 @@ function App() {
 			<ExampleBlock
 				label="Non-forced polyfill"
 				codeString={`
-/* TimeInput.js */
+	/* TimeInput.js */
 
-import React from 'react'
+	import React from 'react'
 
-// Import the component into your project
-import TimeInputPolyfill from 'react-time-input-polyfill'
+	// Import the component into your project
+	import TimeInputPolyfill from 'react-time-input-polyfill'
 
-export const TimeInput = ({ label, value, setValue }) => {
-	return (
-		<label>
-			<span>{label}</span>
-			<TimeInputPolyfill
+	export const TimeInput = ({ label, value, setValue }) => {
+		return (
+			<label>
+				<span>{label}</span>
+				<TimeInputPolyfill
 
-				// Set the value through props
-				value={value}
+					// Set the value through props
+					value={value}
 
-				// Pass the state setter
-				setValue={setValue}
-			/>
-		</label>
-	)
-}
+					// Pass the state setter
+					setValue={setValue}
+				/>
+			</label>
+		)
+	}
 
-///////////////////////////////////////////////////
+	///////////////////////////////////////////////////
 
-/* ExampleForm.js */
+	/* ExampleForm.js */
 
-import React, { useState } from 'react'
+	import React, { useState } from 'react'
 
-// import your local time input component into your form component
-import { TimeInput } from './TimeInput'
+	// import your local time input component into your form component
+	import { TimeInput } from './TimeInput'
 
-export const ExampleForm = ()=> {
+	export const ExampleForm = ()=> {
 
-	// Use state to keep track of the value
-	const [inputValue, setInputValue] = useState('20:30') // default to 8:30 PM
+		// Use state to keep track of the value
+		const [inputValue, setInputValue] = useState('20:30') // default to 8:30 PM
 
-	return (
-		<form>
-			<TimeInput
-				label="Label text"
+		return (
+			<form>
+				<TimeInput
+					label="Label text"
 
-				// Use the state value to set the time
-				value={inputValue}
+					// Use the state value to set the time
+					value={inputValue}
 
-				// Pass the state setter function into the component
-				setValue={setInputValue}
-			/>
-			<button type="submit">Submit</button>
-		</form>
-	)
-}
+					// Pass the state setter function into the component
+					setValue={setInputValue}
+				/>
+				<button type="submit">Submit</button>
+			</form>
+		)
+	}
 `}
 			/>
 
@@ -307,27 +307,27 @@ export const ExampleForm = ()=> {
 				label="Forced polyfill"
 				extraInputProps={{ forcePolyfill: true }}
 				codeString={`
-/* TimeInput.js */
+	/* TimeInput.js */
 
-import React from 'react'
-import TimeInputPolyfill from 'react-time-input-polyfill'
+	import React from 'react'
+	import TimeInputPolyfill from 'react-time-input-polyfill'
 
-export const TimeInput = ({ label, value, setValue }) => {
-	return (
-		<label>
-			<span>{label}</span>
-			<TimeInputPolyfill
-				value={value}
-				setValue={setValue}
+	export const TimeInput = ({ label, value, setValue }) => {
+		return (
+			<label>
+				<span>{label}</span>
+				<TimeInputPolyfill
+					value={value}
+					setValue={setValue}
 
-				/*  Force browsers that support input[type=time]
-				    to use the polyfill.
-				    (useful for testing and debugging)
-				*/  forcePolyfill={true}
-			/>
-		</label>
-	)
-}
+					/*  Force browsers that support input[type=time]
+						to use the polyfill.
+						(useful for testing and debugging)
+					*/  forcePolyfill={true}
+				/>
+			</label>
+		)
+	}
 `}
 			/>
 
@@ -335,28 +335,28 @@ export const TimeInput = ({ label, value, setValue }) => {
 				label="Non-polyfill"
 				usePolyfill={false}
 				codeString={`
-/* TimeInput.js */
+	/* TimeInput.js */
 
-// View this example in Internet Explorer
-// This is a normal time input with no polyfill applied
+	// View this example in Internet Explorer
+	// This is a normal time input with no polyfill applied
 
-import React from 'react'
+	import React from 'react'
 
-export const TimeInput = ({ label, value, setValue }) => {
-	return (
-		<label>
-			<span>{label}</span>
-			<input
-				type="time"
-				value={value}
-				onChange={(e) => {
-					console.log(e) // the default browser event
-					setValue(e.target.value)
-				}
-			/>
-		</label>
-	)
-}`}
+	export const TimeInput = ({ label, value, setValue }) => {
+		return (
+			<label>
+				<span>{label}</span>
+				<input
+					type="time"
+					value={value}
+					onChange={(e) => {
+						console.log(e) // the default browser event
+						setValue(e.target.value)
+					}
+				/>
+			</label>
+		)
+	}`}
 			/>
 
 			<ClassBasedComponentExample />
