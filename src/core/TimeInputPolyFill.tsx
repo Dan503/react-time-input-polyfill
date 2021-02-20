@@ -39,11 +39,29 @@ export interface TimePolyfillProps
 	forcePolyfill?: boolean
 }
 
+/**
+ * An `input[type=time]` element with a built in polyfill for browsers that don't support the time input natively.
+ *
+ * Only browsers that _need_ the polyfill code will download the polyfill.
+ *
+ * ```jsx
+ * import TimeInput from '@time-input-polyfill/react'
+ * // ...
+ * const [value, setValue] = useState()
+ * // ...
+ * <TimeInput value={value} setValue={setValue} />
+ * ```
+ *
+ * __Resources:__
+ * - [Demo website](https://dan503.github.io/react-time-input-polyfill/)
+ * - [GitHub repository](https://github.com/Dan503/react-time-input-polyfill)
+ * - [npm package](https://www.npmjs.com/package/@time-input-polyfill/react)
+ */
 const TimeInputPolyfill = ({
-	onChange,
 	value: value24hr = '',
 	setValue: setValue24hr,
 	forcePolyfill = false,
+	onChange,
 	onFocus,
 	onBlur,
 	onMouseDown,
