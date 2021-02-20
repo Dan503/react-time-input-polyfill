@@ -3,9 +3,11 @@
  *
  * - Add support for `polyfillSource` prop
  *
- * - Go through the full list of both closed and open issues
- *   and check if the issue is fixed in v2 (not adding 24hr support yet though):
- *   https://github.com/Dan503/react-time-input-polyfill/issues?q=is%3Aissue+
+ * - Bug: Pressing up arrow twice in hours field while mode field is empty causes mode to populate
+ *
+ * - Bug:  Pressing delete/backspace clears all fields. It should only clear one field at a time.
+ *   Note: Firefox clears all fields no matter what field has focus.
+ *         Chrome only clears the currently focussed field. I want Chrome behavior.
  *
  * - Use this when v1.0.0 of the utils is released: https://cdn.jsdelivr.net/npm/@time-input-polyfill/utils@1
  *
