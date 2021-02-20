@@ -23,20 +23,20 @@ interface Element {
 
 export type SetValue = React.Dispatch<React.SetStateAction<String24hr | null>>
 
-export interface TimePolyfill {
+export interface TimePolyfillProps
+	extends React.HTMLAttributes<HTMLInputElement> {
+	/** The string value of the input in 24 hour time. */
 	value?: String24hr
+	/** The setState function that updates the `value` prop. */
 	setValue: SetValue
+	/**
+	 * Set to true to force browsers that support input[type=time]
+	 * to use the polyfill.
+	 *
+	 * (Useful for testing and debugging)
+	 *
+	 * @default false */
 	forcePolyfill?: boolean
-	onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
-	onFocus?: (e: React.FocusEvent<HTMLInputElement>) => void
-	onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void
-	onMouseDown?: (e: React.MouseEvent<HTMLInputElement>) => void
-	onMouseUp?: (e: React.MouseEvent<HTMLInputElement>) => void
-	onClick?: (e: React.MouseEvent<HTMLInputElement>) => void
-	onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void
-	className?: string
-	style?: React.CSSProperties
-	[key: string]: unknown
 }
 
 const TimeInputPolyfill = ({
@@ -53,7 +53,7 @@ const TimeInputPolyfill = ({
 	className,
 	style,
 	...restProps
-}: TimePolyfill) => {
+}: TimePolyfillProps) => {
 	const isPolyfilled = forcePolyfill || !supportsTime
 
 	const $input = useRef<HTMLInputElement>(null)
