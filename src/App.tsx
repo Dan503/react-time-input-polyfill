@@ -80,6 +80,9 @@ const ExampleBlock = ({
 				<button onClick={() => setValue('15:45')}>
 					Set {label} time to 3:45 PM
 				</button>
+				<button onClick={() => setValue('')}>
+					Set {label} time to " "
+				</button>
 			</p>
 
 			<p>
