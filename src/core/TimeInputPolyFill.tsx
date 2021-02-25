@@ -5,9 +5,9 @@
  *
  * - Bug: Pressing up arrow twice in hours field while mode field is empty causes mode to populate
  *
- * - Bug:  Pressing delete/backspace clears all fields. It should only clear one field at a time.
- *   Note: Firefox clears all fields no matter what field has focus.
- *         Chrome only clears the currently focussed field. I want Chrome behavior.
+ * - Bug:  Clearing mode segment does not clear 24 hour time
+ *
+ * - Bug: Using a button to set value24 to empty does not clear all values
  *
  * - Use this when v1.0.0 of the utils is released: https://cdn.jsdelivr.net/npm/@time-input-polyfill/utils@1
  *
@@ -24,7 +24,8 @@ import {
 	String12hr,
 	Polyfill,
 	Segment,
-} from '@time-input-polyfill/utils/npm/types/index'
+	TimeObjectKey,
+} from '@time-input-polyfill/utils/npm/types'
 
 // Avoid bulk importing from index files to be more tree-shake friendly
 import supportsTime from '@time-input-polyfill/utils/npm/common/supportsTime'
@@ -142,6 +143,16 @@ const TimeInputPolyfill = ({
 	}, [value24hr])
 	/* </Forced override value code>	*/
 
+	const getBlankValuesStatus = (timeObject: TimeObject) => {
+		if (!polyfill) return {}
+		const isBlankValue = (key: TimeObjectKey) => timeObject[key] === '--'
+		const { timeObjectKeys } = polyfill
+		return {
+			hasBlankValues: timeObjectKeys.some(isBlankValue),
+			isAllBlankValues: timeObjectKeys.every(isBlankValue),
+		}
+	}
+
 	// Do all modifications through the timeObject. React will update the other values accordingly.
 	useEffect(() => {
 		if (polyfill) {
@@ -151,8 +162,13 @@ const TimeInputPolyfill = ({
 				selectSegment,
 			} = polyfill
 			const segment = cursorSegment || getCursorSegment($input.current)
+			const timeObjAs24hr = convertTimeObject(timeObject).to24hr()
+
 			setValue12hr(convertTimeObject(timeObject).to12hr())
-			setValue24hr(convertTimeObject(timeObject).to24hr())
+
+			if (timeObjAs24hr !== value24hr) {
+				setValue24hr(timeObjAs24hr)
+			}
 			if (allowSegmentSelection) {
 				setTimeout(() => {
 					selectSegment($input.current, segment)
@@ -177,9 +193,12 @@ const TimeInputPolyfill = ({
 		if (polyfill) {
 			const { convertString24hr, matchesTimeObject } = polyfill
 			const newTimeObject = convertString24hr(value24hr).toTimeObject()
+			const { hasBlankValues } = getBlankValuesStatus(newTimeObject)
+
 			if (
 				!matchesTimeObject(newTimeObject, timeObject) &&
-				hasInitialised
+				hasInitialised &&
+				!hasBlankValues
 			) {
 				setTimeObject(newTimeObject)
 			}
@@ -361,6 +380,8 @@ const TimeInputPolyfill = ({
 		...style,
 	}
 
+	const polyfilledValue = forcedValue === null ? value12hr : forcedValue
+
 	return (
 		<input
 			{...restProps}
@@ -373,7 +394,7 @@ const TimeInputPolyfill = ({
 			onKeyDown={handleKeyDown}
 			ref={$input}
 			type={isPolyfilled ? 'text' : 'time'}
-			value={isPolyfilled ? forcedValue || value12hr : value24hr}
+			value={isPolyfilled ? polyfilledValue : value24hr}
 			style={styles}
 			className={
 				[className || '', polyfillClass].join(' ').trim() || undefined
