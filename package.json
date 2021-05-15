@@ -102,7 +102,8 @@
 	"scripts": {
 		"start": "npx rollup --config && gulp",
 		"build": "npx rollup --config && gulp build",
-		"test": "node scripts/test.js"
+		"test": "node scripts/test.js",
+		"prepublish": "npx rollup --config"
 	},
 	"eslintConfig": {
 		"extends": "react-app"
