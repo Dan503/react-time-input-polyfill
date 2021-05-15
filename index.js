@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import supportsTime from 'time-input-polyfill/core/helpers/supportsTime'
 import loadJS from 'time-input-polyfill/core/helpers/loadJS'
 
@@ -394,19 +394,10 @@ export default class TimeInput extends React.Component {
 	}
 
 	render() {
-		const {
-			value,
-			forcePolyfill,
-			className,
-			polyfillSource,
-			...props
-		} = this.props
-		const {
-			usePolyfill,
-			value24hr,
-			currentSegment,
-			forcedValue,
-		} = this.state
+		const { value, forcePolyfill, className, polyfillSource, ...props } =
+			this.props
+		const { usePolyfill, value24hr, currentSegment, forcedValue } =
+			this.state
 
 		const value12hr = usePolyfill ? this.get_12hr_value() : null
 
