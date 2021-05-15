@@ -2,6 +2,7 @@
 
 # generated
 ./timePolyfillHelpers.js
+./dist
 
 # dependencies
 /node_modules
