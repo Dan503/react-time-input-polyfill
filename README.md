@@ -154,6 +154,6 @@ Then when using the component, add a `polyfillSource` prop that points to the co
 <TimeInput
     value={currentValue}
     onChange={({ value }) => setCurrentValue(value)}
-    polyfillSource="/path/to/timePolyfillHelpers.js"
+    polyfillSource="/path/to/local/timePolyfillHelpers.js"
 />
 ```

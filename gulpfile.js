@@ -1,59 +1,57 @@
 var gulp = require('gulp')
-var browserify = require('browserify')
-var uglify = require('gulp-uglify')
-var buffer = require('vinyl-buffer')
-var source = require('vinyl-source-stream')
-
 var exec = require('child_process').exec
 
 var isProduction = () => process.env.NODE_ENV === 'production'
 
-const setEnv = env => done => {
+const setEnv = (env) => (done) => {
 	process.env.NODE_ENV = env
 	done()
 }
 gulp.task('set_dev_env', setEnv('development'))
 gulp.task('set_prod_env', setEnv('production'))
 
-gulp.task('webpack', done => {
-	exec(`node scripts/${isProduction() ? 'build' : 'start'}.js`, function(
-		err,
-		stdout,
-		stderr,
-	) {
+gulp.task('webpack', (done) => {
+	const command = isProduction() ? 'build' : 'start'
+	exec(`npm run react-${command}`, function(err, stdout, stderr) {
 		console.log(stdout)
 		console.log(stderr)
 		done(err)
 	})
 })
 
-gulp.task('watch', done => {
-	gulp.watch('./timePolyfillHelpers.js').on(
-		'change',
-		gulp.series('browserify'),
-	)
+gulp.task('rollup', (done) => {
+	exec(`npx rollup --config`, function(err, stdout, stderr) {
+		console.log(stdout)
+		console.log(stderr)
+		done(err)
+	})
+})
+
+gulp.task('watch', (done) => {
+	gulp.watch('./src/time-polyfill/*.js').on('change', gulp.series('rollup'))
 	done()
 })
 
-gulp.task('browserify', () => {
-	return browserify({
-		// entry file defined here
-		entries: ['./timePolyfillHelpers.js'],
-		debug: true,
-		transform: ['babelify'],
-	})
-		.bundle()
-		.pipe(source('timePolyfillHelpers.js'))
-		.pipe(buffer())
-		.pipe(uglify())
-		.pipe(gulp.dest('./dist'))
-		.pipe(gulp.dest('./test-site/public'))
-})
+gulp.task('compile', gulp.parallel('webpack'))
 
-gulp.task('compile', gulp.parallel('webpack', 'browserify'))
+gulp.task('copy-build-to-docs', () => {
+	return gulp.src('./build/**/*').pipe(gulp.dest('docs'))
+})
+gulp.task('copy-dts-to-dist', () => {
+	return gulp
+		.src('./src/time-polyfill/ReactTimeInputPolyfill.d.ts')
+		.pipe(gulp.dest('dist'))
+})
 
 gulp.task(
 	'default',
 	gulp.series('set_dev_env', gulp.parallel('watch', 'compile')),
 )
-gulp.task('build', gulp.series('set_prod_env', 'compile'))
+gulp.task(
+	'build',
+	gulp.series(
+		'set_prod_env',
+		'compile',
+		gulp.parallel('copy-dts-to-dist', 'copy-build-to-docs'),
+	),
+)

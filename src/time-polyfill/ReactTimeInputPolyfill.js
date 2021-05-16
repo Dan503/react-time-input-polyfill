@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import supportsTime from 'time-input-polyfill/core/helpers/supportsTime'
 import loadJS from 'time-input-polyfill/core/helpers/loadJS'
 
@@ -41,7 +41,7 @@ const flash24hrTime = (component) => () => {
 	}
 }
 
-export default class TimeInput extends React.Component {
+export default class TimeInputPolyfill extends React.Component {
 	constructor(props) {
 		super(props)
 		this.$input = React.createRef()
@@ -225,7 +225,7 @@ export default class TimeInput extends React.Component {
 
 	traverse_segments(direction) {
 		const { segments } = this.polyfill
-		const modifier = direction == 'left' ? -1 : 1
+		const modifier = direction === 'left' ? -1 : 1
 		const newIndex = segments.indexOf(this.state.currentSegment) + modifier
 		const finalIndex = newIndex <= 0 ? 0 : newIndex >= 2 ? 2 : newIndex
 		const currentSegment = segments[finalIndex]
