@@ -225,7 +225,7 @@ export default class TimeInput extends React.Component {
 
 	traverse_segments(direction) {
 		const { segments } = this.polyfill
-		const modifier = direction == 'left' ? -1 : 1
+		const modifier = direction === 'left' ? -1 : 1
 		const newIndex = segments.indexOf(this.state.currentSegment) + modifier
 		const finalIndex = newIndex <= 0 ? 0 : newIndex >= 2 ? 2 : newIndex
 		const currentSegment = segments[finalIndex]

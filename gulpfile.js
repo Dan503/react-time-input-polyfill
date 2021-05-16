@@ -11,24 +11,24 @@ gulp.task('set_dev_env', setEnv('development'))
 gulp.task('set_prod_env', setEnv('production'))
 
 gulp.task('webpack', (done) => {
-	exec(
-		`node scripts/${isProduction() ? 'build' : 'start'}.js`,
-		function (err, stdout, stderr) {
-			console.log(stdout)
-			console.log(stderr)
-			done(err)
-		},
-	)
+	const command = isProduction() ? 'build' : 'start'
+	exec(`npm run react-${command}`, function (err, stdout, stderr) {
+		console.log(stdout)
+		console.log(stderr)
+		done(err)
+	})
+})
+
+gulp.task('rollup', (done) => {
+	exec(`npx rollup --config`, function (err, stdout, stderr) {
+		console.log(stdout)
+		console.log(stderr)
+		done(err)
+	})
 })
 
 gulp.task('watch', (done) => {
-	gulp.watch(['./timePolyfillHelpers.js', './index.js']).on('change', () => {
-		exec(`npx rollup --config`, function (err, stdout, stderr) {
-			console.log(stdout)
-			console.log(stderr)
-			done(err)
-		})
-	})
+	gulp.watch('./src/time-polyfill/*.js').on('change', gulp.series('rollup'))
 	done()
 })
 

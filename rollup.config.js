@@ -35,12 +35,11 @@ const plugins = [
 		babelrc: false,
 		exclude: 'node_modules/**',
 	}),
-	terser(),
 ]
 
 const rollupConfig = [
 	{
-		input: './timePolyfillHelpers.esm.js',
+		input: './src/time-polyfill/timePolyfillHelpers.js',
 		output: [
 			{
 				file: './timePolyfillHelpers.js',
@@ -51,17 +50,17 @@ const rollupConfig = [
 				format: 'iife',
 			},
 			{
-				file: './test-site/public/timePolyfillHelpers.js',
+				file: './public/timePolyfillHelpers.js',
 				format: 'iife',
 			},
 		],
-		plugins,
+		plugins: [...plugins, terser()],
 	},
 	{
-		input: './index.js',
+		input: './src/time-polyfill/ReactTimeInputPolyfill.js',
 		output: [
 			{
-				file: './dist/index.cjs.js',
+				file: './dist/ReactTimeInputPolyfill.cjs.js',
 				format: 'cjs',
 				exports: 'default',
 			},
