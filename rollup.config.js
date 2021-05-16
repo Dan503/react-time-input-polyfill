@@ -60,7 +60,7 @@ const rollupConfig = [
 		input: './src/time-polyfill/ReactTimeInputPolyfill.js',
 		output: [
 			{
-				file: './dist/ReactTimeInputPolyfill.cjs.js',
+				file: './dist/ReactTimeInputPolyfill.js',
 				format: 'cjs',
 				exports: 'default',
 			},

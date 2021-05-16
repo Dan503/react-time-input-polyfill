@@ -12,7 +12,7 @@ gulp.task('set_prod_env', setEnv('production'))
 
 gulp.task('webpack', (done) => {
 	const command = isProduction() ? 'build' : 'start'
-	exec(`npm run react-${command}`, function (err, stdout, stderr) {
+	exec(`npm run react-${command}`, function(err, stdout, stderr) {
 		console.log(stdout)
 		console.log(stderr)
 		done(err)
@@ -20,7 +20,7 @@ gulp.task('webpack', (done) => {
 })
 
 gulp.task('rollup', (done) => {
-	exec(`npx rollup --config`, function (err, stdout, stderr) {
+	exec(`npx rollup --config`, function(err, stdout, stderr) {
 		console.log(stdout)
 		console.log(stderr)
 		done(err)
@@ -37,9 +37,21 @@ gulp.task('compile', gulp.parallel('webpack'))
 gulp.task('copy-build-to-docs', () => {
 	return gulp.src('./build/**/*').pipe(gulp.dest('docs'))
 })
+gulp.task('copy-dts-to-dist', () => {
+	return gulp
+		.src('./src/time-polyfill/ReactTimeInputPolyfill.d.ts')
+		.pipe(gulp.dest('dist'))
+})
 
 gulp.task(
 	'default',
 	gulp.series('set_dev_env', gulp.parallel('watch', 'compile')),
 )
-gulp.task('build', gulp.series('set_prod_env', 'compile', 'copy-build-to-docs'))
+gulp.task(
+	'build',
+	gulp.series(
+		'set_prod_env',
+		'compile',
+		gulp.parallel('copy-dts-to-dist', 'copy-build-to-docs'),
+	),
+)

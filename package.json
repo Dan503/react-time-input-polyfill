@@ -2,7 +2,7 @@
 	"name": "react-time-input-polyfill",
 	"version": "1.0.5",
 	"description": "A pre-built, plug-and-play, fully accessible React component that will produce an `input[type='time']` element with a built in polyfill for IE and Safari support.",
-	"main": "dist/ReactTimeInputPolyfill.cjs.js",
+	"main": "dist/ReactTimeInputPolyfill.js",
 	"module": "src/time-polyfill/ReactTimeInputPolyfill.js",
 	"repository": {
 		"type": "git",
@@ -87,7 +87,7 @@
 		"build": "npx rollup --config && gulp build",
 		"react-build": "node node_modules/react-scripts/scripts/build.js",
 		"test": "node scripts/test.js",
-		"prepublish": "npx rollup --config"
+		"prepublish": "npm run build"
 	},
 	"eslintConfig": {
 		"extends": "react-app"
