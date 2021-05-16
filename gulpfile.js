@@ -34,8 +34,12 @@ gulp.task('watch', (done) => {
 
 gulp.task('compile', gulp.parallel('webpack'))
 
+gulp.task('copy-build-to-docs', () => {
+	return gulp.src('./build/**/*').pipe(gulp.dest('docs'))
+})
+
 gulp.task(
 	'default',
 	gulp.series('set_dev_env', gulp.parallel('watch', 'compile')),
 )
-gulp.task('build', gulp.series('set_prod_env', 'compile'))
+gulp.task('build', gulp.series('set_prod_env', 'compile', 'copy-build-to-docs'))
