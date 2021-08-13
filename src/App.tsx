@@ -33,6 +33,7 @@ const Input = ({
 	return (
 		<input
 			type="time"
+			id="non-polyfill-time-input"
 			value={value}
 			onChange={(e) => setValue(e.target.value)}
 			className={className}
@@ -69,6 +70,7 @@ const ExampleBlock = ({
 					value={value}
 					setValue={setValue}
 					className="exampleClass"
+					id={label.replace(/\s/g, '-') + '-input'}
 					{...extraInputProps}
 				/>
 			</label>
@@ -114,7 +116,12 @@ class TestClassInput extends Component<{
 				<span style={{ marginRight: '0.5em' }}>
 					Class based version
 				</span>
-				<TimeInput value={value} setValue={setValue} forcePolyfill />
+				<TimeInput
+					value={value}
+					setValue={setValue}
+					forcePolyfill
+					id="class-based-component-example-input"
+				/>
 			</label>
 		)
 	}
