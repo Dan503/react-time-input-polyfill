@@ -77,13 +77,22 @@ const ExampleBlock = ({
 			</label>
 
 			<p>
-				<button onClick={() => setValue('07:15')}>
+				<button
+					onClick={() => setValue('07:15')}
+					id={exampleId + '-button-1'}
+				>
 					Set {label} time to 7:15 AM
 				</button>
-				<button onClick={() => setValue('15:45')}>
+				<button
+					onClick={() => setValue('15:45')}
+					id={exampleId + '-button-2'}
+				>
 					Set {label} time to 3:45 PM
 				</button>
-				<button onClick={() => setValue('')}>
+				<button
+					onClick={() => setValue('')}
+					id={exampleId + '-button-3'}
+				>
 					Set {label} time to " "
 				</button>
 			</p>
@@ -130,6 +139,7 @@ class TestClassInput extends Component<{
 
 class ClassBasedComponentExample extends Component {
 	state = { value: '20:30' }
+	exampleId = 'class-based-component-example'
 	setValue(newValue) {
 		this.setState({ value: newValue })
 	}
@@ -154,11 +164,23 @@ class ClassBasedComponentExample extends Component {
 				/>
 
 				<p>
-					<button onClick={() => this.setValue('07:15')}>
+					<button
+						onClick={() => this.setValue('07:15')}
+						id={this.exampleId + '-button-1'}
+					>
 						Set class based time to 7:15 AM
 					</button>
-					<button onClick={() => this.setValue('15:45')}>
+					<button
+						onClick={() => this.setValue('15:45')}
+						id={this.exampleId + '-button-2'}
+					>
 						Set class based time to 3:45 PM
+					</button>
+					<button
+						onClick={() => this.setValue('')}
+						id={this.exampleId + '-button-3'}
+					>
+						Set class based time to " "
 					</button>
 				</p>
 
