@@ -35,9 +35,9 @@ import { ManualEntryLog } from '@time-input-polyfill/utils/npm/core/ManualEntryL
 const polyfillClassName = 'react-time-input-polyfill-target'
 
 // Needed for the sake of IE to work
-interface Element {
-	msMatchesSelector(selectors: string): boolean
-}
+// interface Element {
+// 	msMatchesSelector(selectors: string): boolean
+// }
 
 export type SetValue = React.Dispatch<
 	React.SetStateAction<String24hr | null | undefined>
@@ -113,9 +113,8 @@ const TimeInputPolyfill = ({
 
 	const [cursorSegment, setCursorSegment] = useState<Segment | null>(null)
 	const cursorSegmentRef = useRef(cursorSegment)
-	const [allowSegmentSelection, setAllowSegmentSelection] = useState<boolean>(
-		false,
-	)
+	const [allowSegmentSelection, setAllowSegmentSelection] =
+		useState<boolean>(false)
 
 	const [manualEntryLog, setManualEntryLog] = useState<ManualEntryLog | null>(
 		null,
@@ -145,7 +144,7 @@ const TimeInputPolyfill = ({
 
 	const getBlankValuesStatus = (timeObject: TimeObject) => {
 		if (!polyfill) return {}
-		const isBlankValue = (key: TimeObjectKey) => timeObject[key] === '--'
+		const isBlankValue = (key: TimeObjectKey) => timeObject[key] === null
 		const { timeObjectKeys } = polyfill
 		return {
 			hasBlankValues: timeObjectKeys.some(isBlankValue),
@@ -156,11 +155,8 @@ const TimeInputPolyfill = ({
 	// Do all modifications through the timeObject. React will update the other values accordingly.
 	useEffect(() => {
 		if (polyfill) {
-			const {
-				convertTimeObject,
-				getCursorSegment,
-				selectSegment,
-			} = polyfill
+			const { convertTimeObject, getCursorSegment, selectSegment } =
+				polyfill
 			const segment = cursorSegment || getCursorSegment($input.current)
 			const timeObjAs24hr = convertTimeObject(timeObject).to24hr()
 
@@ -206,47 +202,56 @@ const TimeInputPolyfill = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [value24hr, polyfill])
 
-	if (isPolyfilled) {
-		// TO DO 1st: Use this when v1.0.0 of the utils is released: https://cdn.jsdelivr.net/npm/@time-input-polyfill/utils@1
-		// TO DO 2nd: Create a local polyfill file that only holds the things that are needed
-		// Don't worry, it only downloads the polyfill once no matter how many inputs you have on the page
-		loadJS(
-			'https://cdn.jsdelivr.net/npm/@time-input-polyfill/utils@1.0.0-beta.48/npm/time-input-polyfill-utils.min.js',
-			() => {
-				const {
-					convertString12hr,
-					convertString24hr,
-					a11yCreate,
-					getA11yElement,
-					ManualEntryLog,
-					getNextSegment,
-				} = window.timeInputPolyfillUtils
-				setPolyfill(window.timeInputPolyfillUtils)
-				const timeObject = convertString24hr(value24hr).toTimeObject()
-				setTimeObject(timeObject)
-				if (!getA11yElement()) {
-					a11yCreate()
-				}
-				setManualEntryLog(
-					new ManualEntryLog({
-						timeObject,
-						onUpdate({ fullValue12hr }) {
-							const timeObj = convertString12hr(
-								fullValue12hr,
-							).toTimeObject()
-							setTimeObject(timeObj)
-						},
-						onLimitHit() {
-							setCursorSegment(
-								getNextSegment(cursorSegmentRef.current),
-							)
-						},
-					}),
-				)
-				setHasInitialised(true)
-			},
-		)
-	}
+	useEffect(() => {
+		if (isPolyfilled) {
+			// TO DO 1st: Use this when v1.0.0 of the utils is released: https://cdn.jsdelivr.net/npm/@time-input-polyfill/utils@1
+			// TO DO 2nd: Create a local polyfill file that only holds the things that are needed
+			// Don't worry, it only downloads the polyfill once no matter how many inputs you have on the page
+			loadJS(
+				'https://cdn.jsdelivr.net/npm/@time-input-polyfill/utils@1.0.0-beta.49/npm/time-input-polyfill-utils.min.js',
+				() => {
+					if (window.timeInputPolyfillUtils) {
+						const {
+							convertString12hr,
+							convertString24hr,
+							a11yCreate,
+							getA11yElement,
+							ManualEntryLog,
+							getNextSegment,
+						} = window.timeInputPolyfillUtils
+						setPolyfill(window.timeInputPolyfillUtils)
+						const timeObject =
+							convertString24hr(value24hr).toTimeObject()
+						setTimeObject(timeObject)
+						if (!getA11yElement()) {
+							a11yCreate()
+						}
+						setManualEntryLog(
+							new ManualEntryLog({
+								timeObject,
+								onUpdate({ fullValue12hr }) {
+									const timeObj =
+										convertString12hr(
+											fullValue12hr,
+										).toTimeObject()
+									setTimeObject(timeObj)
+								},
+								onLimitHit() {
+									setCursorSegment(
+										getNextSegment(
+											cursorSegmentRef.current,
+										),
+									)
+								},
+							}),
+						)
+						setHasInitialised(true)
+					}
+				},
+			)
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [isPolyfilled])
 
 	const resetSegmentEntryLog = () => {
 		if (manualEntryLog && cursorSegment) {
