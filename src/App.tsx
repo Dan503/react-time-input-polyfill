@@ -55,6 +55,7 @@ const ExampleBlock = ({
 	}
 }) => {
 	const [value, setValue] = useState('20:30')
+	const exampleId = label.replace(/\s/g, '-')
 
 	return (
 		<form
@@ -70,7 +71,7 @@ const ExampleBlock = ({
 					value={value}
 					setValue={setValue}
 					className="exampleClass"
-					id={label.replace(/\s/g, '-') + '-input'}
+					id={exampleId + '-input'}
 					{...extraInputProps}
 				/>
 			</label>
@@ -87,7 +88,7 @@ const ExampleBlock = ({
 				</button>
 			</p>
 
-			<p>
+			<p id={exampleId + '-return-value'}>
 				{label} returned value: "{value}"
 			</p>
 
@@ -161,7 +162,9 @@ class ClassBasedComponentExample extends Component {
 					</button>
 				</p>
 
-				<p>class based returned value: "{value}"</p>
+				<p id="class-based-component-return-value">
+					class based returned value: "{value}"
+				</p>
 
 				<SyntaxHighlighter
 					style={dark}

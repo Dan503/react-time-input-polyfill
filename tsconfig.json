@@ -8,6 +8,7 @@
       "dom.iterable",
       "esnext"
     ],
+    "types": ["cypress"],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -28,7 +29,8 @@
   ],
   "include": [
     "src/core/**/*.ts",
-    "src/core/**/*.tsx"
+    "src/core/**/*.tsx",
+    "cypress/**/*.ts"
   ],
   "exclude": [
     "node_modules"
