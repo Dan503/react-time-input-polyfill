@@ -1,16 +1,20 @@
-// cypress was failing when trying to find cypress-promise
-import cyPromise from '../../node_modules/cypress-promise/index'
-
 interface LoadedPageProps {
 	document: Document
 	window: Window
+	$input: HTMLInputElement
 }
 
 export type LoadedPage = Promise<LoadedPageProps>
 
-export const loadTestPage = (htmlFileOrUrl = 'http://localhost:3000/react-time-input-polyfill'): LoadedPage => {
-	return cyPromise(cy.visit(htmlFileOrUrl)).then((contentWindow: Window) => {
-		const { document } = contentWindow
-		return { document, window: contentWindow }
+export const loadTestPage = ({ inputId = 'Forced-polyfill-input', htmlFileOrUrl = 'http://localhost:3000/react-time-input-polyfill' } = {}): LoadedPage => {
+	return new Cypress.Promise((resolve) => {
+		cy.visit(htmlFileOrUrl).then((contentWindow: Window) => {
+			const { document } = contentWindow
+			const $input = document.getElementById(inputId) as HTMLInputElement
+			resolve({ document, window: contentWindow, $input })
+		})
 	})
 }
+
+export const forcedPolyfillId = 'Forced-polyfill-input'
+export const _forcedPolyfillId = `#${forcedPolyfillId}`
