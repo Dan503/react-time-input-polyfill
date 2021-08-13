@@ -19,8 +19,9 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react",
-    "outDir": "npm"
+    "jsx": "react-jsx",
+    "outDir": "npm",
+    "noFallthroughCasesInSwitch": true
   },
   "files": [
     "./index.tsx"
