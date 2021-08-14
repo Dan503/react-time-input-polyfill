@@ -9,6 +9,8 @@ export const sendFocus = () => {
 }
 
 export const use = {
+	upArrow: () => cyInput().type('{uparrow}'),
+	downArrow: () => cyInput().type('{downarrow}'),
 	leftArrow: () => cyInput().type('{leftarrow}'),
 	rightArrow: () => cyInput().type('{rightarrow}'),
 	tab: () => cyInput().tab(),
