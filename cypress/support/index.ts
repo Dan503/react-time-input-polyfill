@@ -13,6 +13,9 @@
 // https://on.cypress.io/configuration
 // ***********************************************************
 
+// Adds Tab support to Cypress
+import 'cypress-plugin-tab'
+
 // Import commands.js using ES2015 syntax:
 import './commands'
 
