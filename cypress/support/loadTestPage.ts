@@ -4,9 +4,11 @@ interface LoadedPageProps {
 	$input: HTMLInputElement
 }
 
+export const demoSiteUrl = 'http://localhost:3000/react-time-input-polyfill'
+
 export type LoadedPage = Promise<LoadedPageProps>
 
-export const loadTestPage = ({ inputId = 'Forced-polyfill-input', htmlFileOrUrl = 'http://localhost:3000/react-time-input-polyfill' } = {}): LoadedPage => {
+export const loadTestPage = ({ inputId = 'Forced-polyfill-input', htmlFileOrUrl = demoSiteUrl } = {}): LoadedPage => {
 	return new Cypress.Promise((resolve) => {
 		cy.visit(htmlFileOrUrl).then((contentWindow: Window) => {
 			const { document } = contentWindow
@@ -16,5 +18,4 @@ export const loadTestPage = ({ inputId = 'Forced-polyfill-input', htmlFileOrUrl 
 	})
 }
 
-export const forcedPolyfillId = 'Forced-polyfill-input'
-export const _forcedPolyfillId = `#${forcedPolyfillId}`
+export const cyVisit = () => cy.visit(demoSiteUrl)
