@@ -94,7 +94,7 @@ export default class TimeInputPolyfill extends React.Component {
 		setTimeout(() => {
 			this.flash24hrTime = flash24hrTime(this)
 
-			if (this.$input.current.form) {
+			if (this.$input.current && this.$input.current.form) {
 				this.$input.current.form.addEventListener(
 					'submit',
 					this.flash24hrTime,
@@ -109,7 +109,7 @@ export default class TimeInputPolyfill extends React.Component {
 		}
 	}
 	componentWillUnmount() {
-		if (this.$input.current.form) {
+		if (this.$input.current && this.$input.current.form) {
 			this.$input.current.form.removeEventListener(
 				'submit',
 				this.flash24hrTime,
