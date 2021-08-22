@@ -31,7 +31,7 @@ let $a11y
 const polyfillClassName = 'react-time-input-polyfill-target'
 
 const customStyles = document.createElement('style')
-customStyles.innerHTML = `.${polyfillClassName}::-ms-clear { display: none; }`
+customStyles.innerHTML = `.${polyfillClassName} { font-family: monospace } .${polyfillClassName}::-ms-clear { display: none; }`
 document.getElementsByTagName('head')[0].appendChild(customStyles)
 
 const flash24hrTime = (component) => () => {
