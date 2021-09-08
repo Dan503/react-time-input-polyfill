@@ -3,7 +3,7 @@ import { cyInput, loadTestPage } from "../../support"
 
 export function incrementMinutes() {
 	it('Should increment as expected on up key press', () => {
-		loadTestPage().then(({ $input }) => {
+		loadTestPage({ segment: 'minutes' }).then(({ $input }) => {
 			selectSegment($input, 'minutes')
 			let a = 31
 			while (a < 60) {

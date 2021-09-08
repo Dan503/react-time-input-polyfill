@@ -10,7 +10,7 @@ export function fromBlankMinutes() {
 		function incrementBlankMinutes() {
 			describe('increment blank minutes', () => {
 				it('Should increment blank minutes 08:-- PM to 01:30 PM', () => {
-					loadTestPage().then(({ $input }) => {
+					loadTestPage({ segment: 'minutes' }).then(({ $input }) => {
 						selectSegment($input, 'minutes')
 						cyInput().type('{del}').should('have.value', '08:-- PM')
 							.then(() => use.upArrow().should('have.value', '08:00 PM'))
@@ -18,7 +18,7 @@ export function fromBlankMinutes() {
 				})
 
 				it('Should increment blank minutes from --:-- -- to --:00 --', () => {
-					loadTestPage().then(() => {
+					loadTestPage({ segment: 'minutes' }).then(() => {
 						clearAllSegments('minutes').then(() =>
 							use.upArrow().should('have.value', '--:00 --')
 						)
@@ -30,7 +30,7 @@ export function fromBlankMinutes() {
 		function decrementBlankMinutes() {
 			describe('decrement blank minutes', () => {
 				it('Should decrement blank minutes 08:-- PM to 08:59 PM', () => {
-					loadTestPage().then(({ $input }) => {
+					loadTestPage({ segment: 'minutes' }).then(({ $input }) => {
 						selectSegment($input, 'minutes')
 						cy.wait(100)
 						cyInput().type('{del}').should('have.value', '08:-- PM')
@@ -39,7 +39,7 @@ export function fromBlankMinutes() {
 				})
 
 				it('Should decrement blank minutes from --:-- -- to --:59 --', () => {
-					loadTestPage().then(() => {
+					loadTestPage({ segment: 'minutes' }).then(() => {
 						clearAllSegments('minutes')
 							.then(() => use.downArrow().should('have.value', '--:59 --'))
 					})
