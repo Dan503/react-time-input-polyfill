@@ -1,6 +1,6 @@
 {
 	"name": "react-time-input-polyfill",
-	"version": "1.0.7",
+	"version": "1.0.8",
 	"description": "A pre-built, plug-and-play, fully accessible React component that will produce an `input[type='time']` element with a built in polyfill for IE and Safari support.",
 	"main": "dist/ReactTimeInputPolyfill.js",
 	"module": "src/time-polyfill/ReactTimeInputPolyfill.js",
@@ -30,6 +30,7 @@
 	},
 	"devDependencies": {
 		"@babel/core": "^7.14.0",
+		"@babel/plugin-proposal-optional-chaining": "^7.14.5",
 		"@babel/preset-env": "^7.14.1",
 		"@babel/register": "^7.13.16",
 		"@svgr/webpack": "^5.5.0",

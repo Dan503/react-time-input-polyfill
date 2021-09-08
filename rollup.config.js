@@ -32,6 +32,7 @@ const plugins = [
 				},
 			],
 		],
+		plugins: ['@babel/plugin-proposal-optional-chaining'],
 		babelrc: false,
 		exclude: 'node_modules/**',
 	}),
