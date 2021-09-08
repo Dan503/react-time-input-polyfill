@@ -1,10 +1,9 @@
-import { selectSegment, toLeadingZero } from "@time-input-polyfill/utils"
+import { toLeadingZero } from "@time-input-polyfill/utils"
 import { loadTestPage, use } from "../../support"
 
 export function decrementHours() {
 	it('Should decrement hours as expected on down key press', () => {
-		loadTestPage().then(({ $input }) => {
-			selectSegment($input, 'hrs12')
+		loadTestPage({ segment: 'hrs12' }).then(() => {
 			let a = 7
 			while (a > 0) {
 				use.downArrow().should('have.value', `0${a}:30 PM`)

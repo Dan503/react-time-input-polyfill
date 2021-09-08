@@ -1,19 +1,34 @@
-interface LoadedPageProps {
-	document: Document
-	window: Window
-	$input: HTMLInputElement
-}
+import { selectSegment, Segment } from "@time-input-polyfill/utils"
 
 export const demoSiteUrl = 'http://localhost:3000/react-time-input-polyfill'
 
-export type LoadedPage = Promise<LoadedPageProps>
+interface LoadTestPageParams {
+	inputId?: string,
+	htmlFileOrUrl?: string
+	segment: Segment
+}
 
-export const loadTestPage = ({ inputId = 'Forced-polyfill-input', htmlFileOrUrl = demoSiteUrl } = {}): LoadedPage => {
+interface LoadTestPageReturn {
+	document: Document
+	window: Window
+	$input: HTMLInputElement
+	segment?: Segment
+}
+
+export type LoadedPage = Promise<LoadTestPageReturn>
+
+export const loadTestPage = ({ segment, inputId = 'Forced-polyfill-input', htmlFileOrUrl = demoSiteUrl }: LoadTestPageParams): LoadedPage => {
 	return new Cypress.Promise((resolve) => {
 		cy.visit(htmlFileOrUrl).then((contentWindow: Window) => {
 			const { document } = contentWindow
 			const $input = document.getElementById(inputId) as HTMLInputElement
-			resolve({ document, window: contentWindow, $input })
+
+			cy.wait(10).then(() => {
+				selectSegment($input, segment)
+				return cy.wait(10)
+			}).then(() => {
+				resolve({ document, window: contentWindow, $input, segment })
+			})
 		})
 	})
 }
