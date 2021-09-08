@@ -1,8 +1,36 @@
-import { loadTestPage } from "../../support"
+import { cySelectSegment, loadTestPage } from "../../support"
 
 export function manualEntryHours() {
-	it('Should ____', () => {
-		loadTestPage({ segment: 'hrs12' }).then(() => {
+	describe('Manual Entry Hours', () => {
+		it('08:30 PM >> [0] >> 12:30 PM', () => {
+			loadTestPage({ segment: 'hrs12' }).then(() => {
+				return cySelectSegment('hrs12').type('0').should('have.value', '12:30 PM')
+			})
+		})
+		it('08:30 PM >> [0 0] >> 12:30 PM', () => {
+			loadTestPage({ segment: 'hrs12' }).then(() => {
+				return cySelectSegment('hrs12').type('00').should('have.value', '12:30 PM')
+			})
+		})
+		it('08:30 PM >> [0 0 0] >> 12:30 PM', () => {
+			loadTestPage({ segment: 'hrs12' }).then(() => {
+				return cySelectSegment('hrs12').type('000').should('have.value', '12:30 PM')
+			})
+		})
+		it('08:30 PM >> [1] >> 01:30 PM', () => {
+			loadTestPage({ segment: 'hrs12' }).then(() => {
+				return cySelectSegment('hrs12').type('1').should('have.value', '01:30 PM')
+			})
+		})
+		it('08:30 PM >> [11] >> 11:30 PM', () => {
+			loadTestPage({ segment: 'hrs12' }).then(() => {
+				return cySelectSegment('hrs12').type('1').should('have.value', '11:30 PM')
+			})
+		})
+		it('08:30 PM >> [1] [>][<] [2] >> 02:30 PM', () => {
+			loadTestPage({ segment: 'hrs12' }).then(() => {
+				return cySelectSegment('hrs12').type('1{rightarrow}{leftarrow}2').should('have.value', '02:30 PM')
+			})
 		})
 	})
 }

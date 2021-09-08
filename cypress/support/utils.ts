@@ -18,22 +18,24 @@ export const use = {
 	shiftTab: () => cyInput().tab({ shift: true }),
 }
 
+export const cySelectSegment = (segmentToEndOn: Segment) => {
+	const inputSelection = sendFocus()
+
+	const targets = {
+		hrs12: () => inputSelection,
+		minutes: () => inputSelection.then(() => use.rightArrow()),
+		mode: () => inputSelection.then(() => use.rightArrow()).then(() => use.rightArrow()),
+	}
+
+	return targets[segmentToEndOn]().wait(100)
+}
+
 export const clearAllSegments = (segmentToEndOn: Segment) => {
-	const clearSegments = () => cyInput().focus().type('{del}').should('have.value', '--:30 PM')
+	return cyInput().focus().type('{del}').should('have.value', '--:30 PM')
 		.then(() => use.rightArrow())
 		.then(() => cyInput().type('{del}').should('have.value', '--:-- PM'))
 		.then(() => use.rightArrow())
 		.then(() => cyInput().type('{del}').should('have.value', '--:-- --'))
-
-	if (segmentToEndOn === 'mode') {
-		return clearSegments()
-	}
-	if (segmentToEndOn === 'minutes') {
-		return clearSegments()
-			.then(() => use.leftArrow())
-	}
-
-	return clearSegments()
-		.then(() => use.leftArrow())
-		.then(() => use.leftArrow())
+		.then(() => cyInput().blur())
+		.then(() => cySelectSegment(segmentToEndOn))
 }
