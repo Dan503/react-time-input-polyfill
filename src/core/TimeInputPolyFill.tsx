@@ -208,7 +208,7 @@ const TimeInputPolyfill = ({
 			// TO DO 2nd: Create a local polyfill file that only holds the things that are needed
 			// Don't worry, it only downloads the polyfill once no matter how many inputs you have on the page
 			loadJS(
-				'https://cdn.jsdelivr.net/npm/@time-input-polyfill/utils@1.0.0-beta.50/npm/time-input-polyfill-utils.min.js',
+				'https://cdn.jsdelivr.net/npm/@time-input-polyfill/utils@1.0.0-beta.51/npm/time-input-polyfill-utils.min.js',
 				() => {
 					if (window.timeInputPolyfillUtils) {
 						const {
@@ -322,6 +322,8 @@ const TimeInputPolyfill = ({
 		if (polyfill) {
 			const key = e.key
 
+			const userChangeEvent = () => onChange && onChange(e)
+
 			const {
 				modifyTimeObject,
 				getCursorSegment,
@@ -340,6 +342,7 @@ const TimeInputPolyfill = ({
 				setTimeObject(
 					modifyTimeObject(timeObject).increment[segment].isolated(),
 				)
+				userChangeEvent()
 			} else if (key === 'ArrowDown') {
 				if (!cursorSegment) setCursorSegment(segment)
 				e.preventDefault()
@@ -347,6 +350,7 @@ const TimeInputPolyfill = ({
 				setTimeObject(
 					modifyTimeObject(timeObject).decrement[segment].isolated(),
 				)
+				userChangeEvent()
 			} else if (key === 'ArrowLeft') {
 				e.preventDefault()
 				setCursorSegment(getPrevSegment(cursorSegment))
@@ -371,9 +375,12 @@ const TimeInputPolyfill = ({
 						modifyTimeObject(timeObject).clear[cursorSegment](),
 					)
 				}
+				userChangeEvent()
 			} else if (regex.alphaNumericKeyName.test(key) && manualEntryLog) {
 				e.preventDefault()
 				manualEntryLog[segment].add(key)
+				console.log(manualEntryLog[segment])
+				userChangeEvent()
 			}
 		}
 	}
