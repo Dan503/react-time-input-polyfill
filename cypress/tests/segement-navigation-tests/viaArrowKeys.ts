@@ -4,8 +4,7 @@ import { loadTestPage, use } from "../../support"
 export function viaArrowKeys() {
 	describe('Via Arrow keys', () => {
 		it('hours [->] minutes', () => {
-			loadTestPage().then(({ $input }) => {
-				selectSegment($input, 'hrs12')
+			loadTestPage({ segment: 'hrs12' }).then(({ $input }) => {
 				use.rightArrow().then(() => {
 					const segment = getCursorSegment($input)
 					const expectation: Segment = 'minutes'
@@ -14,7 +13,7 @@ export function viaArrowKeys() {
 			})
 		})
 		it('minutes [->] mode', () => {
-			loadTestPage().then(({ $input }) => {
+			loadTestPage({ segment: 'minutes' }).then(({ $input }) => {
 				selectSegment($input, 'minutes')
 				use.rightArrow().then(() => {
 					const segment = getCursorSegment($input)
@@ -24,7 +23,7 @@ export function viaArrowKeys() {
 			})
 		})
 		it('mode [->] mode', () => {
-			loadTestPage().then(({ $input }) => {
+			loadTestPage({ segment: 'mode' }).then(({ $input }) => {
 				selectSegment($input, 'mode')
 				use.rightArrow().then(() => {
 					const segment = getCursorSegment($input)
@@ -34,7 +33,7 @@ export function viaArrowKeys() {
 			})
 		})
 		it('mode [<-] minutes', () => {
-			loadTestPage().then(({ $input }) => {
+			loadTestPage({ segment: 'mode' }).then(({ $input }) => {
 				selectSegment($input, 'mode')
 				use.leftArrow().then(() => {
 					const segment = getCursorSegment($input)
@@ -44,7 +43,7 @@ export function viaArrowKeys() {
 			})
 		})
 		it('minutes [<-] hours', () => {
-			loadTestPage().then(({ $input }) => {
+			loadTestPage({ segment: 'minutes' }).then(({ $input }) => {
 				selectSegment($input, 'minutes')
 				use.leftArrow().then(() => {
 					const segment = getCursorSegment($input)
@@ -54,7 +53,7 @@ export function viaArrowKeys() {
 			})
 		})
 		it('hours [<-] hours', () => {
-			loadTestPage().then(({ $input }) => {
+			loadTestPage({ segment: 'hrs12' }).then(({ $input }) => {
 				selectSegment($input, 'hrs12')
 				use.leftArrow().then(() => {
 					const segment = getCursorSegment($input)

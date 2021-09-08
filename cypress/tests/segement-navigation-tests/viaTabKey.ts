@@ -4,8 +4,7 @@ import { loadTestPage, cyInput, use } from "../../support"
 export function viaTabKey() {
 	describe('Via Tab key', () => {
 		it('hours [tab] minutes', () => {
-			loadTestPage().then(({ $input }) => {
-				selectSegment($input, 'hrs12')
+			loadTestPage({ segment: 'hrs12' }).then(({ $input }) => {
 				use.tab().then(() => {
 					const segment = getCursorSegment($input)
 					const expectation: Segment = 'minutes'
@@ -15,8 +14,7 @@ export function viaTabKey() {
 			})
 		})
 		it('minutes [tab] mode', () => {
-			loadTestPage().then(({ $input }) => {
-				selectSegment($input, 'minutes')
+			loadTestPage({ segment: 'minutes' }).then(({ $input }) => {
 				use.tab().then(() => {
 					const segment = getCursorSegment($input)
 					const expectation: Segment = 'mode'
@@ -26,15 +24,14 @@ export function viaTabKey() {
 			})
 		})
 		it('mode [tab] off', () => {
-			loadTestPage().then(({ $input }) => {
-				selectSegment($input, 'mode')
+			loadTestPage({ segment: 'mode' }).then(({ $input }) => {
 				use.tab().then(() => {
 					cyInput().should('not.have.focus')
 				})
 			})
 		})
 		it('mode [shift + tab] minutes', () => {
-			loadTestPage().then(({ $input }) => {
+			loadTestPage({ segment: 'mode' }).then(({ $input }) => {
 				selectSegment($input, 'mode')
 				use.shiftTab().then(() => {
 					const segment = getCursorSegment($input)
@@ -45,7 +42,7 @@ export function viaTabKey() {
 			})
 		})
 		it('minutes [shift + tab] hours', () => {
-			loadTestPage().then(({ $input }) => {
+			loadTestPage({ segment: 'minutes' }).then(({ $input }) => {
 				selectSegment($input, 'minutes')
 				use.shiftTab().then(() => {
 					const segment = getCursorSegment($input)
@@ -56,7 +53,7 @@ export function viaTabKey() {
 			})
 		})
 		it('hours [shift + tab] off', () => {
-			loadTestPage().then(({ $input }) => {
+			loadTestPage({ segment: 'hrs12' }).then(({ $input }) => {
 				selectSegment($input, 'hrs12')
 				use.shiftTab().then(() => {
 					cyInput().should('not.have.focus')
