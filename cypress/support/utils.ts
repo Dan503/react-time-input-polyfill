@@ -19,7 +19,7 @@ export const use = {
 }
 
 export const cySelectSegment = (segmentToEndOn: Segment) => {
-	const inputSelection = sendFocus()
+	const inputSelection = cyInput().focus()
 
 	const targets = {
 		hrs12: () => inputSelection,
@@ -27,7 +27,7 @@ export const cySelectSegment = (segmentToEndOn: Segment) => {
 		mode: () => inputSelection.then(() => use.rightArrow()).then(() => use.rightArrow()),
 	}
 
-	return targets[segmentToEndOn]().wait(100)
+	return targets[segmentToEndOn]()
 }
 
 export const clearAllSegments = (segmentToEndOn: Segment) => {
