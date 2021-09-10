@@ -288,7 +288,7 @@ const TimeInputPolyfill = ({
 		if (onFocus) onFocus(e)
 		if (polyfill) {
 			setAllowSegmentSelection(true)
-			const { isShiftHeldDown, getCursorSegment } = polyfill
+			const { isShiftHeldDown, getCursorSegment, a11yUpdate } = polyfill
 
 			if (focusedViaClick) {
 				setCursorSegment(getCursorSegment($input.current))
@@ -296,6 +296,7 @@ const TimeInputPolyfill = ({
 				setCursorSegment(isShiftHeldDown ? 'mode' : 'hrs12')
 			}
 			resetSegmentEntryLog()
+			a11yUpdate($input.current, ['initial', 'select'])
 		}
 	}
 	const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
