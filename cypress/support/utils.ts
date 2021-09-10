@@ -9,7 +9,24 @@ export const _a11yId = `#${a11yId}`
 export const cyInput = () => cy.get(_forcedPolyfillId)
 export const cyA11y = () => cy.get(_a11yId)
 
-export const a11yHasExpectedHtml = (expectedHtml: string) => () => cyA11y().should('have.html', expectedHtml)
+interface A11yInitialHtmlReturn {
+	hrs12: string
+	minutes: string,
+	mode: string,
+	focus: string
+}
+
+export const a11yInitialHtml = (value?: number | string): A11yInitialHtmlReturn => {
+	const hrs12 = `<p>Hours spin button ${value || 8}.</p>`
+	return ({
+		hrs12,
+		minutes: `<p>Minutes spin button ${value || 30}.</p>`,
+		mode: `<p>AM/PM spin button ${value || 'PM'}.</p>`,
+		focus: hrs12 + '<p>Forced polyfill time input grouping 08:30 PM.</p>'
+	})
+}
+
+export const a11yHasExpectedHtml = (expectedHtml: string) => () => cyA11y().wait(10).should('have.html', expectedHtml)
 
 export const sendFocus = () => {
 	return cyInput().focus().wait(100)

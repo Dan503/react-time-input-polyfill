@@ -1,5 +1,5 @@
 import { getCursorSegment, Segment, selectSegment } from "@time-input-polyfill/utils"
-import { loadTestPage, use } from "../../support"
+import { a11yHasExpectedHtml, a11yInitialHtml, loadTestPage, use } from "../../support"
 
 export function viaArrowKeys() {
 	describe('Via Arrow keys', () => {
@@ -9,7 +9,7 @@ export function viaArrowKeys() {
 					const segment = getCursorSegment($input)
 					const expectation: Segment = 'minutes'
 					expect(segment).to.eq(expectation)
-				})
+				}).then(a11yHasExpectedHtml(a11yInitialHtml().minutes))
 			})
 		})
 		it('minutes [->] mode', () => {
@@ -19,7 +19,7 @@ export function viaArrowKeys() {
 					const segment = getCursorSegment($input)
 					const expectation: Segment = 'mode'
 					expect(segment).to.eq(expectation)
-				})
+				}).then(a11yHasExpectedHtml(a11yInitialHtml().mode))
 			})
 		})
 		it('mode [->] mode', () => {
@@ -29,7 +29,7 @@ export function viaArrowKeys() {
 					const segment = getCursorSegment($input)
 					const expectation: Segment = 'mode'
 					expect(segment).to.eq(expectation)
-				})
+				}).then(a11yHasExpectedHtml(a11yInitialHtml().mode))
 			})
 		})
 		it('mode [<-] minutes', () => {
@@ -39,7 +39,7 @@ export function viaArrowKeys() {
 					const segment = getCursorSegment($input)
 					const expectation: Segment = 'minutes'
 					expect(segment).to.eq(expectation)
-				})
+				}).then(a11yHasExpectedHtml(a11yInitialHtml().minutes))
 			})
 		})
 		it('minutes [<-] hours', () => {
@@ -49,7 +49,7 @@ export function viaArrowKeys() {
 					const segment = getCursorSegment($input)
 					const expectation: Segment = 'hrs12'
 					expect(segment).to.eq(expectation)
-				})
+				}).then(a11yHasExpectedHtml(a11yInitialHtml().hrs12))
 			})
 		})
 		it('hours [<-] hours', () => {
@@ -59,7 +59,7 @@ export function viaArrowKeys() {
 					const segment = getCursorSegment($input)
 					const expectation: Segment = 'hrs12'
 					expect(segment).to.eq(expectation)
-				})
+				}).then(a11yHasExpectedHtml(a11yInitialHtml().hrs12))
 			})
 		})
 	})
