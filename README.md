@@ -1,3 +1,13 @@
+# TO DO
+
+-   Fix up arrow from blank mode failing test (code is setting to PM when it should be setting to AM)
+-   refactor `type('{del}')` and `type('{backspace}')` in tests to `use.del` and `use.backspace`
+-   Make tests for pressing the 3 buttons
+-   Check `Forced polyfill returned value: "________"` paragraph text in all tests
+-   Fix blank set time button not clearing all values
+-   Refactor Manual entry log tests to run each full set in one page load using chaining
+-   convert the Cypress test suite into a separate package
+
 # @time-input-polyfill/react
 
 [![hits per month badge](https://data.jsdelivr.com/v1/package/npm/@time-input-polyfill/react/badge)](https://www.jsdelivr.com/package/npm/@time-input-polyfill/react)
