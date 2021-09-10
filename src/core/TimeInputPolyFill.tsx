@@ -379,7 +379,6 @@ const TimeInputPolyfill = ({
 			} else if (regex.alphaNumericKeyName.test(key) && manualEntryLog) {
 				e.preventDefault()
 				manualEntryLog[segment].add(key)
-				console.log(manualEntryLog[segment])
 				userChangeEvent()
 			}
 		}
