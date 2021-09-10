@@ -1,4 +1,4 @@
-import { a11yHasExpectedHtml, cyInput, loadTestPage, use } from "../../support"
+import { a11yHasExpectedHtml, loadTestPage, use } from "../../support"
 
 export const toggleModeFromBlank = () => {
 	describe('BLANK mode toggle', () => {
