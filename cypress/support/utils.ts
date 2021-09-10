@@ -8,6 +8,7 @@ export const _a11yId = `#${a11yId}`
 
 export const cyInput = () => cy.get(_forcedPolyfillId)
 export const cyA11y = () => cy.get(_a11yId)
+export const $input = (jQueryInput: JQuery<HTMLElement>) => jQueryInput[0] as HTMLInputElement
 
 interface A11yInitialHtmlReturn {
 	hrs12: string
@@ -22,7 +23,7 @@ export const a11yInitialHtml = (value?: number | string): A11yInitialHtmlReturn 
 		hrs12,
 		minutes: `<p>Minutes spin button ${value || 30}.</p>`,
 		mode: `<p>AM/PM spin button ${value || 'PM'}.</p>`,
-		focus: hrs12 + '<p>Forced polyfill time input grouping 08:30 PM.</p>'
+		focus: '<p>Forced polyfill time input grouping 08:30 PM.</p>' + hrs12
 	})
 }
 
@@ -39,6 +40,8 @@ export const use = {
 	rightArrow: () => cyInput().type('{rightarrow}'),
 	tab: () => cyInput().tab(),
 	shiftTab: () => cyInput().tab({ shift: true }),
+	del: () => cyInput().type('{del}').wait(10),
+	backspace: () => cyInput().type('{backspace}').wait(10)
 }
 
 export const cySelectSegment = (segmentToEndOn: Segment) => {

@@ -1,64 +1,61 @@
-import { getCursorSegment, Segment, selectSegment } from "@time-input-polyfill/utils"
-import { loadTestPage, cyInput, use } from "../../support"
+import { getCursorSegment, Segment } from "@time-input-polyfill/utils"
+import { loadTestPage, use, $input } from "../../support"
 
 export function viaTabKey() {
 	describe('Via Tab key', () => {
 		it('hours [tab] minutes', () => {
-			loadTestPage({ segment: 'hrs12' }).then(({ $input }) => {
-				use.tab().then(() => {
-					const segment = getCursorSegment($input)
+			loadTestPage({ segment: 'hrs12' })
+				.then(use.tab)
+				.should('have.focus')
+				.then((jQueryInputElem) => {
+					const segment = getCursorSegment($input(jQueryInputElem))
 					const expectation: Segment = 'minutes'
-					cyInput().should('have.focus')
 					expect(segment).to.eq(expectation)
+					return jQueryInputElem
 				})
-			})
 		})
 		it('minutes [tab] mode', () => {
-			loadTestPage({ segment: 'minutes' }).then(({ $input }) => {
-				use.tab().then(() => {
-					const segment = getCursorSegment($input)
+			loadTestPage({ segment: 'minutes' })
+				.then(use.tab)
+				.should('have.focus')
+				.then((jQueryInputElem) => {
+					const segment = getCursorSegment($input(jQueryInputElem))
 					const expectation: Segment = 'mode'
-					cyInput().should('have.focus')
 					expect(segment).to.eq(expectation)
+					return jQueryInputElem
 				})
-			})
 		})
 		it('mode [tab] off', () => {
-			loadTestPage({ segment: 'mode' }).then(({ $input }) => {
-				use.tab().then(() => {
-					cyInput().should('not.have.focus')
-				})
-			})
+			loadTestPage({ segment: 'mode' })
+				.then(use.tab)
+				.should('not.have.focus')
 		})
 		it('mode [shift + tab] minutes', () => {
-			loadTestPage({ segment: 'mode' }).then(({ $input }) => {
-				selectSegment($input, 'mode')
-				use.shiftTab().then(() => {
-					const segment = getCursorSegment($input)
+			loadTestPage({ segment: 'mode' })
+				.then(use.shiftTab)
+				.should('have.focus')
+				.then((jQueryInputElem) => {
+					const segment = getCursorSegment($input(jQueryInputElem))
 					const expectation: Segment = 'minutes'
-					cyInput().should('have.focus')
 					expect(segment).to.eq(expectation)
+					return jQueryInputElem
 				})
-			})
 		})
 		it('minutes [shift + tab] hours', () => {
-			loadTestPage({ segment: 'minutes' }).then(({ $input }) => {
-				selectSegment($input, 'minutes')
-				use.shiftTab().then(() => {
-					const segment = getCursorSegment($input)
+			loadTestPage({ segment: 'minutes' })
+				.then(use.shiftTab)
+				.should('have.focus')
+				.then((jQueryInputElem) => {
+					const segment = getCursorSegment($input(jQueryInputElem))
 					const expectation: Segment = 'hrs12'
-					cyInput().should('have.focus')
 					expect(segment).to.eq(expectation)
+					return jQueryInputElem
 				})
-			})
 		})
 		it('hours [shift + tab] off', () => {
-			loadTestPage({ segment: 'hrs12' }).then(({ $input }) => {
-				selectSegment($input, 'hrs12')
-				use.shiftTab().then(() => {
-					cyInput().should('not.have.focus')
-				})
-			})
+			loadTestPage({ segment: 'hrs12' })
+				.then(use.shiftTab)
+				.should('not.have.focus')
 		})
 	})
 }
