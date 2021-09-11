@@ -29,7 +29,7 @@ export const a11yInitialHtml = (value?: number | string): A11yInitialHtmlReturn 
 	})
 }
 
-export const a11yHasExpectedHtml = (expectedHtml: string) => () => cyA11y().wait(10).should('have.html', expectedHtml)
+export const a11yHasExpectedHtml = (expectedHtml: string) => () => cyA11y().wait(10).should('have.html', expectedHtml).then(cyInput)
 
 export const sendFocus = () => {
 	return cyInput().focus().wait(100)

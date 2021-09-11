@@ -1,4 +1,4 @@
-import { a11yHasExpectedHtml, a11yInitialHtml, cyInput, cySelectSegment, loadTestPage, use } from "../../support"
+import { a11yHasExpectedHtml, a11yInitialHtml, loadTestPage, use } from "../../support"
 
 export const otherManualEntryTests = () => {
 	describe('other manual entry tests', () => {
@@ -10,7 +10,6 @@ export const otherManualEntryTests = () => {
 				.then(a11yHasExpectedHtml(a11yInitialHtml().minutes))
 				.then(use.leftArrow)
 				.then(a11yHasExpectedHtml(a11yInitialHtml(1).hrs12))
-				.then(cyInput)
 				.type('2')
 				.should('have.value', '02:30 PM')
 				.then(a11yHasExpectedHtml(a11yInitialHtml().minutes))
@@ -19,14 +18,12 @@ export const otherManualEntryTests = () => {
 			loadTestPage({ segment: 'hrs12' })
 				.then(use.rightArrow)
 				.then(a11yHasExpectedHtml(a11yInitialHtml().minutes))
-				.then(cyInput)
 				.type('1')
 				.then(a11yHasExpectedHtml('<p>1.</p>'))
 				.then(use.rightArrow)
 				.then(a11yHasExpectedHtml(a11yInitialHtml().mode))
 				.then(use.leftArrow)
 				.then(a11yHasExpectedHtml(a11yInitialHtml(1).minutes))
-				.then(cyInput)
 				.type('2')
 				.should('have.value', '08:02 PM')
 				.then(a11yHasExpectedHtml('<p>2.</p>'))
@@ -36,7 +33,6 @@ export const otherManualEntryTests = () => {
 				.then(use.rightArrow)
 				.then(use.rightArrow)
 				.then(a11yHasExpectedHtml(a11yInitialHtml().mode))
-				.then(cyInput)
 				.type('AM')
 				.should('have.value', '08:30 AM')
 				.then(a11yHasExpectedHtml('<p>AM.</p>'))
