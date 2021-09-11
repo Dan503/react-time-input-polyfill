@@ -201,7 +201,7 @@ class ClassBasedComponentExample extends Component {
 	import React, { Component } from 'react'
 
 	// Import the component into your project
-	import TimeInputPolyfill from 'react-time-input-polyfill'
+	import TimeInputPolyfill from '@time-input-polyfill/react'
 
 	export class TimeInput extends Component {
 		render() {
@@ -272,7 +272,7 @@ function App() {
 				language="text"
 				showLineNumbers={false}
 			>
-				npm install react-time-input-polyfill
+				npm install @time-input-polyfill/react
 			</SyntaxHighlighter>
 
 			<p>
@@ -289,7 +289,7 @@ function App() {
 	import React from 'react'
 
 	// Import the component into your project
-	import TimeInputPolyfill from 'react-time-input-polyfill'
+	import TimeInputPolyfill from '@time-input-polyfill/react'
 
 	export const TimeInput = ({ label, value, setValue }) => {
 		return (
@@ -346,7 +346,7 @@ function App() {
 	/* TimeInput.js */
 
 	import React from 'react'
-	import TimeInputPolyfill from 'react-time-input-polyfill'
+	import TimeInputPolyfill from '@time-input-polyfill/react'
 
 	export const TimeInput = ({ label, value, setValue }) => {
 		return (
