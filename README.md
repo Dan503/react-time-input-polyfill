@@ -3,7 +3,6 @@
 -   Make tests for pressing the 3 buttons
 -   Check `Forced polyfill returned value: "________"` paragraph text in all tests
 -   Fix blank set time button not clearing all values
--   Fix Chrome not selecting the range the user places their cursor in (not an issue in Fire Fox)
 -   Refactor Manual entry log tests to run each full set in one page load using chaining
 -   convert the Cypress test suite into a separate package
 

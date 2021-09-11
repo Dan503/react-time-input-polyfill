@@ -291,7 +291,10 @@ const TimeInputPolyfill = ({
 			const { isShiftHeldDown, getCursorSegment, a11yUpdate } = polyfill
 
 			if (focusedViaClick) {
-				setCursorSegment(getCursorSegment($input.current))
+				// Need to wait for browser to settle before detecting the cursor segment
+				setTimeout(() => {
+					setCursorSegment(getCursorSegment($input.current))
+				})
 			} else {
 				setCursorSegment(isShiftHeldDown ? 'mode' : 'hrs12')
 			}
@@ -341,14 +344,6 @@ const TimeInputPolyfill = ({
 				e.preventDefault()
 				resetSegmentEntryLog()
 
-				console.log('increment', {
-					timeObject,
-					modified:
-						modifyTimeObject(timeObject).increment[
-							segment
-						].isolated(),
-				})
-
 				setTimeObject(
 					modifyTimeObject(timeObject).increment[segment].isolated(),
 				)
@@ -357,14 +352,6 @@ const TimeInputPolyfill = ({
 				if (!cursorSegment) setCursorSegment(segment)
 				e.preventDefault()
 				resetSegmentEntryLog()
-
-				console.log('decrement', {
-					timeObject,
-					modified:
-						modifyTimeObject(timeObject).decrement[
-							segment
-						].isolated(),
-				})
 
 				setTimeObject(
 					modifyTimeObject(timeObject).decrement[segment].isolated(),
