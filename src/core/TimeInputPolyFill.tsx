@@ -208,7 +208,7 @@ const TimeInputPolyfill = ({
 			// TO DO 2nd: Create a local polyfill file that only holds the things that are needed
 			// Don't worry, it only downloads the polyfill once no matter how many inputs you have on the page
 			loadJS(
-				'https://cdn.jsdelivr.net/npm/@time-input-polyfill/utils@1.0.0-beta.51/npm/time-input-polyfill-utils.min.js',
+				'https://cdn.jsdelivr.net/npm/@time-input-polyfill/utils@1.0.0-beta.52/npm/time-input-polyfill-utils.min.js',
 				() => {
 					if (window.timeInputPolyfillUtils) {
 						const {
@@ -340,6 +340,15 @@ const TimeInputPolyfill = ({
 				if (!cursorSegment) setCursorSegment(segment)
 				e.preventDefault()
 				resetSegmentEntryLog()
+
+				console.log('increment', {
+					timeObject,
+					modified:
+						modifyTimeObject(timeObject).increment[
+							segment
+						].isolated(),
+				})
+
 				setTimeObject(
 					modifyTimeObject(timeObject).increment[segment].isolated(),
 				)
@@ -348,6 +357,15 @@ const TimeInputPolyfill = ({
 				if (!cursorSegment) setCursorSegment(segment)
 				e.preventDefault()
 				resetSegmentEntryLog()
+
+				console.log('decrement', {
+					timeObject,
+					modified:
+						modifyTimeObject(timeObject).decrement[
+							segment
+						].isolated(),
+				})
+
 				setTimeObject(
 					modifyTimeObject(timeObject).decrement[segment].isolated(),
 				)
