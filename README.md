@@ -1,6 +1,5 @@
 # TO DO
 
--   refactor `type('{del}')` and `type('{backspace}')` in tests to `use.del` and `use.backspace`
 -   Make tests for pressing the 3 buttons
 -   Check `Forced polyfill returned value: "________"` paragraph text in all tests
 -   Fix blank set time button not clearing all values

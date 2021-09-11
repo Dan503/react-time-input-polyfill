@@ -1,6 +1,5 @@
-import { selectSegment } from "@time-input-polyfill/utils"
 import { loadTestPage } from "../../support/loadTestPage"
-import { clearAllSegments, cyInput, use, a11yHasExpectedHtml } from "../../support/utils"
+import { clearAllSegments, use, a11yHasExpectedHtml } from "../../support/utils"
 
 export function fromBlankMinutes() {
 	describe('from blank minutes', () => {
@@ -11,8 +10,7 @@ export function fromBlankMinutes() {
 			describe('increment blank minutes', () => {
 				it('Should increment blank minutes 08:-- PM to 01:30 PM', () => {
 					loadTestPage({ segment: 'minutes' })
-						.type('{del}')
-						.wait(10)
+						.then(use.del)
 						.should('have.value', '08:-- PM')
 						.then(use.upArrow)
 						.should('have.value', '08:00 PM')
@@ -34,8 +32,7 @@ export function fromBlankMinutes() {
 			describe('decrement blank minutes', () => {
 				it('Should decrement blank minutes 08:-- PM to 08:59 PM', () => {
 					loadTestPage({ segment: 'minutes' })
-						.type('{del}')
-						.wait(10)
+						.then(use.del)
 						.should('have.value', '08:-- PM')
 						.then(use.downArrow)
 						.should('have.value', '08:59 PM')

@@ -10,7 +10,7 @@ export function fromBlankHours() {
 			describe('increment blank hours', () => {
 				it('Should increment blank hours --:30 PM to 01:30 PM', () => {
 					loadTestPage({ segment: 'hrs12' })
-						.type('{del}')
+						.then(use.del)
 						.should('have.value', '--:30 PM')
 						.then(use.upArrow)
 						.should('have.value', '01:30 PM')
@@ -32,7 +32,7 @@ export function fromBlankHours() {
 			describe('decrement blank hours', () => {
 				it('Should decrement blank hours --:30 PM to 12:30 PM', () => {
 					loadTestPage({ segment: 'hrs12' })
-						.type('{del}')
+						.then(use.del)
 						.should('have.value', '--:30 PM')
 						.then(use.downArrow)
 						.should('have.value', '12:30 PM')
