@@ -97,8 +97,9 @@ const ExampleBlock = ({
 				</button>
 			</p>
 
-			<p id={exampleId + '-return-value'}>
-				{label} returned value: "{value}"
+			<p>
+				{label} returned value: "
+				<span id={exampleId + '-return-value'}>{value}</span>"
 			</p>
 
 			{!!codeString && (

@@ -1,6 +1,5 @@
 # TO DO
 
--   Make tests for pressing the 3 buttons
 -   Check `Forced polyfill returned value: "________"` paragraph text in all tests
 -   Fix blank set time button not clearing all values
 -   Refactor Manual entry log tests to run each full set in one page load using chaining
