@@ -35,6 +35,21 @@ export const sendFocus = () => {
 	return cyInput().focus().wait(100)
 }
 
+export const setTime = (string12hr: string, finishingSegment: Segment = 'hrs12') => {
+	const regex = /(\d\d):(\d\d) ([AP]M)/i
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	const [_match, hrs12, minutes, mode] = regex.exec(string12hr) || []
+	const inputSelection = cySelectSegment('hrs12').type(`${hrs12}${minutes}${mode}`)
+
+	const targets = {
+		hrs12: () => inputSelection.then(use.leftArrow).then(use.leftArrow),
+		minutes: () => inputSelection.then(use.leftArrow),
+		mode: () => inputSelection,
+	}
+
+	return targets[finishingSegment]()
+}
+
 export const use = {
 	upArrow: () => cyInput().type('{uparrow}'),
 	downArrow: () => cyInput().type('{downarrow}'),
