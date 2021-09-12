@@ -10,7 +10,7 @@ export const cyInput = () => cy.get(_forcedPolyfillId)
 export const cyA11y = () => cy.get(_a11yId)
 export const $input = (jQueryInput: JQuery<HTMLElement>) => jQueryInput[0] as HTMLInputElement
 
-export const hasReturnVal = (expectation: string) => () => cy.get('#Forced-polyfill-return-value').wait(10).should('have.text', expectation)
+export const hasReturnVal = (expectation: string) => () => cy.get('#Forced-polyfill-return-value').wait(10).should('have.text', expectation).then(cyInput)
 
 interface A11yInitialHtmlReturn {
 	hrs12: string
