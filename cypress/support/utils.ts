@@ -1,4 +1,4 @@
-import { Segment } from "@time-input-polyfill/utils"
+import { Segment, toLeadingZero } from "@time-input-polyfill/utils"
 
 export const forcedPolyfillId = 'Forced-polyfill-input'
 export const _forcedPolyfillId = `#${forcedPolyfillId}`
@@ -25,7 +25,7 @@ export const a11yInitialHtml = (value?: number | string): A11yInitialHtmlReturn 
 		hrs12,
 		minutes: `<p>Minutes spin button ${value || 30}.</p>`,
 		mode: `<p>AM/PM spin button ${value || 'PM'}.</p>`,
-		focus: '<p>Forced polyfill time input grouping 08:30 PM.</p>' + hrs12
+		focus: `<p>Forced polyfill time input grouping ${toLeadingZero(value || 8)}:30 PM.</p>` + hrs12
 	})
 }
 
