@@ -53,7 +53,7 @@ export function button_2() {
 						.then(use.upArrow)
 						.should('have.value', '04:46 AM')
 						.then(clickBtn2)
-						.should('have.value', '03:45 AM')
+						.should('have.value', '03:45 PM')
 				)
 		})
 	})
