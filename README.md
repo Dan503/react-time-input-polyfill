@@ -2,6 +2,7 @@
 
 -   Check `Forced polyfill returned value: "________"` paragraph text in all tests
 -   Fix blank set time button not clearing all values
+-   Fix class component version not working
 -   convert the Cypress test suite into a separate package
 
 # @time-input-polyfill/react
