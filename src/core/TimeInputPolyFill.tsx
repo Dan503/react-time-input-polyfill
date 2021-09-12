@@ -31,6 +31,7 @@ import {
 import supportsTime from '@time-input-polyfill/utils/npm/common/supportsTime'
 import { blankValues } from '@time-input-polyfill/utils/npm/common/blankValues'
 import { ManualEntryLog } from '@time-input-polyfill/utils/npm/core/ManualEntryLog/ManualEntryLog'
+import { convertString24hr } from '@time-input-polyfill/utils'
 
 const polyfillClassName = 'react-time-input-polyfill-target'
 
@@ -80,8 +81,8 @@ export interface TimePolyfillProps
  * - [npm package](https://www.npmjs.com/package/@time-input-polyfill/react)
  */
 const TimeInputPolyfill = ({
-	value: value24hr = '',
-	setValue: setValue24hr,
+	value: value24hrProp = '',
+	setValue: setValue24hrProp,
 	forcePolyfill = false,
 	onChange,
 	onFocus,
@@ -100,6 +101,7 @@ const TimeInputPolyfill = ({
 
 	const [polyfill, setPolyfill] = useState<Polyfill | null>(null)
 	const [hasInitialised, setHasInitialised] = useState(false)
+	const [value24hr, setValue24hr] = useState(value24hrProp)
 
 	const [focusedViaClick, setFocusedViaClick] = useState<boolean>(false)
 
@@ -141,6 +143,10 @@ const TimeInputPolyfill = ({
 		}
 	}, [value24hr])
 	/* </Forced override value code>	*/
+
+	useEffect(() => {
+		setTimeObject(convertString24hr(value24hrProp).toTimeObject())
+	}, [value24hrProp])
 
 	const getBlankValuesStatus = (timeObject: TimeObject) => {
 		if (!polyfill) return {}
