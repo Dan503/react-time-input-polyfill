@@ -1,6 +1,7 @@
 # TO DO
 
 -   Fix blank set time button not clearing all values
+-   Apply tests to Class component version
 -   Fix class component version not working
 -   convert the Cypress test suite into a separate package
 
