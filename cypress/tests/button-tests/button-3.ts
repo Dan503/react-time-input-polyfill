@@ -19,7 +19,6 @@ export function button_3() {
 						.then(use.upArrow)
 						.should('have.value', '12:00 --')
 						.then(use.downArrow)
-						.then(use.downArrow)
 						.should('have.value', '12:59 --')
 						.then(use.rightArrow)
 						.then(use.upArrow)
