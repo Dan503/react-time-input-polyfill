@@ -31,6 +31,7 @@ import {
 import supportsTime from '@time-input-polyfill/utils/npm/common/supportsTime'
 import { blankValues } from '@time-input-polyfill/utils/npm/common/blankValues'
 import { ManualEntryLog } from '@time-input-polyfill/utils/npm/core/ManualEntryLog/ManualEntryLog'
+import { convertString24hr } from '@time-input-polyfill/utils'
 
 const polyfillClassName = 'react-time-input-polyfill-target'
 
@@ -96,6 +97,13 @@ const TimeInputPolyfill = ({
 }: TimePolyfillProps) => {
 	const isPolyfilled = forcePolyfill || !supportsTime
 
+	const value24hrCache = useRef(value24hr)
+
+	const update24hr = (newValue24Hr: String24hr): void => {
+		value24hrCache.current = newValue24Hr
+		setValue24hr(newValue24Hr)
+	}
+
 	const $input = useRef<HTMLInputElement>(null)
 
 	const [polyfill, setPolyfill] = useState<Polyfill | null>(null)
@@ -119,6 +127,13 @@ const TimeInputPolyfill = ({
 	const [manualEntryLog, setManualEntryLog] = useState<ManualEntryLog | null>(
 		null,
 	)
+
+	useEffect(() => {
+		const isBeingExternallySet = value24hr !== value24hrCache.current
+		if (isBeingExternallySet) {
+			setTimeObject(convertString24hr(value24hr).toTimeObject())
+		}
+	}, [value24hr])
 
 	/*
 		<Forced override value code>
@@ -163,7 +178,7 @@ const TimeInputPolyfill = ({
 			setValue12hr(convertTimeObject(timeObject).to12hr())
 
 			if (timeObjAs24hr !== value24hr) {
-				setValue24hr(timeObjAs24hr)
+				update24hr(timeObjAs24hr)
 			}
 			if (allowSegmentSelection) {
 				setTimeout(() => {
@@ -282,7 +297,7 @@ const TimeInputPolyfill = ({
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		if (onChange) onChange(e)
-		if (!isPolyfilled) setValue24hr(e.target.value)
+		if (!isPolyfilled) update24hr(e.target.value)
 	}
 	const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
 		if (onFocus) onFocus(e)
