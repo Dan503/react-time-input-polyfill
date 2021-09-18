@@ -1,6 +1,5 @@
 # TO DO
 
--   Fix mode getting set from blank when hours and minutes are set
 -   Apply tests to Class component version
 -   Fix class component version not working
 -   convert the Cypress test suite into a separate package
