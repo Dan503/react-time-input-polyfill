@@ -4,6 +4,7 @@
 -   Apply tests to Class component version
 -   Fix class component version not working
 -   convert the Cypress test suite into a separate package
+-   Move the forced example version to the top and update the example code sample
 
 # @time-input-polyfill/react
 
