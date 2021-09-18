@@ -37,7 +37,7 @@ export function button_2() {
 						.should('have.value', '--:-- --')
 				)
 		})
-		it('Can press button again', () => {
+		it('Can press button twice', () => {
 			loadTestPage()
 				.then(clickBtn2)
 				.should('have.value', '03:45 PM')
