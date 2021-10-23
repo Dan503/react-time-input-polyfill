@@ -219,11 +219,10 @@ const TimeInputPolyfill = ({
 
 	useEffect(() => {
 		if (isPolyfilled) {
-			// TO DO 1st: Use this when v1.0.0 of the utils is released: https://cdn.jsdelivr.net/npm/@time-input-polyfill/utils@1
-			// TO DO 2nd: Create a local polyfill file that only holds the things that are needed
+			// TO DO: Create a local polyfill file that only holds the things that are needed
 			// Don't worry, it only downloads the polyfill once no matter how many inputs you have on the page
 			loadJS(
-				'https://cdn.jsdelivr.net/npm/@time-input-polyfill/utils@1.0.0-beta.54/npm/time-input-polyfill-utils.min.js',
+				'https://cdn.jsdelivr.net/npm/@time-input-polyfill/utils@1',
 				() => {
 					if (window.timeInputPolyfillUtils) {
 						const {
