@@ -1,6 +1,7 @@
 import { nodeResolve } from '@rollup/plugin-node-resolve'
 import commonjs from '@rollup/plugin-commonjs'
 import babel from '@rollup/plugin-babel'
+import { terser } from 'rollup-plugin-terser'
 
 process.env.BABEL_ENV = 'production'
 process.env.NODE_ENV = 'production'
@@ -10,6 +11,7 @@ export default {
 	plugins: [
 		commonjs(),
 		nodeResolve(),
+		terser(),
 		babel({
 			babelHelpers: 'runtime',
 			presets: ['@babel/preset-env'],
@@ -28,9 +30,5 @@ export default {
 	output: {
 		file: './public/requiredTimeInputPolyfillUtils.js',
 		format: 'iife',
-		// globals: [
-
-		// ],
 	},
-	// compact: true,
 }

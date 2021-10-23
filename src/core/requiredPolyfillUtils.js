@@ -1,5 +1,6 @@
 // This needs to be a JS file because Rollup can't handle TypeScript
 // It really doesn't need to be TypeScript anyway
+// Also, the output is smaller if I import each thing as directly as possible
 import {
 	a11yClear,
 	a11yCreate,
