@@ -42,6 +42,7 @@
 		"cypress": "^8.2.0",
 		"cypress-plugin-tab": "^1.0.5",
 		"cypress-promise": "^1.1.0",
+		"del-cli": "^4.0.1",
 		"eslint-plugin-cypress": "^2.11.3",
 		"npm-run-all": "^4.1.5",
 		"react-dom": "^17.0.2",
@@ -56,7 +57,10 @@
 		"build": "node node_modules/react-scripts/scripts/build.js",
 		"test": "run-p start cy",
 		"cy": "cypress open",
-		"prepublishOnly": "rollup --config"
+		"ts": "tsc --project tsconfig.npm.json",
+		"prepublishOnly": "rollup --config && npm run ts",
+		"postpublish": "npm run clean",
+		"clean": "del-cli index.js index.d.ts src/core/index.js src/core/index.d.ts src/core/TimeInputPolyFill.js src/core/TimeInputPolyFill.d.ts"
 	},
 	"eslintConfig": {
 		"extends": "react-app"
