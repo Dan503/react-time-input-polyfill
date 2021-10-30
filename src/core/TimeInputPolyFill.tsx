@@ -61,14 +61,16 @@ export type SetStateFn<
 	ParamType = StateType | PrevState<StateType>,
 > = (newState: ParamType) => void
 
-export type ValidTimePolyfillValues = String24hr | undefined
+export type TimeInputValue = String24hr | undefined
+
+export type SetTimeInputValue = SetStateFn<TimeInputValue>
 
 export interface TimePolyfillProps
 	extends React.HTMLAttributes<HTMLInputElement> {
 	/** The string value of the input in 24 hour time. */
-	value: ValidTimePolyfillValues
+	value: TimeInputValue
 	/** The setState function that updates the `value` prop. */
-	setValue: SetStateFn<ValidTimePolyfillValues>
+	setValue: SetTimeInputValue
 	/**
 	 * Set to true to force browsers that support input[type=time]
 	 * to use the polyfill.
