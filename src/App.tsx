@@ -260,6 +260,8 @@ function App() {
 	// let [addedLater, setAddedLater] = useState(false)
 	// setTimeout(() => setAddedLater(true), 2000)
 
+	const [force, setForce] = useState(true)
+
 	return (
 		<div className="App">
 			<h1>React Time Input Polyfill</h1>
@@ -339,9 +341,13 @@ function App() {
 `}
 			/>
 
+			<button onClick={() => setForce(!force)}>
+				Toggle the polyfill on/off
+			</button>
+
 			<ExampleBlock
 				label="Forced polyfill"
-				extraInputProps={{ forcePolyfill: true }}
+				extraInputProps={{ forcePolyfill: force }}
 				codeString={`
 	/* TimeInput.js */
 
