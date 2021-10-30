@@ -46,21 +46,16 @@ const Input = ({
 
 const ExampleBlock = ({
 	label,
-	extraInputProps,
 	codeString,
 	usePolyfill,
 }: {
 	label: string
 	codeString: string
 	usePolyfill?: boolean
-	extraInputProps?: {
-		[prop: string]: any
-	}
 }) => {
 	const [value, setValue] = useState('20:30')
+	const [forcePolyfill, setForcePolyfill] = useState(true)
 	const exampleId = label.replace(/\s/g, '-')
-
-	console.log(label, { value })
 
 	return (
 		<form
@@ -77,8 +72,14 @@ const ExampleBlock = ({
 					setValue={setValue}
 					className="exampleClass"
 					id={exampleId + '-input'}
-					{...extraInputProps}
+					forcePolyfill={forcePolyfill}
 				/>
+				<button
+					onClick={() => setForcePolyfill(!forcePolyfill)}
+					style={{ marginLeft: 10 }}
+				>
+					Turn polyfill {forcePolyfill ? 'off' : 'on'}
+				</button>
 			</label>
 
 			<p>
@@ -265,8 +266,6 @@ function App() {
 	// let [addedLater, setAddedLater] = useState(false)
 	// setTimeout(() => setAddedLater(true), 2000)
 
-	const [force, setForce] = useState(true)
-
 	return (
 		<div className="App">
 			<h1>React Time Input Polyfill</h1>
@@ -346,13 +345,8 @@ function App() {
 `}
 			/>
 
-			<button onClick={() => setForce(!force)}>
-				Toggle the polyfill on/off
-			</button>
-
 			<ExampleBlock
 				label="Forced polyfill"
-				extraInputProps={{ forcePolyfill: force }}
 				codeString={`
 	/* TimeInput.js */
 
