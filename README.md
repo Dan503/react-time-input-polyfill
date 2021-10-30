@@ -2,14 +2,14 @@
 
 // These are critical for a successful release
 
--   set up node scripts for generating the .js and .d.ts files form the TS files and then removing them automatically after publishing
+-   Need to update tests to work with the new page layout
+-   Need to add polyfill toggle button tests
 -   TODO item in TimeInputPolyFill.tsx
 
 // These can be done after releasing v2.0.0, not essential for release
 
 -   Apply tests to Class component version
 -   convert the Cypress test suite into a separate package
--   Move the forced example version to the top and update the example code sample
 
 # @time-input-polyfill/react
 
