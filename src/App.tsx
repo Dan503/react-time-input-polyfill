@@ -1,6 +1,9 @@
 import React, { Component, useState } from 'react'
 import './App.css'
-import TimeInput, { SetValue } from './core/TimeInputPolyFill'
+import TimeInput, {
+	TimeInputValue,
+	SetTimeInputValue,
+} from './core/TimeInputPolyFill'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { dark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 
@@ -12,8 +15,8 @@ const Input = ({
 	usePolyfill = true,
 	...restProps
 }: {
-	value: string
-	setValue?: SetValue
+	value: TimeInputValue
+	setValue?: SetTimeInputValue
 	onChange?: (props: { value: string; element: HTMLInputElement }) => void
 	className?: string
 	usePolyfill?: boolean
@@ -56,6 +59,8 @@ const ExampleBlock = ({
 }) => {
 	const [value, setValue] = useState('20:30')
 	const exampleId = label.replace(/\s/g, '-')
+
+	console.log(label, { value })
 
 	return (
 		<form
