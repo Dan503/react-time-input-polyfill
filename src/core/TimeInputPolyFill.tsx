@@ -40,16 +40,35 @@ const polyfillClassName = 'react-time-input-polyfill-target'
 // 	msMatchesSelector(selectors: string): boolean
 // }
 
-export type SetValue = React.Dispatch<
-	React.SetStateAction<String24hr | null | undefined>
->
+/** The format of the 1st parameter of `SetStateFn` when that 1st parameter is callback function */
+export type PrevState<StateType, ReturnType = StateType> = (
+	prevState: StateType,
+) => ReturnType
+
+/**
+ * Type for React hook setState functions
+ *
+ * The two different ways to use setState functions:
+ * 1. setState(newState) ---> (newState: StateType) => void
+ * 2. setState((prevState) => newState) ---> (newState:(prevState: StateType) => StateType) => void
+ *
+ * For style 1, you would write it like this if state is a `string` type: `SetStateFn<string>`
+ *
+ * For style 2, you would write it like this if state is a `string` type: `SetStateFn<string, PrevState<string>>`
+ */
+export type SetStateFn<
+	StateType,
+	ParamType = StateType | PrevState<StateType>,
+> = (newState: ParamType) => void
+
+export type ValidTimePolyfillValues = String24hr | undefined
 
 export interface TimePolyfillProps
 	extends React.HTMLAttributes<HTMLInputElement> {
 	/** The string value of the input in 24 hour time. */
-	value?: String24hr
+	value: ValidTimePolyfillValues
 	/** The setState function that updates the `value` prop. */
-	setValue: SetValue
+	setValue: SetStateFn<ValidTimePolyfillValues>
 	/**
 	 * Set to true to force browsers that support input[type=time]
 	 * to use the polyfill.
