@@ -77,8 +77,9 @@ const ExampleBlock = ({
 				<button
 					onClick={() => setForcePolyfill(!forcePolyfill)}
 					style={{ marginLeft: 10 }}
+					title="Toggle polyfill"
 				>
-					Turn polyfill {forcePolyfill ? 'off' : 'on'}
+					Polyfill is <strong>{forcePolyfill ? 'ON' : 'OFF'}</strong>
 				</button>
 			</label>
 
