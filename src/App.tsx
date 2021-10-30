@@ -62,10 +62,10 @@ const ExampleBlock = ({
 			style={{ marginBottom: '2em' }}
 			onSubmit={(e) => e.preventDefault()}
 		>
-			<h2>{label} time input</h2>
+			<h2>{label}</h2>
 
 			<label style={{ display: 'inline-block' }}>
-				<span style={{ marginRight: '0.5em' }}>{label} time input</span>
+				<span style={{ marginRight: '0.5em' }}>{label}</span>
 				<Input
 					usePolyfill={usePolyfill}
 					value={value}
@@ -88,19 +88,19 @@ const ExampleBlock = ({
 					onClick={() => setValue('07:15')}
 					id={exampleId + '-button-1'}
 				>
-					Set {label} time to 7:15 AM
+					Set {label.toLocaleLowerCase()} time to 7:15 AM
 				</button>
 				<button
 					onClick={() => setValue('15:45')}
 					id={exampleId + '-button-2'}
 				>
-					Set {label} time to 3:45 PM
+					Set {label.toLocaleLowerCase()} time to 3:45 PM
 				</button>
 				<button
 					onClick={() => setValue('')}
 					id={exampleId + '-button-3'}
 				>
-					Set {label} time to " "
+					Set {label.toLocaleLowerCase()} time to " "
 				</button>
 			</p>
 
@@ -127,8 +127,10 @@ class TestClassInput extends Component<{
 	value: string
 	setValue: React.Dispatch<React.SetStateAction<string>>
 }> {
+	state = { forcePolyfill: true }
 	render() {
 		const { value, setValue } = this.props
+		const { forcePolyfill } = this.state
 		return (
 			<label style={{ display: 'inline-block' }}>
 				<span style={{ marginRight: '0.5em' }}>
@@ -137,9 +139,18 @@ class TestClassInput extends Component<{
 				<TimeInput
 					value={value}
 					setValue={setValue}
-					forcePolyfill
+					forcePolyfill={forcePolyfill}
 					id="class-based-component-example-input"
 				/>
+				<button
+					onClick={() =>
+						this.setState({ forcePolyfill: !forcePolyfill })
+					}
+					style={{ marginLeft: 10 }}
+					title="Toggle polyfill"
+				>
+					Polyfill is <strong>{forcePolyfill ? 'ON' : 'OFF'}</strong>
+				</button>
 			</label>
 		)
 	}
@@ -158,7 +169,7 @@ class ClassBasedComponentExample extends Component {
 				style={{ marginBottom: '2em' }}
 				onSubmit={(e) => e.preventDefault()}
 			>
-				<h2>Class based component example (forced polyfill)</h2>
+				<h2>Class based component example</h2>
 
 				<p>
 					The time input polyfill has been optimized to work best with
@@ -221,7 +232,6 @@ class ClassBasedComponentExample extends Component {
 						<TimeInputPolyfill
 							value={value}
 							setValue={setValue}
-							forcePolyfill // Don't force in production
 						/>
 					</label>
 			)
@@ -289,7 +299,7 @@ function App() {
 			</p>
 
 			<ExampleBlock
-				label="Non-forced polyfill"
+				label="Polyfill demo"
 				codeString={`
 	/* TimeInput.js */
 
@@ -309,6 +319,11 @@ function App() {
 
 					// Pass the state setter
 					setValue={setValue}
+
+					/*  Force browsers that support input[type=time]
+						to use the polyfill.
+						(useful for testing and debugging)
+					*/  forcePolyfill={true}
 				/>
 			</label>
 		)
@@ -328,6 +343,11 @@ function App() {
 		// Use state to keep track of the value
 		const [inputValue, setInputValue] = useState('20:30') // default to 8:30 PM
 
+		// Make use of useEffect to react to inputValue changes
+		useEffect(() => {
+			console.log({ inputValue })
+		}, [ inputValue ])
+
 		return (
 			<form>
 				<TimeInput
@@ -346,76 +366,7 @@ function App() {
 `}
 			/>
 
-			<ExampleBlock
-				label="Forced polyfill"
-				codeString={`
-	/* TimeInput.js */
-
-	import React from 'react'
-	import TimeInputPolyfill from '@time-input-polyfill/react'
-
-	export const TimeInput = ({ label, value, setValue }) => {
-		return (
-			<label>
-				<span>{label}</span>
-				<TimeInputPolyfill
-					value={value}
-					setValue={setValue}
-
-					/*  Force browsers that support input[type=time]
-						to use the polyfill.
-						(useful for testing and debugging)
-					*/  forcePolyfill={true}
-				/>
-			</label>
-		)
-	}
-`}
-			/>
-
-			<ExampleBlock
-				label="Non-polyfill"
-				usePolyfill={false}
-				codeString={`
-	/* TimeInput.js */
-
-	// View this example in Internet Explorer
-	// This is a normal time input with no polyfill applied
-
-	import React from 'react'
-
-	export const TimeInput = ({ label, value, setValue }) => {
-		return (
-			<label>
-				<span>{label}</span>
-				<input
-					type="time"
-					value={value}
-					onChange={(e) => {
-						console.log(e) // the default browser event
-						setValue(e.target.value)
-					}
-				/>
-			</label>
-		)
-	}`}
-			/>
-
 			<ClassBasedComponentExample />
-
-			{/* {addedLater && (
-				<ExampleBlock
-					label="Delayed forced polyfill"
-					Input={({ value, setValue, className }) => (
-						<TimeInput
-							value={value}
-							onChange={({ value }) => setValue(value)}
-							forcePolyfill={true}
-							className={className}
-						/>
-					)}
-				/>
-			)} */}
 		</div>
 	)
 }
