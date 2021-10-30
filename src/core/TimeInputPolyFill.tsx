@@ -197,12 +197,13 @@ const TimeInputPolyfill = ({
 				polyfill
 			const segment = cursorSegment || getCursorSegment($input.current)
 			const timeObjAs24hr = convertTimeObject(timeObject).to24hr()
+			const timeObjAs12hr = convertTimeObject(timeObject).to12hr()
 
-			setValue12hr(convertTimeObject(timeObject).to12hr())
-
-			if (timeObjAs24hr !== value24hr) {
+			if (value12hr !== timeObjAs12hr) {
+				setValue12hr(timeObjAs12hr)
 				update24hr(timeObjAs24hr)
 			}
+
 			if (allowSegmentSelection) {
 				setTimeout(() => {
 					selectSegment($input.current, segment)
@@ -326,7 +327,7 @@ const TimeInputPolyfill = ({
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		if (onChange) onChange(e)
-		if (!isPolyfilled) update24hr(e.target.value)
+		update24hr(e.target.value)
 	}
 	const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
 		if (onFocus) onFocus(e)
