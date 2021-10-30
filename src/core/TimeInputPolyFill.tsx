@@ -161,12 +161,14 @@ const TimeInputPolyfill = ({
 		This will quickly switch IE form inputs to 24 hour time before submitting
 		then switch back afterwards so the user doesn't notice
 	*/
-	const [forcedValue, setForcedValue] = useState<String24hr | null>(null)
+	const [forcedValue, setForcedValue] = useState<String24hr | undefined>(
+		undefined,
+	)
 	// Watch for form submission events and override the displayed time value on submit
 	useEffect(() => {
 		const overrideTime = () => {
 			setForcedValue(value24hr)
-			setTimeout(() => setForcedValue(null), 1)
+			setTimeout(() => setForcedValue(undefined), 1)
 		}
 		const $inputElement = $input.current
 		$inputElement?.form?.addEventListener('submit', overrideTime)
@@ -177,7 +179,7 @@ const TimeInputPolyfill = ({
 	/* </Forced override value code>	*/
 
 	const getBlankValuesStatus = (timeObject: TimeObject) => {
-		if (!polyfill) return {}
+		if (!polyfill || !isPolyfilled) return {}
 		const isBlankValue = (key: TimeObjectKey) => timeObject[key] === null
 		const { timeObjectKeys } = polyfill
 		return {
@@ -188,7 +190,7 @@ const TimeInputPolyfill = ({
 
 	// Do all modifications through the timeObject. React will update the other values accordingly.
 	useEffect(() => {
-		if (polyfill) {
+		if (polyfill && isPolyfilled) {
 			const { convertTimeObject, getCursorSegment, selectSegment } =
 				polyfill
 			const segment = cursorSegment || getCursorSegment($input.current)
@@ -206,10 +208,16 @@ const TimeInputPolyfill = ({
 			}
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [allowSegmentSelection, cursorSegment, polyfill, timeObject])
+	}, [
+		allowSegmentSelection,
+		cursorSegment,
+		polyfill,
+		isPolyfilled,
+		timeObject,
+	])
 
 	useEffect(() => {
-		if (polyfill) {
+		if (polyfill && isPolyfilled) {
 			const { a11yUpdate, getA11yValue } = polyfill
 			setTimeout(() => {
 				if (getA11yValue()) {
@@ -217,10 +225,10 @@ const TimeInputPolyfill = ({
 				}
 			})
 		}
-	}, [timeObject, polyfill])
+	}, [timeObject, polyfill, isPolyfilled])
 
 	useEffect(() => {
-		if (polyfill) {
+		if (polyfill && isPolyfilled) {
 			const { convertString24hr, matchesTimeObject } = polyfill
 			const newTimeObject = convertString24hr(value24hr).toTimeObject()
 			const { hasBlankValues } = getBlankValuesStatus(newTimeObject)
@@ -234,11 +242,12 @@ const TimeInputPolyfill = ({
 			}
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [value24hr, polyfill])
+	}, [value24hr, polyfill, isPolyfilled])
 
 	useEffect(() => {
 		if (isPolyfilled) {
-			// TO DO: Have this load `requiredTimeInputPolyfillUtils.js` from cdn.jsdelivr.net (requires a beta publish)
+			// TODO: Delete the requiredPolyfillUtils.js file. It somehow ended up turning into a MUCH larger file size than the original utils file
+			// Original utils file size: 19,848 bytes; essentials only file size: 24,481 bytes
 			// Don't worry, it only downloads the polyfill once no matter how many inputs you have on the page
 			loadJS(
 				'https://cdn.jsdelivr.net/npm/@time-input-polyfill/utils@1',
@@ -295,7 +304,7 @@ const TimeInputPolyfill = ({
 	useEffect(() => {
 		cursorSegmentRef.current = cursorSegment
 		const hasFocus = document.activeElement === $input.current
-		if (polyfill && hasFocus) {
+		if (polyfill && isPolyfilled && hasFocus) {
 			const { a11yUpdate, getA11yValue } = polyfill
 			setTimeout(() => {
 				if (getA11yValue()) {
@@ -305,7 +314,7 @@ const TimeInputPolyfill = ({
 				}
 			})
 		}
-	}, [cursorSegment, polyfill])
+	}, [cursorSegment, polyfill, isPolyfilled])
 
 	//Reset entry log cursor segmet
 	useEffect(() => {
@@ -319,7 +328,7 @@ const TimeInputPolyfill = ({
 	}
 	const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
 		if (onFocus) onFocus(e)
-		if (polyfill) {
+		if (polyfill && isPolyfilled) {
 			setAllowSegmentSelection(true)
 			const { isShiftHeldDown, getCursorSegment, a11yUpdate } = polyfill
 
@@ -347,7 +356,7 @@ const TimeInputPolyfill = ({
 	}
 	const handleMouseUp = (e: React.MouseEvent<HTMLInputElement>) => {
 		if (onMouseUp) onMouseUp(e)
-		if (polyfill) {
+		if (polyfill && isPolyfilled) {
 			polyfill.selectCursorSegment($input.current)
 		}
 	}
@@ -356,7 +365,7 @@ const TimeInputPolyfill = ({
 	}
 	const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
 		if (onKeyDown) onKeyDown(e)
-		if (polyfill) {
+		if (polyfill && isPolyfilled) {
 			const key = e.key
 
 			const userChangeEvent = () => onChange && onChange(e)
@@ -430,7 +439,7 @@ const TimeInputPolyfill = ({
 		...style,
 	}
 
-	const polyfilledValue = forcedValue === null ? value12hr : forcedValue
+	const polyfilledValue = forcedValue === undefined ? value12hr : forcedValue
 
 	return (
 		<input
