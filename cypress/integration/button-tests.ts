@@ -1,7 +1,8 @@
-import { button_1, button_2, button_3 } from "../tests/button-tests"
+import { button_1, button_2, button_3, toggleButton } from "../tests/button-tests"
 
 describe('Button tests', () => {
-	button_1()
-	button_2()
-	button_3()
+	toggleButton()
+	// button_1()
+	// button_2()
+	// button_3()
 })

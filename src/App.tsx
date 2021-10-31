@@ -82,6 +82,7 @@ const ExampleBlock = ({
 				<button
 					onClick={() => setForcePolyfill(!forcePolyfill)}
 					style={{ marginLeft: 10 }}
+					id={exampleId + '-toggle-polyfill'}
 					title="Toggle polyfill"
 				>
 					Polyfill is <strong>{forcePolyfill ? 'ON' : 'OFF'}</strong>
@@ -136,11 +137,12 @@ class TestClassInput extends Component<{
 	render() {
 		const { value, setValue } = this.props
 		const { forcePolyfill } = this.state
+		const identifier = 'class-based-component-example'
 		return (
 			<span style={{ display: 'inline-block' }}>
 				<label
 					style={{ marginRight: '0.5em' }}
-					htmlFor="class-based-component-example-input"
+					htmlFor={`${identifier}-input`}
 				>
 					Class based version
 				</label>
@@ -148,7 +150,7 @@ class TestClassInput extends Component<{
 					value={value}
 					setValue={setValue}
 					forcePolyfill={forcePolyfill}
-					id="class-based-component-example-input"
+					id={`${identifier}-input`}
 				/>
 				<button
 					onClick={() =>
@@ -156,6 +158,7 @@ class TestClassInput extends Component<{
 					}
 					style={{ marginLeft: 10 }}
 					title="Toggle polyfill"
+					id={`${identifier}-toggle-polyfill`}
 				>
 					Polyfill is <strong>{forcePolyfill ? 'ON' : 'OFF'}</strong>
 				</button>
