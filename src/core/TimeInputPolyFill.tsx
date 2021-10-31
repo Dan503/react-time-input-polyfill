@@ -40,30 +40,11 @@ const polyfillClassName = 'react-time-input-polyfill-target'
 // 	msMatchesSelector(selectors: string): boolean
 // }
 
-/** The format of the 1st parameter of `SetStateFn` when that 1st parameter is callback function */
-export type PrevState<StateType, ReturnType = StateType> = (
-	prevState: StateType,
-) => ReturnType
-
-/**
- * Type for React hook setState functions
- *
- * The two different ways to use setState functions:
- * 1. setState(newState) ---> (newState: StateType) => void
- * 2. setState((prevState) => newState) ---> (newState:(prevState: StateType) => StateType) => void
- *
- * For style 1, you would write it like this if state is a `string` type: `SetStateFn<string>`
- *
- * For style 2, you would write it like this if state is a `string` type: `SetStateFn<string, PrevState<string>>`
- */
-export type SetStateFn<
-	StateType,
-	ParamType = StateType | PrevState<StateType>,
-> = (newState: ParamType) => void
-
 export type TimeInputValue = String24hr | undefined
 
-export type SetTimeInputValue = SetStateFn<TimeInputValue>
+export type SetTimeInputValue = React.Dispatch<
+	React.SetStateAction<TimeInputValue>
+>
 
 export interface TimePolyfillProps
 	extends React.HTMLAttributes<HTMLInputElement> {
