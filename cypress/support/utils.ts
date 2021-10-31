@@ -51,14 +51,14 @@ export const setTime = (string12hr: string, finishingSegment: Segment = 'hrs12')
 }
 
 export const use = {
-	upArrow: () => cyInput().type('{uparrow}'),
-	downArrow: () => cyInput().type('{downarrow}'),
-	leftArrow: () => cyInput().type('{leftarrow}'),
-	rightArrow: () => cyInput().type('{rightarrow}'),
+	upArrow: () => cyInput().trigger('keydown', { key: 'ArrowUp' }).trigger('keyup', { key: 'ArrowUp' }),
+	downArrow: () => cyInput().trigger('keydown', { key: 'ArrowDown' }).trigger('keyup', { key: 'ArrowDown' }),
+	leftArrow: () => cyInput().trigger('keydown', { key: 'ArrowLeft' }).trigger('keyup', { key: 'ArrowLeft' }),
+	rightArrow: () => cyInput().trigger('keydown', { key: 'ArrowRight' }).trigger('keyup', { key: 'ArrowRight' }),
 	tab: () => cyInput().tab(),
 	shiftTab: () => cyInput().tab({ shift: true }),
-	del: () => cyInput().type('{del}').wait(10),
-	backspace: () => cyInput().type('{backspace}').wait(10)
+	del: () => cyInput().trigger('keydown', { key: 'Delete' }).trigger('keyup', { key: 'Delete' }).wait(10),
+	backspace: () => cyInput().trigger('keydown', { key: 'Backspace' }).trigger('keyup', { key: 'Backspace' }).wait(10)
 }
 
 export const cySelectSegment = (segmentToEndOn: Segment) => {
