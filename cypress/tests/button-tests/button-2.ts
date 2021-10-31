@@ -1,6 +1,6 @@
 import { cyInput, cySelectSegment, hasReturnVal, loadTestPage, use } from "../../support"
 
-const clickBtn2 = () => cy.get('#Forced-polyfill-button-2').click().wait(10).then(cyInput)
+const clickBtn2 = () => cy.get('#Polyfill-demo-button-2').click().wait(10).then(cyInput)
 
 export function button_2() {
 	describe('Button 2 - "03:45 PM"', () => {

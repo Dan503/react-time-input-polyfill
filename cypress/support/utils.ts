@@ -1,6 +1,6 @@
 import { Segment, toLeadingZero } from "@time-input-polyfill/utils"
 
-export const forcedPolyfillId = 'Forced-polyfill-input'
+export const forcedPolyfillId = 'Polyfill-demo-input'
 export const _forcedPolyfillId = `#${forcedPolyfillId}`
 
 export const a11yId = 'time-input-polyfill-accessibility-block'
@@ -10,7 +10,7 @@ export const cyInput = () => cy.get(_forcedPolyfillId)
 export const cyA11y = () => cy.get(_a11yId)
 export const $input = (jQueryInput: JQuery<HTMLElement>) => jQueryInput[0] as HTMLInputElement
 
-export const hasReturnVal = (expectation: string) => () => cy.get('#Forced-polyfill-return-value').wait(10).should('have.text', expectation).then(cyInput)
+export const hasReturnVal = (expectation: string) => () => cy.get('#Polyfill-demo-return-value').wait(10).should('have.text', expectation).then(cyInput)
 
 interface A11yInitialHtmlReturn {
 	hrs12: string
