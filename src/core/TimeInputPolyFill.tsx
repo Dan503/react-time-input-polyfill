@@ -249,8 +249,9 @@ const TimeInputPolyfill = ({
 
 	useEffect(() => {
 		if (isPolyfilled) {
-			// TODO: Delete the requiredPolyfillUtils.js file. It somehow ended up turning into a MUCH larger file size than the original utils file
+			// I tried making an "essentials only" utils js file. It somehow ended up turning into a MUCH larger file size than the original utils file.
 			// Original utils file size: 19,848 bytes; essentials only file size: 24,481 bytes
+			// So I just download the full utils instead of trying to reduce it.
 			// Don't worry, it only downloads the polyfill once no matter how many inputs you have on the page
 			loadJS(
 				'https://cdn.jsdelivr.net/npm/@time-input-polyfill/utils@1',

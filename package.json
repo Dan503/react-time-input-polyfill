@@ -58,7 +58,7 @@
 		"test": "run-p start cy",
 		"cy": "cypress open",
 		"ts": "tsc --project tsconfig.npm.json",
-		"prepublishOnly": "rollup --config && npm run ts",
+		"prepublishOnly": "npm run ts",
 		"postpublish": "npm run clean",
 		"clean": "del-cli index.js index.d.ts src/core/index.js src/core/index.d.ts src/core/TimeInputPolyFill.js src/core/TimeInputPolyFill.d.ts"
 	},
