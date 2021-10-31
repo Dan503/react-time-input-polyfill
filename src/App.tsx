@@ -64,8 +64,13 @@ const ExampleBlock = ({
 		>
 			<h2>{label}</h2>
 
-			<label style={{ display: 'inline-block' }}>
-				<span style={{ marginRight: '0.5em' }}>{label}</span>
+			<span style={{ display: 'inline-block' }}>
+				<label
+					htmlFor={exampleId + '-input'}
+					style={{ marginRight: '0.5em' }}
+				>
+					{label}
+				</label>
 				<Input
 					usePolyfill={usePolyfill}
 					value={value}
@@ -81,7 +86,7 @@ const ExampleBlock = ({
 				>
 					Polyfill is <strong>{forcePolyfill ? 'ON' : 'OFF'}</strong>
 				</button>
-			</label>
+			</span>
 
 			<p>
 				<button
@@ -132,10 +137,13 @@ class TestClassInput extends Component<{
 		const { value, setValue } = this.props
 		const { forcePolyfill } = this.state
 		return (
-			<label style={{ display: 'inline-block' }}>
-				<span style={{ marginRight: '0.5em' }}>
+			<span style={{ display: 'inline-block' }}>
+				<label
+					style={{ marginRight: '0.5em' }}
+					htmlFor="class-based-component-example-input"
+				>
 					Class based version
-				</span>
+				</label>
 				<TimeInput
 					value={value}
 					setValue={setValue}
@@ -151,7 +159,7 @@ class TestClassInput extends Component<{
 				>
 					Polyfill is <strong>{forcePolyfill ? 'ON' : 'OFF'}</strong>
 				</button>
-			</label>
+			</span>
 		)
 	}
 }
