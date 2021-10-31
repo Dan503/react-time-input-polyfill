@@ -25,7 +25,7 @@ export const a11yInitialHtml = (value?: number | string): A11yInitialHtmlReturn 
 		hrs12,
 		minutes: `<p>Minutes spin button ${value || 30}.</p>`,
 		mode: `<p>AM/PM spin button ${value || 'PM'}.</p>`,
-		focus: `<p>Forced polyfill time input grouping ${toLeadingZero(value || 8)}:30 PM.</p>` + hrs12
+		focus: `<p>Polyfill demo grouping ${toLeadingZero(value || 8)}:30 PM.</p>` + hrs12
 	})
 }
 
