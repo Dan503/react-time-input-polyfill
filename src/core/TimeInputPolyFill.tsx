@@ -85,7 +85,7 @@ const TimeInputPolyfill = ({
 	onMouseUp,
 	onClick,
 	onKeyDown,
-	className,
+	className = '',
 	style,
 	polyfillSource = 'https://cdn.jsdelivr.net/npm/@time-input-polyfill/utils@1',
 	...restProps
@@ -428,9 +428,7 @@ const TimeInputPolyfill = ({
 			type={isPolyfilled ? 'text' : 'time'}
 			value={isPolyfilled ? polyfilledValue : value24hr}
 			style={styles}
-			className={
-				[className || '', polyfillClass].join(' ').trim() || undefined
-			}
+			className={[className, polyfillClass].join(' ').trim() || undefined}
 		/>
 	)
 }
