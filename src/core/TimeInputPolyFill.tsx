@@ -1,10 +1,6 @@
 /**
  * # Full list of TODO items
  *
- * ## Essential
- *
- * - Add support for `polyfillSource` prop
- *
  * ## Non-essential
  *
  * These can be done after releasing v2.0.0
@@ -16,7 +12,7 @@
 import React, { useRef, useState, useEffect } from 'react'
 import loadJS from '@dan503/load-js'
 
-import {
+import type {
 	TimeObject,
 	String24hr,
 	String12hr,
@@ -24,12 +20,11 @@ import {
 	Segment,
 	TimeObjectKey,
 } from '@time-input-polyfill/utils/npm/types'
+import type { ManualEntryLog } from '@time-input-polyfill/utils/npm/core/ManualEntryLog/ManualEntryLog'
 
 // Avoid bulk importing from index files to be more tree-shake friendly
 import supportsTime from '@time-input-polyfill/utils/npm/common/supportsTime'
 import { blankValues } from '@time-input-polyfill/utils/npm/common/blankValues'
-import { ManualEntryLog } from '@time-input-polyfill/utils/npm/core/ManualEntryLog/ManualEntryLog'
-import { convertString24hr } from '@time-input-polyfill/utils'
 
 const polyfillClassName = 'react-time-input-polyfill-target'
 
@@ -135,10 +130,10 @@ const TimeInputPolyfill = ({
 
 	useEffect(() => {
 		const isBeingExternallySet = value24hr !== value24hrCache.current
-		if (isBeingExternallySet) {
-			setTimeObject(convertString24hr(value24hr).toTimeObject())
+		if (isBeingExternallySet && polyfill) {
+			setTimeObject(polyfill.convertString24hr(value24hr).toTimeObject())
 		}
-	}, [value24hr])
+	}, [value24hr, polyfill])
 
 	/*
 		<Forced override value code>
