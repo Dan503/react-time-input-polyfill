@@ -333,9 +333,6 @@ const TimeInputPolyfill = ({
 			polyfill.selectCursorSegment($input.current)
 		}
 	}
-	const handleClick = (e: React.MouseEvent<HTMLInputElement>) => {
-		if (onClick) onClick(e)
-	}
 	const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
 		if (onKeyDown) onKeyDown(e)
 		if (polyfill && isPolyfilled) {
@@ -422,7 +419,6 @@ const TimeInputPolyfill = ({
 			onBlur={handleBlur}
 			onMouseDown={handleMouseDown}
 			onMouseUp={handleMouseUp}
-			onClick={handleClick}
 			onKeyDown={handleKeyDown}
 			ref={$input}
 			type={isPolyfilled ? 'text' : 'time'}
