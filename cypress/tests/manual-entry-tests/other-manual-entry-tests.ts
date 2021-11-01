@@ -49,7 +49,7 @@ export const otherManualEntryTests = () => {
 				.then(a11yHasExpectedHtml('<p>PM.</p>'))
 				.then(hasReturnVal(`20:30`))
 		})
-		it('08:30 PM >> [ 1 > blur > focus > 1 ] >> 01:30 PM', () => {
+		it('08:30 PM >> [ 1 blur focus 1 ] >> 01:30 PM', () => {
 			loadTestPage({ segment: 'hrs12' })
 				.type('1')
 				.should('have.value', '01:30 PM')
@@ -67,7 +67,5 @@ export const otherManualEntryTests = () => {
 				.then(a11yHasExpectedHtml(a11yInitialHtml().minutes))
 				.then(hasReturnVal(`23:30`))
 		})
-
-		// TODO: type > blur > focus > type should forget the first time you typed
 	})
 }
