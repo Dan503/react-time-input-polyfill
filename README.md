@@ -1,7 +1,5 @@
 # @time-input-polyfill/react
 
-[![hits per month badge](https://data.jsdelivr.com/v1/package/npm/@time-input-polyfill/react/badge)](https://www.jsdelivr.com/package/npm/@time-input-polyfill/react)
-
 This is a pre-built, plug-and-play, fully accessible React component that will produce an `<input type="time">` element with a built in polyfill for IE and Safari support.
 
 -   ✔️ Modeled after the Chrome 78 and Firefox 70 desktop implementations.
