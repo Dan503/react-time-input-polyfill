@@ -176,6 +176,8 @@ useEffect(()=>{
 <TimeInput value={value} setValue={setValue} />
 ```
 
+Note: It is still possible to use `onChange` however this is just an extension of the native `onChange` event in the `<input type="time">` React DOM element. It is not compatible with v1 and it does not provide a consistent value between polyfilled and non-polyfilled browsers.
+
 ### `polyfillSource` value has changed location
 
 In version 1, you would import the polyfill utils from here:
