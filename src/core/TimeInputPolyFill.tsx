@@ -28,11 +28,6 @@ import { blankValues } from '@time-input-polyfill/utils/npm/common/blankValues'
 
 const polyfillClassName = 'react-time-input-polyfill-target'
 
-// Needed for the sake of IE to work
-// interface Element {
-// 	msMatchesSelector(selectors: string): boolean
-// }
-
 export type TimeInputValue = String24hr | undefined
 
 export type SetTimeInputValue = React.Dispatch<
