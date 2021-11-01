@@ -1,18 +1,16 @@
 /**
- * # Full list of TO DO items
+ * # Full list of TODO items
+ *
+ * ## Essential
  *
  * - Add support for `polyfillSource` prop
  *
- * - Bug: Pressing up arrow twice in hours field while mode field is empty causes mode to populate
+ * ## Non-essential
  *
- * - Bug:  Clearing mode segment does not clear 24 hour time
+ * These can be done after releasing v2.0.0
  *
- * - Bug: Using a button to set value24 to empty does not clear all values
- *
- * - Use this when v1.0.0 of the utils is released: https://cdn.jsdelivr.net/npm/@time-input-polyfill/utils@1
- *
- * - Create a local polyfill file that only holds the things that are needed
- *   The output should end up here: `@time-input-polyfill/react/dist/timePolyfillUtils.js`
+ * - Apply tests to Class component version
+ * - convert the Cypress test suite into a separate package
  */
 
 import React, { useRef, useState, useEffect } from 'react'

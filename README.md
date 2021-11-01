@@ -1,14 +1,3 @@
-# TO DO
-
-// These are critical for a successful release
-
--   Add `polyfillSource` prop support
-
-// These can be done after releasing v2.0.0, not essential for release
-
--   Apply tests to Class component version
--   convert the Cypress test suite into a separate package
-
 # @time-input-polyfill/react
 
 [![hits per month badge](https://data.jsdelivr.com/v1/package/npm/@time-input-polyfill/react/badge)](https://www.jsdelivr.com/package/npm/@time-input-polyfill/react)
