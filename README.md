@@ -2,9 +2,7 @@
 
 // These are critical for a successful release
 
--   Need to update tests to work with the new page layout
--   Need to add polyfill toggle button tests
--   TODO item in TimeInputPolyFill.tsx
+-   Add `polyfillSource` prop support
 
 // These can be done after releasing v2.0.0, not essential for release
 
@@ -127,7 +125,7 @@ export function TimeInput({ label, currentValue, onInputChange }) {
 The way that the polyfill avoids downloading the full polyfill code in modern browsers is by injecting the following script tag onto the page:
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/@time-input-polyfill/react@1/dist/timePolyfillUtils.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@time-input-polyfill/utils@1"></script>
 ```
 
 That downloads the extra helper functions that the polyfill needs to function.
@@ -140,10 +138,10 @@ To work around the issue, first create a `timePolyfillUtils.js` file and ensure 
 // timePolyfillUtils.js
 
 // ES5
-require('@time-input-polyfill/react/dist/timePolyfillUtils.js')
+require('@time-input-polyfill/utils/npm/time-input-polyfill-utils.min.js')
 
 // ES6
-import '@time-input-polyfill/react/dist/timePolyfillUtils.js'
+import '@time-input-polyfill/utils/npm/time-input-polyfill-utils.min.js'
 ```
 
 Then when using the component, add a `polyfillSource` prop that points to the compiled helpers file on your server.
@@ -158,14 +156,21 @@ Then when using the component, add a `polyfillSource` prop that points to the co
 
 ## Breaking changes in v2
 
+### `onChange` replaced with `setValue`
+
 In v1 you updated the value using an `onChange` event. This was really clunky though.
 
 ```jsx
 // v1 syntax
 
 const [value, setValue] = useState()
+
 // ...
-<TimeInput value={value} onChange={({ value }) => setValue(value)} />
+
+<TimeInput value={value} onChange={({ value }) => {
+	doStuff(value)
+	setValue(value)
+}} />
 ```
 
 In v2, the syntax has been simplified down to this:
@@ -174,6 +179,22 @@ In v2, the syntax has been simplified down to this:
 // v2 syntax
 
 const [value, setValue] = useState()
+
+useEffect(()=>{
+	doStuff(value)
+}, [value])
+
 // ...
+
 <TimeInput value={value} setValue={setValue} />
 ```
+
+### `polyfillSource` value has changed location
+
+In version 1, you would import the polyfill utils from here:
+
+`@time-input-polyfill/react/dist/timePolyfillUtils.js`.
+
+That doesn't exist anymore, you need to import from here instead now:
+
+`@time-input-polyfill/utils/npm/time-input-polyfill-utils.min.js`
