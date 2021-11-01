@@ -2,7 +2,7 @@ import { button_1, button_2, button_3, toggleButton } from "../tests/button-test
 
 describe('Button tests', () => {
 	toggleButton()
-	// button_1()
-	// button_2()
-	// button_3()
+	button_1()
+	button_2()
+	button_3()
 })

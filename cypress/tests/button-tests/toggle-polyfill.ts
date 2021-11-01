@@ -1,5 +1,5 @@
 import { Segment } from "@time-input-polyfill/utils"
-import { cyInput, cySelectSegment, hasReturnVal, loadTestPage, sendFocus, use } from "../../support"
+import { cyInput, cySelectSegment, hasReturnVal, loadTestPage, use } from "../../support"
 
 const clickToggleButton = (segment: Segment) => () => cy.get('#Polyfill-demo-toggle-polyfill').click().wait(10).then(() => cySelectSegment(segment))
 
