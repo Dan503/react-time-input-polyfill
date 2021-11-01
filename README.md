@@ -6,6 +6,7 @@ This is a pre-built, plug-and-play, fully accessible React component that will p
 -   ✔️ Fully keyboard and screen reader accessible.
 -   ✔️ Sends back the same values as real time inputs (24 hour time).
 -   ✔️ Only downloads the full polyfill code in the browsers that need it
+-   ✔️ Quality assured with [Cypress](https://www.cypress.io/) tests
 
 You may have already come across the [plain JavaScript version](https://www.npmjs.com/package/time-input-polyfill). This is not just a wrapper component though. This package was built from the ground up in React, for React.
 
