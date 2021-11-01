@@ -58,7 +58,11 @@ export interface TimePolyfillProps
 	 *
 	 * @default false */
 	forcePolyfill?: boolean
-	/** TO DO: Add support for `polyfillSource` prop */
+	/**
+	 * Determines where to load the polyfill utility functions from.
+	 *
+	 * @default 'https://cdn.jsdelivr.net/npm/@time-input-polyfill/utils@1'
+	 */
 	polyfillSource?: string
 }
 
@@ -93,6 +97,7 @@ const TimeInputPolyfill = ({
 	onKeyDown,
 	className,
 	style,
+	polyfillSource = 'https://cdn.jsdelivr.net/npm/@time-input-polyfill/utils@1',
 	...restProps
 }: TimePolyfillProps) => {
 	const isPolyfilled = forcePolyfill || !supportsTime
@@ -232,48 +237,43 @@ const TimeInputPolyfill = ({
 			// Original utils file size: 19,848 bytes; essentials only file size: 24,481 bytes
 			// So I just download the full utils instead of trying to reduce it.
 			// Don't worry, it only downloads the polyfill once no matter how many inputs you have on the page
-			loadJS(
-				'https://cdn.jsdelivr.net/npm/@time-input-polyfill/utils@1',
-				() => {
-					if (window.timeInputPolyfillUtils) {
-						const {
-							convertString12hr,
-							convertString24hr,
-							a11yCreate,
-							getA11yElement,
-							ManualEntryLog,
-							getNextSegment,
-						} = window.timeInputPolyfillUtils
-						setPolyfill(window.timeInputPolyfillUtils)
-						const timeObject =
-							convertString24hr(value24hr).toTimeObject()
-						setTimeObject(timeObject)
-						if (!getA11yElement()) {
-							a11yCreate()
-						}
-						setManualEntryLog(
-							new ManualEntryLog({
-								timeObject,
-								onUpdate({ fullValue12hr }) {
-									const timeObj =
-										convertString12hr(
-											fullValue12hr,
-										).toTimeObject()
-									setTimeObject(timeObj)
-								},
-								onLimitHit() {
-									setCursorSegment(
-										getNextSegment(
-											cursorSegmentRef.current,
-										),
-									)
-								},
-							}),
-						)
-						setHasInitialised(true)
+			loadJS(polyfillSource, () => {
+				if (window.timeInputPolyfillUtils) {
+					const {
+						convertString12hr,
+						convertString24hr,
+						a11yCreate,
+						getA11yElement,
+						ManualEntryLog,
+						getNextSegment,
+					} = window.timeInputPolyfillUtils
+					setPolyfill(window.timeInputPolyfillUtils)
+					const timeObject =
+						convertString24hr(value24hr).toTimeObject()
+					setTimeObject(timeObject)
+					if (!getA11yElement()) {
+						a11yCreate()
 					}
-				},
-			)
+					setManualEntryLog(
+						new ManualEntryLog({
+							timeObject,
+							onUpdate({ fullValue12hr }) {
+								const timeObj =
+									convertString12hr(
+										fullValue12hr,
+									).toTimeObject()
+								setTimeObject(timeObj)
+							},
+							onLimitHit() {
+								setCursorSegment(
+									getNextSegment(cursorSegmentRef.current),
+								)
+							},
+						}),
+					)
+					setHasInitialised(true)
+				}
+			})
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isPolyfilled])
