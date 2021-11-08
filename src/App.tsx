@@ -1,58 +1,20 @@
 import React, { Component, useState } from 'react'
 import './App.css'
-import TimeInput, {
-	TimeInputValue,
-	SetTimeInputValue,
-} from './core/TimeInputPolyFill'
+import TimeInputPolyFill, { TimePolyfillProps } from './core/TimeInputPolyFill'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { dark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 
-const Input = ({
-	value,
-	setValue,
-	onChange,
-	className,
-	usePolyfill = true,
-	...restProps
-}: {
-	value: TimeInputValue
-	setValue?: SetTimeInputValue
-	onChange?: (props: { value: string; element: HTMLInputElement }) => void
-	className?: string
-	usePolyfill?: boolean
-	[key: string]: any
-}) => {
-	if (usePolyfill) {
-		return (
-			<TimeInput
-				value={value}
-				setValue={setValue}
-				className={className}
-				{...restProps}
-			/>
-		)
-	}
-
-	return (
-		<input
-			type="time"
-			id="non-polyfill-time-input"
-			value={value}
-			onChange={(e) => setValue(e.target.value)}
-			className={className}
-		/>
-	)
+interface ExampleBlockProps
+	extends Omit<TimePolyfillProps, 'value' | 'setValue'> {
+	label: string
+	codeString?: string
 }
 
 const ExampleBlock = ({
 	label,
 	codeString,
-	usePolyfill,
-}: {
-	label: string
-	codeString: string
-	usePolyfill?: boolean
-}) => {
+	...restProps
+}: ExampleBlockProps) => {
 	const [value, setValue] = useState('20:30')
 	const [forcePolyfill, setForcePolyfill] = useState(true)
 	const exampleId = label.replace(/\s/g, '-')
@@ -71,13 +33,13 @@ const ExampleBlock = ({
 				>
 					{label}
 				</label>
-				<Input
-					usePolyfill={usePolyfill}
+				<TimeInputPolyFill
 					value={value}
 					setValue={setValue}
 					className="exampleClass"
 					id={exampleId + '-input'}
 					forcePolyfill={forcePolyfill}
+					{...restProps}
 				/>
 				<button
 					onClick={() => setForcePolyfill(!forcePolyfill)}
@@ -115,7 +77,7 @@ const ExampleBlock = ({
 				<span id={exampleId + '-return-value'}>{value}</span>"
 			</p>
 
-			{!!codeString && (
+			{Boolean(codeString) && (
 				<SyntaxHighlighter
 					style={dark}
 					className="code"
@@ -146,7 +108,7 @@ class TestClassInput extends Component<{
 				>
 					Class based version
 				</label>
-				<TimeInput
+				<TimeInputPolyFill
 					value={value}
 					setValue={setValue}
 					forcePolyfill={forcePolyfill}
