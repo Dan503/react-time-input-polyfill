@@ -250,6 +250,7 @@ class ClassBasedComponentExample extends Component {
 function App() {
 	// let [addedLater, setAddedLater] = useState(false)
 	// setTimeout(() => setAddedLater(true), 2000)
+	const [testValue, setTestValue] = useState('default')
 
 	return (
 		<div className="App">
@@ -344,6 +345,22 @@ function App() {
 			/>
 
 			<ClassBasedComponentExample />
+
+			{process.env.NODE_ENV === 'development' && (
+				<>
+					<ExampleBlock
+						label="Events test (localhost only)"
+						onChange={(e) => setTestValue(e.currentTarget.value)}
+						onFocus={(e) => setTestValue(e.currentTarget.value)}
+						onBlur={(e) => setTestValue(e.currentTarget.value)}
+						onMouseDown={(e) => setTestValue(e.currentTarget.value)}
+						onMouseUp={(e) => setTestValue(e.currentTarget.value)}
+						onClick={(e) => setTestValue(e.currentTarget.value)}
+						onKeyDown={(e) => setTestValue(e.currentTarget.value)}
+					/>
+					<p id="events-test-output">{testValue}</p>
+				</>
+			)}
 		</div>
 	)
 }
