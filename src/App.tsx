@@ -3,6 +3,7 @@ import './App.css'
 import TimeInputPolyFill, { TimePolyfillProps } from './core/TimeInputPolyFill'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { dark } from 'react-syntax-highlighter/dist/esm/styles/prism'
+import { version } from '../package.json'
 
 interface ExampleBlockProps
 	extends Omit<TimePolyfillProps, 'value' | 'setValue'> {
@@ -253,6 +254,9 @@ function App() {
 	return (
 		<div className="App">
 			<h1>React Time Input Polyfill</h1>
+			<p>
+				<i>v{version}</i>
+			</p>
 
 			<p>Code examples are simplified guides, not exact code replicas.</p>
 
