@@ -5,6 +5,8 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { dark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import { version } from '../package.json'
 
+import { EventName, AltEventName } from './App-tests-shared-stuff'
+
 interface ExampleBlockProps
 	extends Omit<TimePolyfillProps, 'value' | 'setValue'> {
 	label: string
@@ -18,7 +20,7 @@ const ExampleBlock = ({
 }: ExampleBlockProps) => {
 	const [value, setValue] = useState('20:30')
 	const [forcePolyfill, setForcePolyfill] = useState(true)
-	const exampleId = label.replace(/\s/g, '-')
+	const exampleId = label.replace(/[^A-z]+/g, '-').replace(/-+$/g, '')
 
 	return (
 		<form
@@ -251,6 +253,8 @@ function App() {
 	// let [addedLater, setAddedLater] = useState(false)
 	// setTimeout(() => setAddedLater(true), 2000)
 	const [testValue, setTestValue] = useState('default')
+	const [eventName, setEventName] = useState<EventName>('none')
+	const [altEventName, setAltEventName] = useState<AltEventName>('none')
 
 	return (
 		<div className="App">
@@ -350,15 +354,42 @@ function App() {
 				<>
 					<ExampleBlock
 						label="Events test (localhost only)"
-						onChange={(e) => setTestValue(e.currentTarget.value)}
-						onFocus={(e) => setTestValue(e.currentTarget.value)}
-						onBlur={(e) => setTestValue(e.currentTarget.value)}
-						onMouseDown={(e) => setTestValue(e.currentTarget.value)}
-						onMouseUp={(e) => setTestValue(e.currentTarget.value)}
-						onClick={(e) => setTestValue(e.currentTarget.value)}
-						onKeyDown={(e) => setTestValue(e.currentTarget.value)}
+						onChange={(e) => {
+							setTestValue(e.currentTarget.value)
+							setAltEventName('change')
+						}}
+						onFocus={(e) => {
+							setTestValue(e.currentTarget.value)
+							setEventName('focus')
+						}}
+						onBlur={(e) => {
+							setTestValue(e.currentTarget.value)
+							setEventName('blur')
+						}}
+						onMouseDown={(e) => {
+							setTestValue(e.currentTarget.value)
+							setEventName('mouseDown')
+						}}
+						onMouseUp={(e) => {
+							setTestValue(e.currentTarget.value)
+							setEventName('mouseUp')
+						}}
+						onClick={(e) => {
+							setTestValue(e.currentTarget.value)
+							setAltEventName('click')
+						}}
+						onKeyDown={(e) => {
+							setTestValue(e.currentTarget.value)
+							setEventName('keyDown')
+						}}
+						onKeyUp={(e) => {
+							setTestValue(e.currentTarget.value)
+							setEventName('keyUp')
+						}}
 					/>
-					<p id="events-test-output">{testValue}</p>
+					<p id="events-test-value">{testValue}</p>
+					<p id="events-test-eventName">{eventName}</p>
+					<p id="events-test-altEventName">{altEventName}</p>
 				</>
 			)}
 		</div>
