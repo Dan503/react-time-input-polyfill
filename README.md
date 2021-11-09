@@ -33,20 +33,20 @@ import React from 'react'
 
 // Import the component into your project
 import { TimeInputPolyfill } from '@time-input-polyfill/react'
-// Note: default import is also supported if you proffer default imports
+// Note: default import is also supported
 
 export function TimeInput({ label, value, setValue }) {
-	return (
-		<label>
-			<span>{label}</span>
-			<TimeInputPolyfill
-				// Set the value through props
-				value={value}
-				// Pass in the state setter
-				setValue={setValue}
-			/>
-		</label>
-	)
+    return (
+        <label>
+            <span>{label}</span>
+            <TimeInputPolyfill
+                // Set the value through props
+                value={value}
+                // Pass in the state setter
+                setValue={setValue}
+            />
+        </label>
+    )
 }
 ```
 
@@ -59,26 +59,26 @@ import React, { useState, useEffect } from 'react'
 import { TimeInput } from './TimeInput'
 
 export function ExampleForm() {
-	// Use state to keep track of the value
-	const [inputValue, setInputValue] = useState('20:30') // default to 8:30 PM
+    // Use state to keep track of the value
+    const [inputValue, setInputValue] = useState('20:30') // default to 8:30 PM
 
-	// Use useEffect to trigger functionality when the value changes
-	useEffect(() => {
-		console.log({ inputValue })
-	}, [inputValue])
+    // Use useEffect to trigger functionality when the value changes
+    useEffect(() => {
+        console.log({ inputValue })
+    }, [inputValue])
 
-	return (
-		<form>
-			<TimeInput
-				label="Label text"
-				// Use the state value to set the time
-				value={inputValue}
-				// Pass the state setter function into the component
-				setValue={setInputValue}
-			/>
-			<button type="submit">Submit</button>
-		</form>
-	)
+    return (
+        <form>
+            <TimeInput
+                label="Label text"
+                // Use the state value to set the time
+                value={inputValue}
+                // Pass the state setter function into the component
+                setValue={setInputValue}
+            />
+            <button type="submit">Submit</button>
+        </form>
+    )
 }
 ```
 
@@ -91,21 +91,21 @@ import React from 'react'
 import { TimeInputPolyfill } from '@time-input-polyfill/react'
 
 export function TimeInput({ label, currentValue, onInputChange }) {
-	return (
-		<label>
-			<span>{label}</span>
-			<TimeInputPolyfill
-				value={currentValue}
-				/* Force browsers that support input[type=time]
-					to use the polyfill.
-					(useful for testing and debugging)
-				*/ forcePolyfill={true}
-				onChange={({ value, element }) => {
-					onInputChange(value)
-				}}
-			/>
-		</label>
-	)
+    return (
+        <label>
+            <span>{label}</span>
+            <TimeInputPolyfill
+                value={currentValue}
+                /* Force browsers that support input[type=time]
+                   to use the polyfill.
+                   (useful for testing and debugging) */
+                forcePolyfill={true}
+                onChange={({ value, element }) => {
+                    onInputChange(value)
+                }}
+            />
+        </label>
+    )
 }
 ```
 
@@ -137,9 +137,9 @@ Then when using the component, add a `polyfillSource` prop that points to the co
 
 ```jsx
 <TimeInput
-	value={currentValue}
-	setValue={setCurrentValue}
-	polyfillSource="/path/to/timePolyfillUtils.js"
+    value={currentValue}
+    setValue={setCurrentValue}
+    polyfillSource="/path/to/timePolyfillUtils.js"
 />
 ```
 
@@ -157,8 +157,8 @@ const [value, setValue] = useState()
 // ...
 
 <TimeInput value={value} onChange={({ value }) => {
-	doStuff(value)
-	setValue(value)
+    doStuff(value)
+    setValue(value)
 }} />
 ```
 
@@ -170,7 +170,7 @@ In v2, the syntax has been simplified down to this:
 const [value, setValue] = useState()
 
 useEffect(()=>{
-	doStuff(value)
+    doStuff(value)
 }, [value])
 
 // ...

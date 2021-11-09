@@ -105,9 +105,7 @@ const TimeInputPolyfill = ({
 
 	const [focusedViaClick, setFocusedViaClick] = useState<boolean>(false)
 
-	const [value12hr, setValue12hr] = useState<String12hr>(
-		blankValues.string12hr,
-	)
+	const [value12hr, setValue12hr] = useState<String12hr>(blankValues.string12hr)
 
 	const [timeObject, setTimeObject] = useState<TimeObject>(
 		blankValues.timeObject,
@@ -166,8 +164,7 @@ const TimeInputPolyfill = ({
 	// Do all modifications through the timeObject. React will update the other values accordingly.
 	useEffect(() => {
 		if (polyfill && isPolyfilled) {
-			const { convertTimeObject, getCursorSegment, selectSegment } =
-				polyfill
+			const { convertTimeObject, getCursorSegment, selectSegment } = polyfill
 			const segment = cursorSegment || getCursorSegment($input.current)
 			const timeObjAs24hr = convertTimeObject(timeObject).to24hr()
 			const timeObjAs12hr = convertTimeObject(timeObject).to12hr()
@@ -184,13 +181,7 @@ const TimeInputPolyfill = ({
 			}
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [
-		allowSegmentSelection,
-		cursorSegment,
-		polyfill,
-		isPolyfilled,
-		timeObject,
-	])
+	}, [allowSegmentSelection, cursorSegment, polyfill, isPolyfilled, timeObject])
 
 	useEffect(() => {
 		if (polyfill && isPolyfilled) {
@@ -237,8 +228,7 @@ const TimeInputPolyfill = ({
 						getNextSegment,
 					} = window.timeInputPolyfillUtils
 					setPolyfill(window.timeInputPolyfillUtils)
-					const timeObject =
-						convertString24hr(value24hr).toTimeObject()
+					const timeObject = convertString24hr(value24hr).toTimeObject()
 					setTimeObject(timeObject)
 					if (!getA11yElement()) {
 						a11yCreate()
@@ -247,16 +237,11 @@ const TimeInputPolyfill = ({
 						new ManualEntryLog({
 							timeObject,
 							onUpdate({ fullValue12hr }) {
-								const timeObj =
-									convertString12hr(
-										fullValue12hr,
-									).toTimeObject()
+								const timeObj = convertString12hr(fullValue12hr).toTimeObject()
 								setTimeObject(timeObj)
 							},
 							onLimitHit() {
-								setCursorSegment(
-									getNextSegment(cursorSegmentRef.current),
-								)
+								setCursorSegment(getNextSegment(cursorSegmentRef.current))
 							},
 						}),
 					)
@@ -388,9 +373,7 @@ const TimeInputPolyfill = ({
 			} else if (['Backspace', 'Delete'].includes(key)) {
 				e.preventDefault()
 				if (cursorSegment) {
-					setTimeObject(
-						modifyTimeObject(timeObject).clear[cursorSegment](),
-					)
+					setTimeObject(modifyTimeObject(timeObject).clear[cursorSegment]())
 				}
 				userChangeEvent()
 			} else if (regex.alphaNumericKeyName.test(key) && manualEntryLog) {

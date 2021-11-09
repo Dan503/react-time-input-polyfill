@@ -83,5 +83,21 @@
 		"presets": [
 			"react-app"
 		]
+	},
+	"prettier": {
+		"singleQuote": true,
+		"semi": false,
+		"useTabs": true,
+		"trailingComma": "all",
+		"overrides": [
+			{
+				"files": "README.md",
+				"options": {
+					"useTabs": false,
+					"tabWidth": 4,
+					"trailingComma": "es5"
+				}
+			}
+		]
 	}
 }
