@@ -114,7 +114,7 @@ class TestClassInput extends Component<{
 				>
 					Class based version
 				</label>
-				<TimeInputPolyFill
+				<TimeInputPolyfill
 					value={value}
 					setValue={setValue}
 					forcePolyfill={forcePolyfill}
