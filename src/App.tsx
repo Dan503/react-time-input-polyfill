@@ -3,7 +3,7 @@ import './App.css'
 import {
 	TimeInputPolyfill,
 	TimeInputPolyfillProps,
-} from './core/TimeInputPolyFill'
+} from './core/TimeInputPolyfill'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { dark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import { version } from '../package.json'
