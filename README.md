@@ -2,9 +2,9 @@
 
 ## IMPORTANT! This package has been renamed
 
-You will now find the React time input polyfill here:
+The new name for the polyfill is:
 
-https://www.npmjs.com/package/@time-input-polyfill/react
+[@time-input-polyfill/react](https://www.npmjs.com/package/@time-input-polyfill/react)
 
 You can install the new version using:
 
