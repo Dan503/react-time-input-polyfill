@@ -26,17 +26,11 @@ const ExampleBlock = ({
 	const exampleId = label.replace(/[^A-z]+/g, '-').replace(/-+$/g, '')
 
 	return (
-		<form
-			style={{ marginBottom: '2em' }}
-			onSubmit={(e) => e.preventDefault()}
-		>
+		<form style={{ marginBottom: '2em' }} onSubmit={(e) => e.preventDefault()}>
 			<h2>{label}</h2>
 
 			<span style={{ display: 'inline-block' }}>
-				<label
-					htmlFor={exampleId + '-input'}
-					style={{ marginRight: '0.5em' }}
-				>
+				<label htmlFor={exampleId + '-input'} style={{ marginRight: '0.5em' }}>
 					{label}
 				</label>
 				<TimeInputPolyfill
@@ -58,22 +52,13 @@ const ExampleBlock = ({
 			</span>
 
 			<p>
-				<button
-					onClick={() => setValue('07:15')}
-					id={exampleId + '-button-1'}
-				>
+				<button onClick={() => setValue('07:15')} id={exampleId + '-button-1'}>
 					Set {label.toLocaleLowerCase()} time to 7:15 AM
 				</button>
-				<button
-					onClick={() => setValue('15:45')}
-					id={exampleId + '-button-2'}
-				>
+				<button onClick={() => setValue('15:45')} id={exampleId + '-button-2'}>
 					Set {label.toLocaleLowerCase()} time to 3:45 PM
 				</button>
-				<button
-					onClick={() => setValue('')}
-					id={exampleId + '-button-3'}
-				>
+				<button onClick={() => setValue('')} id={exampleId + '-button-3'}>
 					Set {label.toLocaleLowerCase()} time to " "
 				</button>
 			</p>
@@ -108,10 +93,7 @@ class TestClassInput extends Component<{
 		const identifier = 'class-based-component-example'
 		return (
 			<span style={{ display: 'inline-block' }}>
-				<label
-					style={{ marginRight: '0.5em' }}
-					htmlFor={`${identifier}-input`}
-				>
+				<label style={{ marginRight: '0.5em' }} htmlFor={`${identifier}-input`}>
 					Class based version
 				</label>
 				<TimeInputPolyfill
@@ -121,9 +103,7 @@ class TestClassInput extends Component<{
 					id={`${identifier}-input`}
 				/>
 				<button
-					onClick={() =>
-						this.setState({ forcePolyfill: !forcePolyfill })
-					}
+					onClick={() => this.setState({ forcePolyfill: !forcePolyfill })}
 					style={{ marginLeft: 10 }}
 					title="Toggle polyfill"
 					id={`${identifier}-toggle-polyfill`}
@@ -151,9 +131,8 @@ class ClassBasedComponentExample extends Component {
 				<h2>Class based component example</h2>
 
 				<p>
-					The time input polyfill has been optimized to work best with
-					React Hooks but you can still use it in a class based
-					component.
+					The time input polyfill has been optimized to work best with React
+					Hooks but you can still use it in a class based component.
 				</p>
 
 				<TestClassInput
