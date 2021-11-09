@@ -32,7 +32,8 @@ npm i @time-input-polyfill/react
 import React from 'react'
 
 // Import the component into your project
-import TimeInputPolyfill from '@time-input-polyfill/react'
+import { TimeInputPolyfill } from '@time-input-polyfill/react'
+// Note: default import is also supported if you proffer default imports
 
 export function TimeInput({ label, value, setValue }) {
 	return (
@@ -41,7 +42,7 @@ export function TimeInput({ label, value, setValue }) {
 			<TimeInputPolyfill
 				// Set the value through props
 				value={value}
-				// Pass the state setter
+				// Pass in the state setter
 				setValue={setValue}
 			/>
 		</label>
@@ -87,7 +88,7 @@ You can also force-enable the polyfill so that it is active in modern browsers t
 /* TimeInput.js */
 
 import React from 'react'
-import TimeInputPolyfill from '@time-input-polyfill/react'
+import { TimeInputPolyfill } from '@time-input-polyfill/react'
 
 export function TimeInput({ label, currentValue, onInputChange }) {
 	return (
