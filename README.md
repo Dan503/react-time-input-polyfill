@@ -1,4 +1,26 @@
-# react-time-input-polyfill
+# {DEPRECATED} react-time-input-polyfill
+
+## IMPORTANT! This package has been renamed
+
+You will now find the React time input polyfill here:
+
+https://www.npmjs.com/package/@time-input-polyfill/react
+
+You can install the new version using:
+
+```
+npm i @time-input-polyfill/react
+```
+
+Version 1 ("react-time-input-polyfill") is not supported anymore, please migrate to version 2.
+
+### Migration details
+
+There were breaking changes made in v2.0.0 for the sake of making the usage of the component more streamlined.
+
+See the [v2 release notes](https://github.com/Dan503/react-time-input-polyfill/releases/tag/v2.0.0-major-overhaul) for more details.
+
+## DEPRECATED documentation...
 
 [![hits per month badge](https://data.jsdelivr.com/v1/package/npm/react-time-input-polyfill/badge)](https://www.jsdelivr.com/package/npm/react-time-input-polyfill)
 
