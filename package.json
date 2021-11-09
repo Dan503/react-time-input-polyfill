@@ -42,6 +42,7 @@
 		"@testing-library/user-event": "^13.2.1",
 		"@types/react-dom": "^17.0.11",
 		"@types/react-syntax-highlighter": "^13.5.2",
+		"copyfiles": "^2.4.1",
 		"cypress": "^8.2.0",
 		"cypress-plugin-tab": "^1.0.5",
 		"cypress-promise": "^1.1.0",
@@ -57,11 +58,12 @@
 	},
 	"scripts": {
 		"start": "node node_modules/react-scripts/scripts/start.js",
-		"build": "node node_modules/react-scripts/scripts/build.js",
+		"build": "node node_modules/react-scripts/scripts/build.js && npm run copy",
+		"copy": "npx copyfiles -u 1 build/**/* docs",
 		"test": "run-p start cy",
 		"cy": "cypress open",
 		"ts": "tsc --project tsconfig.npm.json",
-		"prepublishOnly": "npm run ts",
+		"prepublishOnly": "npm run ts && build",
 		"postpublish": "npm run clean",
 		"clean": "del-cli index.js index.d.ts src/core/index.js src/core/index.d.ts src/core/TimeInputPolyFill.js src/core/TimeInputPolyFill.d.ts"
 	},
