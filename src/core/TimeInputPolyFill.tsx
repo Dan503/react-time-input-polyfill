@@ -83,7 +83,6 @@ const TimeInputPolyfill = ({
 	onBlur,
 	onMouseDown,
 	onMouseUp,
-	onClick,
 	onKeyDown,
 	className = '',
 	style,
