@@ -34,7 +34,7 @@ export type SetTimeInputValue = React.Dispatch<
 	React.SetStateAction<TimeInputValue>
 >
 
-export interface TimePolyfillProps
+export interface TimeInputPolyfillProps
 	extends React.HTMLAttributes<HTMLInputElement> {
 	/** The string value of the input in 24 hour time. */
 	value: TimeInputValue
@@ -88,7 +88,7 @@ const TimeInputPolyfill = ({
 	style,
 	polyfillSource = 'https://cdn.jsdelivr.net/npm/@time-input-polyfill/utils@1',
 	...restProps
-}: TimePolyfillProps) => {
+}: TimeInputPolyfillProps) => {
 	const isPolyfilled = forcePolyfill || !supportsTime
 
 	const value24hrCache = useRef(value24hr)
@@ -428,4 +428,7 @@ const TimeInputPolyfill = ({
 	)
 }
 
-export default React.memo(TimeInputPolyfill)
+const _TimeInputPolyfill = React.memo(TimeInputPolyfill)
+
+export { _TimeInputPolyfill as TimeInputPolyfill }
+export default _TimeInputPolyfill

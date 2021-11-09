@@ -1,6 +1,9 @@
 import React, { Component, useState } from 'react'
 import './App.css'
-import TimeInputPolyFill, { TimePolyfillProps } from './core/TimeInputPolyFill'
+import {
+	TimeInputPolyfill,
+	TimeInputPolyfillProps,
+} from './core/TimeInputPolyFill'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { dark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import { version } from '../package.json'
@@ -8,7 +11,7 @@ import { version } from '../package.json'
 import { EventName, AltEventName } from './App-tests-shared-stuff'
 
 interface ExampleBlockProps
-	extends Omit<TimePolyfillProps, 'value' | 'setValue'> {
+	extends Omit<TimeInputPolyfillProps, 'value' | 'setValue'> {
 	label: string
 	codeString?: string
 }
@@ -36,7 +39,7 @@ const ExampleBlock = ({
 				>
 					{label}
 				</label>
-				<TimeInputPolyFill
+				<TimeInputPolyfill
 					value={value}
 					setValue={setValue}
 					className="exampleClass"
