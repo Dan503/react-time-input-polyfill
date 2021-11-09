@@ -177,7 +177,9 @@ useEffect(()=>{
 <TimeInput value={value} setValue={setValue} />
 ```
 
-Note: It is still possible to use `onChange` however this is just an extension of the native `onChange` event in the `<input type="time">` React DOM element. It is not compatible with v1 and it does not provide a consistent value between polyfilled and non-polyfilled browsers.
+Note: It is still possible to use `onChange`, however this is just an extension of the native `<input type="time">` `onChange` event now. It is not compatible with v1 and it does not provide a consistent value between polyfilled and non-polyfilled browsers.
+
+**Warning:** events like `onChange` and `onKeyUp` fire **before** the state in the polyfill has settled. This means that `event.target.currentValue` will **not** return the expected value in the polyfill version. It was out of scope to adjust the timing on every possible event to fire _after_ the state has settled.
 
 ### `polyfillSource` value has changed location
 
