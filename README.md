@@ -16,12 +16,18 @@ You can view a demo of the original plain javascript version here: https://dan50
 
 ## Install
 
-The component needs an ES6 compatible environment to run in. It also needs React installed on the project. Take a look at [create-react-app](https://create-react-app.dev/docs/getting-started) to get started with React.
+The component was built to work in [create-react-app](https://create-react-app.dev/docs/getting-started) projects. It should work ok in other React based frameworks though as well.
 
-You can then install this polyfill component with npm:
+Install the polyfill component with npm:
 
 ```
 npm i @time-input-polyfill/react
+```
+
+or install via Yarn:
+
+```
+yarn add @time-input-polyfill/react
 ```
 
 ## Usage
