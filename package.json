@@ -3,6 +3,7 @@
 	"version": "2.0.0",
 	"description": "A pre-built, plug-and-play, fully accessible React component that will produce an `input[type='time']` element with a built in polyfill for IE and Safari support.",
 	"main": "index.js",
+	"private": "false",
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/Dan503/react-time-input-polyfill.git"
