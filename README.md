@@ -4,7 +4,7 @@
 
 The new name for the polyfill is:
 
-[@time-input-polyfill/react](https://www.npmjs.com/package/@time-input-polyfill/react)
+[@time-input-polyfill/react](https://www.npmjs.com/package/@time-input-polyfill/react/v/latest)
 
 You can install the new version using:
 
