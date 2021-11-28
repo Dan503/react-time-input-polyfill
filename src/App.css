@@ -37,3 +37,20 @@ button:hover,
 button:focus {
 	border-color: hsl(30, 20%, 70%);
 }
+
+/* Banner for warning about virtual keyboards not being supported */
+@media (pointer: coarse) {
+	body::before {
+		position: fixed;
+		bottom: 0;
+		display: block;
+		padding: 2rem;
+		border: 5px solid red;
+		background-color: hsl(0, 79%, 87%);
+		color: #000;
+		text-align: center;
+		font-weight: bold;
+		line-height: 1.5;
+		content: 'The polyfill does not work properly for virtual keyboards. Please try the demo on a desktop browser. A device that has a virtual keyboard will most likely also have native time input support.';
+	}
+}
