@@ -1,3 +1,11 @@
+// These polyfills are only necessary for the sake of IE11 being able to render the syntax highlighter
+import 'core-js/features/symbol'
+import 'core-js/features/promise'
+import 'core-js/features/object/assign'
+import 'core-js/features/array/includes'
+import 'core-js/features/array/find'
+import 'core-js/features/array/find-index'
+
 import React, { Component, useState } from 'react'
 import './App.css'
 import {
