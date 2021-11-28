@@ -282,21 +282,11 @@ const TimeInputPolyfill = ({
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		if (onChange) onChange(e)
 
+		// This is needed to guard against virtual keyboards sending 12hr strings in the change event.
+		// Mobile devices are not supported by this polyfill, all mobile devices support time inputs natively.
 		if (!isPolyfilled || polyfill?.isString24hr(e.target.value)) {
 			update24hr(e.target.value)
 			return
-		}
-
-		if (polyfill) {
-			// This code triggers if manually typing into a mobile phone keyboard
-			// Mobile isn't triggering the ManualEntryLog which is what is supposed to handle manual time entry
-			// Mobile isn't a target browser so I'm not really too fussed about mobile not working properly
-			const string12hr = polyfill.isString12hr(e.target.value)
-				? e.target.value
-				: polyfill.toLeadingZero12HrString(e.target.value)
-			const string24hr = polyfill.convertString12hr(string12hr).to24hr()
-
-			update24hr(string24hr)
 		}
 	}
 	const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
