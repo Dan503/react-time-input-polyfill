@@ -96,19 +96,17 @@ You can also force-enable the polyfill so that it is active in modern browsers t
 import React from 'react'
 import { TimeInputPolyfill } from '@time-input-polyfill/react'
 
-export function TimeInput({ label, currentValue, onInputChange }) {
+export function TimeInput({ label, value, setValue }) {
     return (
         <label>
             <span>{label}</span>
             <TimeInputPolyfill
-                value={currentValue}
+                value={value}
+                setValue={setValue}
                 /* Force browsers that support input[type=time]
                    to use the polyfill.
                    (useful for testing and debugging) */
                 forcePolyfill={true}
-                onChange={({ value, element }) => {
-                    onInputChange(value)
-                }}
             />
         </label>
     )
@@ -192,8 +190,8 @@ Note: It is still possible to use `onChange`, however this is just an extension 
 
 In version 1, you would import the polyfill utils from here:
 
-`@time-input-polyfill/react/dist/timePolyfillUtils.js`.
+`react-time-input-polyfill/dist/timePolyfillUtils.js`.
 
-That doesn't exist anymore, you need to import from here instead now:
+In version 2, you will need to import from here instead now:
 
 `@time-input-polyfill/utils/npm/time-input-polyfill-utils.min.js`
