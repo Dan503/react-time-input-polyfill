@@ -88,7 +88,7 @@
 		"build": "npx rollup --config && gulp build",
 		"react-build": "node node_modules/react-scripts/scripts/build.js",
 		"test": "node scripts/test.js",
-		"prepublish": "npm run build"
+		"prepublishOnly": "npm run build"
 	},
 	"eslintConfig": {
 		"extends": "react-app"
