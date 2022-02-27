@@ -15,8 +15,9 @@ import {
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { dark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import { version } from '../package.json'
+import { getIDsAndLabels, staticValues } from '@time-input-polyfill/tests'
 
-import { EventName, AltEventName } from './App-tests-shared-stuff'
+import { EventName, AltEventName, IDsAndLabels } from './App-tests-shared-stuff'
 
 interface ExampleBlockProps
 	extends Omit<TimeInputPolyfillProps, 'value' | 'setValue'> {
@@ -31,28 +32,28 @@ const ExampleBlock = ({
 }: ExampleBlockProps) => {
 	const [value, setValue] = useState('20:30')
 	const [forcePolyfill, setForcePolyfill] = useState(true)
-	const exampleId = label.replace(/[^A-z]+/g, '-').replace(/-+$/g, '')
+	const { IDs } = getIDsAndLabels({ primaryTestsLabel: label })
 
 	return (
 		<form style={{ marginBottom: '2em' }} onSubmit={(e) => e.preventDefault()}>
 			<h2>{label}</h2>
 
 			<span style={{ display: 'inline-block' }}>
-				<label htmlFor={exampleId + '-input'} style={{ marginRight: '0.5em' }}>
+				<label htmlFor={IDs.primaryInputID} style={{ marginRight: '0.5em' }}>
 					{label}
 				</label>
 				<TimeInputPolyfill
 					value={value}
 					setValue={setValue}
 					className="exampleClass"
-					id={exampleId + '-input'}
+					id={IDs.primaryInputID}
 					forcePolyfill={forcePolyfill}
 					{...restProps}
 				/>
 				<button
 					onClick={() => setForcePolyfill(!forcePolyfill)}
 					style={{ marginLeft: 10 }}
-					id={exampleId + '-toggle-polyfill'}
+					id={IDs.buttonIDs.togglePolyfillID}
 					title="Toggle polyfill"
 				>
 					Polyfill is <strong>{forcePolyfill ? 'ON' : 'OFF'}</strong>
@@ -60,20 +61,19 @@ const ExampleBlock = ({
 			</span>
 
 			<p>
-				<button onClick={() => setValue('07:15')} id={exampleId + '-button-1'}>
+				<button onClick={() => setValue('07:15')} id={IDs.buttonIDs.amID}>
 					Set {label.toLocaleLowerCase()} time to 7:15 AM
 				</button>
-				<button onClick={() => setValue('15:45')} id={exampleId + '-button-2'}>
+				<button onClick={() => setValue('15:45')} id={IDs.buttonIDs.pmID}>
 					Set {label.toLocaleLowerCase()} time to 3:45 PM
 				</button>
-				<button onClick={() => setValue('')} id={exampleId + '-button-3'}>
+				<button onClick={() => setValue('')} id={IDs.buttonIDs.blankID}>
 					Set {label.toLocaleLowerCase()} time to " "
 				</button>
 			</p>
 
 			<p>
-				{label} returned value: "
-				<span id={exampleId + '-return-value'}>{value}</span>"
+				{label} returned value: "<span id={IDs.primaryValueID}>{value}</span>"
 			</p>
 
 			{Boolean(codeString) && (
@@ -90,47 +90,32 @@ const ExampleBlock = ({
 	)
 }
 
-class TestClassInput extends Component<{
-	value: string
-	setValue: React.Dispatch<React.SetStateAction<string>>
-}> {
-	state = { forcePolyfill: true }
-	render() {
-		const { value, setValue } = this.props
-		const { forcePolyfill } = this.state
-		const identifier = 'class-based-component-example'
-		return (
-			<span style={{ display: 'inline-block' }}>
-				<label style={{ marginRight: '0.5em' }} htmlFor={`${identifier}-input`}>
-					Class based version
-				</label>
-				<TimeInputPolyfill
-					value={value}
-					setValue={setValue}
-					forcePolyfill={forcePolyfill}
-					id={`${identifier}-input`}
-				/>
-				<button
-					onClick={() => this.setState({ forcePolyfill: !forcePolyfill })}
-					style={{ marginLeft: 10 }}
-					title="Toggle polyfill"
-					id={`${identifier}-toggle-polyfill`}
-				>
-					Polyfill is <strong>{forcePolyfill ? 'ON' : 'OFF'}</strong>
-				</button>
-			</span>
-		)
-	}
-}
-
 class ClassBasedComponentExample extends Component {
-	state = { value: '20:30' }
+	state = {
+		value: staticValues.defaultValue.cpuValue,
+		eventsValue: staticValues.defaultValue.cpuValue,
+		eventsReturnValue: 'default',
+		eventMainName: 'none',
+		eventAltName: 'none',
+		forcePolyfill: true,
+	}
 	exampleId = 'class-based-component-example'
 	setValue(newValue) {
 		this.setState({ value: newValue })
 	}
 	render() {
-		const { value } = this.state
+		const { value, forcePolyfill } = this.state
+		const {
+			eventsInputID,
+			eventsAltNameID,
+			eventsMainNameID,
+			eventsValueID,
+			primaryValueID,
+			primaryInputID,
+			buttonIDs,
+		} = IDsAndLabels.classBased.IDs
+		const { eventTestsLabel, primaryTestsLabel } =
+			IDsAndLabels.classBased.labels
 		return (
 			<form
 				style={{ marginBottom: '2em' }}
@@ -143,34 +128,40 @@ class ClassBasedComponentExample extends Component {
 					Hooks but you can still use it in a class based component.
 				</p>
 
-				<TestClassInput
-					value={this.state.value}
-					setValue={(newValue) => this.setState({ value: newValue })}
-				/>
+				<span style={{ display: 'inline-block' }}>
+					<label style={{ marginRight: '0.5em' }} htmlFor={primaryInputID}>
+						{primaryTestsLabel}
+					</label>
+					<TimeInputPolyfill
+						value={value}
+						setValue={(newValue) => this.setState({ value: newValue })}
+						forcePolyfill={forcePolyfill}
+						id={primaryInputID}
+					/>
+					<button
+						onClick={() => this.setState({ forcePolyfill: !forcePolyfill })}
+						style={{ marginLeft: 10 }}
+						title="Toggle polyfill"
+						id={buttonIDs.togglePolyfillID}
+					>
+						Polyfill is <strong>{forcePolyfill ? 'ON' : 'OFF'}</strong>
+					</button>
+				</span>
 
 				<p>
-					<button
-						onClick={() => this.setValue('07:15')}
-						id={this.exampleId + '-button-1'}
-					>
+					<button onClick={() => this.setValue('07:15')} id={buttonIDs.amID}>
 						Set class based time to 7:15 AM
 					</button>
-					<button
-						onClick={() => this.setValue('15:45')}
-						id={this.exampleId + '-button-2'}
-					>
+					<button onClick={() => this.setValue('15:45')} id={buttonIDs.pmID}>
 						Set class based time to 3:45 PM
 					</button>
-					<button
-						onClick={() => this.setValue('')}
-						id={this.exampleId + '-button-3'}
-					>
+					<button onClick={() => this.setValue('')} id={buttonIDs.blankID}>
 						Set class based time to " "
 					</button>
 				</p>
 
-				<p id="class-based-component-return-value">
-					class based returned value: "{value}"
+				<p>
+					class based returned value: "<span id={primaryValueID}>{value}</span>"
 				</p>
 
 				<SyntaxHighlighter
@@ -234,6 +225,59 @@ class ClassBasedComponentExample extends Component {
 	}
 `.replace(/^\n/, '')}
 				</SyntaxHighlighter>
+				{process.env.NODE_ENV === 'development' && (
+					<>
+						<h2>{IDsAndLabels.classBased.labels.eventTestsLabel}</h2>
+
+						<div>
+							<label htmlFor={eventsInputID}>{eventTestsLabel}</label>
+							<br />
+							<TimeInputPolyfill
+								id={eventsInputID}
+								value={this.state.eventsValue}
+								setValue={(newValue) =>
+									this.setState({ eventsValue: newValue })
+								}
+								forcePolyfill
+								onChange={(e) => {
+									this.setValue(e.currentTarget.value)
+									this.setState({ eventAltName: 'change' })
+								}}
+								onFocus={(e) => {
+									this.setValue(e.currentTarget.value)
+									this.setState({ eventMainName: 'focus' })
+								}}
+								onBlur={(e) => {
+									this.setValue(e.currentTarget.value)
+									this.setState({ eventMainName: 'blur' })
+								}}
+								onMouseDown={(e) => {
+									this.setValue(e.currentTarget.value)
+									this.setState({ eventMainName: 'mouseDown' })
+								}}
+								onMouseUp={(e) => {
+									this.setValue(e.currentTarget.value)
+									this.setState({ eventMainName: 'mouseUp' })
+								}}
+								onClick={(e) => {
+									this.setValue(e.currentTarget.value)
+									this.setState({ eventAltName: 'click' })
+								}}
+								onKeyDown={(e) => {
+									this.setValue(e.currentTarget.value)
+									this.setState({ eventMainName: 'keyDown' })
+								}}
+								onKeyUp={(e) => {
+									this.setValue(e.currentTarget.value)
+									this.setState({ eventMainName: 'keyUp' })
+								}}
+							/>
+							<p id={eventsValueID}>{this.state.value}</p>
+							<p id={eventsMainNameID}>{this.state.eventMainName}</p>
+							<p id={eventsAltNameID}>{this.state.eventAltName}</p>
+						</div>
+					</>
+				)}
 			</form>
 		)
 	}
@@ -343,7 +387,7 @@ function App() {
 			{process.env.NODE_ENV === 'development' && (
 				<>
 					<ExampleBlock
-						label="Events test (localhost only)"
+						label={IDsAndLabels.functionBased.labels.eventTestsLabel}
 						onChange={(e) => {
 							setTestValue(e.currentTarget.value)
 							setAltEventName('change')
