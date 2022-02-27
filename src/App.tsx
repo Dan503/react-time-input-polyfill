@@ -94,15 +94,12 @@ class ClassBasedComponentExample extends Component {
 	state = {
 		value: staticValues.defaultValue.cpuValue,
 		eventsValue: staticValues.defaultValue.cpuValue,
-		eventsReturnValue: 'default',
+		eventsReturnValue: staticValues.defaultValue.inputValue,
 		eventMainName: 'none',
 		eventAltName: 'none',
 		forcePolyfill: true,
 	}
 	exampleId = 'class-based-component-example'
-	setValue(newValue) {
-		this.setState({ value: newValue })
-	}
 	render() {
 		const { value, forcePolyfill } = this.state
 		const {
@@ -149,13 +146,24 @@ class ClassBasedComponentExample extends Component {
 				</span>
 
 				<p>
-					<button onClick={() => this.setValue('07:15')} id={buttonIDs.amID}>
+					<button
+						onClick={() => {
+							this.setState({ value: '07:15' })
+						}}
+						id={buttonIDs.amID}
+					>
 						Set class based time to 7:15 AM
 					</button>
-					<button onClick={() => this.setValue('15:45')} id={buttonIDs.pmID}>
+					<button
+						onClick={() => this.setState({ value: '15:45' })}
+						id={buttonIDs.pmID}
+					>
 						Set class based time to 3:45 PM
 					</button>
-					<button onClick={() => this.setValue('')} id={buttonIDs.blankID}>
+					<button
+						onClick={() => this.setState({ value: '' })}
+						id={buttonIDs.blankID}
+					>
 						Set class based time to " "
 					</button>
 				</p>
@@ -227,7 +235,7 @@ class ClassBasedComponentExample extends Component {
 				</SyntaxHighlighter>
 				{process.env.NODE_ENV === 'development' && (
 					<>
-						<h2>{IDsAndLabels.classBased.labels.eventTestsLabel}</h2>
+						<h2>{eventTestsLabel}</h2>
 
 						<div>
 							<label htmlFor={eventsInputID}>{eventTestsLabel}</label>
@@ -235,44 +243,60 @@ class ClassBasedComponentExample extends Component {
 							<TimeInputPolyfill
 								id={eventsInputID}
 								value={this.state.eventsValue}
-								setValue={(newValue) =>
+								setValue={(newValue) => {
 									this.setState({ eventsValue: newValue })
-								}
+								}}
 								forcePolyfill
 								onChange={(e) => {
-									this.setValue(e.currentTarget.value)
-									this.setState({ eventAltName: 'change' })
+									this.setState({
+										eventsReturnValue: e.currentTarget.value,
+										eventAltName: 'change',
+									})
 								}}
 								onFocus={(e) => {
-									this.setValue(e.currentTarget.value)
-									this.setState({ eventMainName: 'focus' })
+									this.setState({
+										eventsReturnValue: e.currentTarget.value,
+										eventMainName: 'focus',
+									})
 								}}
 								onBlur={(e) => {
-									this.setValue(e.currentTarget.value)
-									this.setState({ eventMainName: 'blur' })
+									this.setState({
+										eventsReturnValue: e.currentTarget.value,
+										eventMainName: 'blur',
+									})
 								}}
 								onMouseDown={(e) => {
-									this.setValue(e.currentTarget.value)
-									this.setState({ eventMainName: 'mouseDown' })
+									this.setState({
+										eventsReturnValue: e.currentTarget.value,
+										eventMainName: 'mouseDown',
+									})
 								}}
 								onMouseUp={(e) => {
-									this.setValue(e.currentTarget.value)
-									this.setState({ eventMainName: 'mouseUp' })
+									this.setState({
+										eventsReturnValue: e.currentTarget.value,
+										eventMainName: 'mouseUp',
+									})
 								}}
 								onClick={(e) => {
-									this.setValue(e.currentTarget.value)
-									this.setState({ eventAltName: 'click' })
+									this.setState({
+										eventsReturnValue: e.currentTarget.value,
+										eventAltName: 'click',
+									})
 								}}
 								onKeyDown={(e) => {
-									this.setValue(e.currentTarget.value)
-									this.setState({ eventMainName: 'keyDown' })
+									this.setState({
+										eventsReturnValue: e.currentTarget.value,
+										eventMainName: 'keyDown',
+									})
 								}}
 								onKeyUp={(e) => {
-									this.setValue(e.currentTarget.value)
-									this.setState({ eventMainName: 'keyUp' })
+									this.setState({
+										eventsReturnValue: e.currentTarget.value,
+										eventMainName: 'keyUp',
+									})
 								}}
 							/>
-							<p id={eventsValueID}>{this.state.value}</p>
+							<p id={eventsValueID}>{this.state.eventsReturnValue}</p>
 							<p id={eventsMainNameID}>{this.state.eventMainName}</p>
 							<p id={eventsAltNameID}>{this.state.eventAltName}</p>
 						</div>
@@ -286,9 +310,15 @@ class ClassBasedComponentExample extends Component {
 function App() {
 	// let [addedLater, setAddedLater] = useState(false)
 	// setTimeout(() => setAddedLater(true), 2000)
-	const [testValue, setTestValue] = useState('default')
-	const [eventName, setEventName] = useState<EventName>('none')
-	const [altEventName, setAltEventName] = useState<AltEventName>('none')
+	const [testValue, setTestValue] = useState(
+		staticValues.defaultValue.inputValue,
+	)
+	const [eventMainName, setEventName] = useState<EventName>('none')
+	const [eventAltName, setAltEventName] = useState<AltEventName>('none')
+
+	const { eventTestsLabel } = IDsAndLabels.functionBased.labels
+	const { eventsValueID, eventsAltNameID, eventsMainNameID } =
+		IDsAndLabels.functionBased.IDs
 
 	return (
 		<div className="App">
@@ -387,7 +417,7 @@ function App() {
 			{process.env.NODE_ENV === 'development' && (
 				<>
 					<ExampleBlock
-						label={IDsAndLabels.functionBased.labels.eventTestsLabel}
+						label={eventTestsLabel}
 						onChange={(e) => {
 							setTestValue(e.currentTarget.value)
 							setAltEventName('change')
@@ -421,9 +451,9 @@ function App() {
 							setEventName('keyUp')
 						}}
 					/>
-					<p id="events-test-value">{testValue}</p>
-					<p id="events-test-eventName">{eventName}</p>
-					<p id="events-test-altEventName">{altEventName}</p>
+					<p id={eventsValueID}>{testValue}</p>
+					<p id={eventsMainNameID}>{eventMainName}</p>
+					<p id={eventsAltNameID}>{eventAltName}</p>
 				</>
 			)}
 		</div>
