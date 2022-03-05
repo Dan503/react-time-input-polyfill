@@ -1,14 +1,3 @@
-/**
- * # Full list of TODO items
- *
- * ## Non-essential
- *
- * These can be done after releasing v2.0.0
- *
- * - Apply tests to Class component version
- * - convert the Cypress test suite into a separate package
- */
-
 import React, { useRef, useState, useEffect } from 'react'
 import loadJS from '@dan503/load-js'
 
