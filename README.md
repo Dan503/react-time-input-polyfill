@@ -18,6 +18,10 @@ You can view a demo of the original plain javascript version here: https://dan50
 
 The component was built to work in [create-react-app](https://create-react-app.dev/docs/getting-started) projects. It should work ok in other React based frameworks though as well.
 
+> **`react-scripts` v5 is currently not supported.**
+>
+> This is related to React upgrading to Webpack v5. [This linked issue](https://github.com/facebook/create-react-app/issues/11865) is blocking my ability to support `react-scripts` v5.
+
 Install the polyfill component with npm:
 
 ```
