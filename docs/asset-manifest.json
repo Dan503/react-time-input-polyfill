@@ -1,20 +1,20 @@
 {
   "files": {
     "main.css": "/react-time-input-polyfill/static/css/main.7723c834.chunk.css",
-    "main.js": "/react-time-input-polyfill/static/js/main.42f6e930.chunk.js",
-    "main.js.map": "/react-time-input-polyfill/static/js/main.42f6e930.chunk.js.map",
+    "main.js": "/react-time-input-polyfill/static/js/main.ffc8e60a.chunk.js",
+    "main.js.map": "/react-time-input-polyfill/static/js/main.ffc8e60a.chunk.js.map",
     "runtime-main.js": "/react-time-input-polyfill/static/js/runtime-main.96ac4df0.js",
     "runtime-main.js.map": "/react-time-input-polyfill/static/js/runtime-main.96ac4df0.js.map",
-    "static/js/2.d1ce3d3e.chunk.js": "/react-time-input-polyfill/static/js/2.d1ce3d3e.chunk.js",
-    "static/js/2.d1ce3d3e.chunk.js.map": "/react-time-input-polyfill/static/js/2.d1ce3d3e.chunk.js.map",
+    "static/js/2.dd4ea589.chunk.js": "/react-time-input-polyfill/static/js/2.dd4ea589.chunk.js",
+    "static/js/2.dd4ea589.chunk.js.map": "/react-time-input-polyfill/static/js/2.dd4ea589.chunk.js.map",
     "index.html": "/react-time-input-polyfill/index.html",
     "static/css/main.7723c834.chunk.css.map": "/react-time-input-polyfill/static/css/main.7723c834.chunk.css.map",
-    "static/js/2.d1ce3d3e.chunk.js.LICENSE.txt": "/react-time-input-polyfill/static/js/2.d1ce3d3e.chunk.js.LICENSE.txt"
+    "static/js/2.dd4ea589.chunk.js.LICENSE.txt": "/react-time-input-polyfill/static/js/2.dd4ea589.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.96ac4df0.js",
-    "static/js/2.d1ce3d3e.chunk.js",
+    "static/js/2.dd4ea589.chunk.js",
     "static/css/main.7723c834.chunk.css",
-    "static/js/main.42f6e930.chunk.js"
+    "static/js/main.ffc8e60a.chunk.js"
   ]
 }
