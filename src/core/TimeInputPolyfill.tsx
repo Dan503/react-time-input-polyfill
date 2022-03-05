@@ -19,12 +19,14 @@ import type {
 	Polyfill,
 	Segment,
 	TimeObjectKey,
-} from '@time-input-polyfill/utils/npm/types'
-import type { ManualEntryLog } from '@time-input-polyfill/utils/npm/core/ManualEntryLog/ManualEntryLog'
+} from '@time-input-polyfill/utils/dist/mjs/types'
+import type { ManualEntryLog } from '@time-input-polyfill/utils/dist/mjs/core/ManualEntryLog/ManualEntryLog'
 
 // Avoid bulk importing from index files to be more tree-shake friendly
-import supportsTime from '@time-input-polyfill/utils/npm/common/supportsTime'
-import { blankValues } from '@time-input-polyfill/utils/npm/common/blankValues'
+import {
+	supportsTime,
+	blankValues,
+} from '@time-input-polyfill/utils/dist/mjs/common'
 
 const polyfillClassName = 'react-time-input-polyfill-target'
 
@@ -51,7 +53,7 @@ export interface TimeInputPolyfillProps
 	/**
 	 * Determines where to load the polyfill utility functions from.
 	 *
-	 * @default 'https://cdn.jsdelivr.net/npm/@time-input-polyfill/utils@1'
+	 * @default 'https://cdn.jsdelivr.net/npm/@time-input-polyfill/utils@2'
 	 */
 	polyfillSource?: string
 }
@@ -86,7 +88,7 @@ const TimeInputPolyfill = ({
 	onKeyDown,
 	className = '',
 	style,
-	polyfillSource = 'https://cdn.jsdelivr.net/npm/@time-input-polyfill/utils@1',
+	polyfillSource = 'https://cdn.jsdelivr.net/npm/@time-input-polyfill/utils@2',
 	...restProps
 }: TimeInputPolyfillProps) => {
 	const isPolyfilled = forcePolyfill || !supportsTime

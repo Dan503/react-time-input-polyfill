@@ -26,7 +26,7 @@
 	"homepage": "https://dan503.github.io/react-time-input-polyfill/",
 	"dependencies": {
 		"@dan503/load-js": "^1.0.7",
-		"@time-input-polyfill/utils": "^1.0.4"
+		"@time-input-polyfill/utils": "^2.0.0-beta.8"
 	},
 	"peerDependencies": {
 		"react": "^17.0.2"

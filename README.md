@@ -118,7 +118,7 @@ export function TimeInput({ label, value, setValue }) {
 The way that the polyfill avoids downloading the full polyfill code in modern browsers is by injecting the following script tag onto the page:
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/@time-input-polyfill/utils@1"></script>
+<script src="https://cdn.jsdelivr.net/npm/@time-input-polyfill/utils@2.0.0-beta.0"></script>
 ```
 
 That downloads the extra helper functions that the polyfill needs to function.
@@ -131,10 +131,10 @@ To work around the issue, first create a `timePolyfillUtils.js` file and ensure 
 // timePolyfillUtils.js
 
 // ES5
-require('@time-input-polyfill/utils/npm/time-input-polyfill-utils.min.js')
+require('@time-input-polyfill/utils/dist/time-input-polyfill-utils.min.js')
 
 // ES6
-import '@time-input-polyfill/utils/npm/time-input-polyfill-utils.min.js'
+import '@time-input-polyfill/utils/dist/time-input-polyfill-utils.min.js'
 ```
 
 Then when using the component, add a `polyfillSource` prop that points to the compiled helpers file on your server.
@@ -194,4 +194,4 @@ In version 1, you would import the polyfill utils from here:
 
 In version 2, you will need to import from here instead now:
 
-`@time-input-polyfill/utils/npm/time-input-polyfill-utils.min.js`
+`@time-input-polyfill/utils/dist/time-input-polyfill-utils.min.js`
