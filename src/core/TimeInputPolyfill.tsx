@@ -12,7 +12,7 @@ import type {
 import type { ManualEntryLog } from '@time-input-polyfill/utils/npm/core/ManualEntryLog/ManualEntryLog'
 
 // Avoid bulk importing from index files to be more tree-shake friendly
-import supportsTime from '@time-input-polyfill/utils/npm/common/supportsTime'
+import { supportsTime } from '@time-input-polyfill/utils/npm/common/supportsTime'
 import { blankValues } from '@time-input-polyfill/utils/npm/common/blankValues'
 
 const polyfillClassName = 'react-time-input-polyfill-target'
@@ -75,7 +75,7 @@ const TimeInputPolyfill = ({
 	onKeyDown,
 	className = '',
 	style,
-	polyfillSource = 'https://cdn.jsdelivr.net/npm/@time-input-polyfill/utils@1',
+	polyfillSource = 'https://cdn.jsdelivr.net/npm/@time-input-polyfill/utils@beta',
 	...restProps
 }: TimeInputPolyfillProps) => {
 	const isPolyfilled = forcePolyfill || !supportsTime

@@ -14,10 +14,12 @@ import {
 } from './core/TimeInputPolyfill'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { dark } from 'react-syntax-highlighter/dist/esm/styles/prism'
-import { version } from '../package.json'
+import pkg from '../package.json'
 import { getIDsAndLabels, staticValues } from '@time-input-polyfill/tests'
 
 import { EventName, AltEventName, IDsAndLabels } from './App-tests-shared-stuff'
+
+const version = pkg.version
 
 interface ExampleBlockProps
 	extends Omit<TimeInputPolyfillProps, 'value' | 'setValue'> {
