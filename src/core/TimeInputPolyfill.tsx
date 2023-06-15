@@ -8,12 +8,12 @@ import type {
 	Polyfill,
 	Segment,
 	TimeObjectKey,
-} from '@time-input-polyfill/utils/npm/types'
-import type { ManualEntryLog } from '@time-input-polyfill/utils/npm/core/ManualEntryLog/ManualEntryLog'
+	ManualEntryLog,
+} from '@time-input-polyfill/utils'
 
 // Avoid bulk importing from index files to be more tree-shake friendly
-import { supportsTime } from '@time-input-polyfill/utils/npm/common/supportsTime'
-import { blankValues } from '@time-input-polyfill/utils/npm/common/blankValues'
+import { supportsTime } from '@time-input-polyfill/utils/npm/mjs/common/supportsTime'
+import { blankValues } from '@time-input-polyfill/utils/npm/mjs/common/blankValues'
 
 const polyfillClassName = 'react-time-input-polyfill-target'
 

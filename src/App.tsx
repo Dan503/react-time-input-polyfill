@@ -15,7 +15,8 @@ import {
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { dark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import pkg from '../package.json'
-import { getIDsAndLabels, staticValues } from '@time-input-polyfill/tests'
+import { getIDsAndLabels } from '@time-input-polyfill/tests/dist/mjs/src/core/IDs-and-labels'
+import { staticValues } from '@time-input-polyfill/tests/dist/mjs/src/core/static-values'
 
 import { EventName, AltEventName, IDsAndLabels } from './App-tests-shared-stuff'
 

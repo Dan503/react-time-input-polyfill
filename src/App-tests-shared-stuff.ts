@@ -1,4 +1,4 @@
-import { getIDsAndLabels } from '@time-input-polyfill/tests'
+import { getIDsAndLabels } from '@time-input-polyfill/tests/dist/mjs/src/core/IDs-and-labels'
 
 export type EventName =
 	| 'focus'
