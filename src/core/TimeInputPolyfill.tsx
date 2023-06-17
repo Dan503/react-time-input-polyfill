@@ -75,7 +75,7 @@ const TimeInputPolyfill = ({
 	onKeyDown,
 	className = '',
 	style,
-	polyfillSource = 'https://cdn.jsdelivr.net/npm/@time-input-polyfill/utils@beta',
+	polyfillSource = 'https://cdn.jsdelivr.net/npm/@time-input-polyfill/utils@1.0.5-beta.8/npm/umd/time-input-polyfill-utils.min.js',
 	...restProps
 }: TimeInputPolyfillProps) => {
 	const isPolyfilled = forcePolyfill || !supportsTime
