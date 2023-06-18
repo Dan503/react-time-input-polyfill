@@ -13,7 +13,7 @@ import type {
 
 // Avoid bulk importing from index files to be more tree-shake friendly
 import { supportsTime } from '@time-input-polyfill/utils/npm/mjs/common/supportsTime'
-import { blankValues } from '@time-input-polyfill/utils/npm/mjs/common/blankValues'
+import { blankValues } from '@time-input-polyfill/utils/npm/mjs/common/staticValues'
 
 const polyfillClassName = 'react-time-input-polyfill-target'
 
@@ -75,7 +75,7 @@ const TimeInputPolyfill = ({
 	onKeyDown,
 	className = '',
 	style,
-	polyfillSource = 'https://cdn.jsdelivr.net/npm/@time-input-polyfill/utils@1.0.5-beta.8/npm/umd/time-input-polyfill-utils.min.js',
+	polyfillSource = 'https://cdn.jsdelivr.net/npm/@time-input-polyfill/utils@2.0.0-beta.15/npm/umd/time-input-polyfill-utils.min.js',
 	...restProps
 }: TimeInputPolyfillProps) => {
 	const isPolyfilled = forcePolyfill || !supportsTime
