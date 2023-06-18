@@ -33,7 +33,7 @@ const ExampleBlock = ({
 	codeString,
 	...restProps
 }: ExampleBlockProps) => {
-	const [value, setValue] = useState('20:30')
+	const [value, setValue] = useState<string | undefined>('20:30')
 	const [forcePolyfill, setForcePolyfill] = useState(true)
 	const { IDs } = getIDsAndLabels({ primaryTestsLabel: label })
 
@@ -76,10 +76,11 @@ const ExampleBlock = ({
 			</p>
 
 			<p>
-				{label} returned value: "<span id={IDs.primaryValueID}>{value}</span>"
+				{label} returned value: "<span id={IDs.primaryCpuValueID}>{value}</span>
+				"
 			</p>
 
-			{Boolean(codeString) && (
+			{codeString && (
 				<SyntaxHighlighter
 					style={dark}
 					className="code"
@@ -109,8 +110,8 @@ class ClassBasedComponentExample extends Component {
 			eventsInputID,
 			eventsAltNameID,
 			eventsMainNameID,
-			eventsValueID,
-			primaryValueID,
+			eventsDisplayValueID,
+			primaryCpuValueID,
 			primaryInputID,
 			buttonIDs,
 		} = IDsAndLabels.classBased.IDs
@@ -172,7 +173,8 @@ class ClassBasedComponentExample extends Component {
 				</p>
 
 				<p>
-					class based returned value: "<span id={primaryValueID}>{value}</span>"
+					class based returned value: "
+					<span id={primaryCpuValueID}>{value}</span>"
 				</p>
 
 				<SyntaxHighlighter
@@ -299,7 +301,7 @@ class ClassBasedComponentExample extends Component {
 									})
 								}}
 							/>
-							<p id={eventsValueID}>{this.state.eventsReturnValue}</p>
+							<p id={eventsDisplayValueID}>{this.state.eventsReturnValue}</p>
 							<p id={eventsMainNameID}>{this.state.eventMainName}</p>
 							<p id={eventsAltNameID}>{this.state.eventAltName}</p>
 						</div>
@@ -320,7 +322,7 @@ function App() {
 	const [eventAltName, setAltEventName] = useState<AltEventName>('none')
 
 	const { eventTestsLabel } = IDsAndLabels.functionBased.labels
-	const { eventsValueID, eventsAltNameID, eventsMainNameID } =
+	const { eventsDisplayValueID, eventsAltNameID, eventsMainNameID } =
 		IDsAndLabels.functionBased.IDs
 
 	return (
@@ -454,7 +456,7 @@ function App() {
 							setEventName('keyUp')
 						}}
 					/>
-					<p id={eventsValueID}>{testValue}</p>
+					<p id={eventsDisplayValueID}>{testValue}</p>
 					<p id={eventsMainNameID}>{eventMainName}</p>
 					<p id={eventsAltNameID}>{eventAltName}</p>
 				</>
