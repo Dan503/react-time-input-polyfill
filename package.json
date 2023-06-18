@@ -1,6 +1,6 @@
 {
 	"name": "@time-input-polyfill/react",
-	"version": "2.0.2",
+	"version": "2.0.3-beta.0",
 	"description": "A pre-built, plug-and-play, fully accessible React component that will produce an `input[type='time']` element with a built in polyfill for IE and Safari support.",
 	"main": "index.js",
 	"private": false,
@@ -69,7 +69,8 @@
 		"ts": "tsc --project tsconfig.npm.json",
 		"prepublishOnly": "run-p ts build",
 		"postpublish": "npm run clean",
-		"clean": "del-cli index.js index.d.ts src/core/index.js src/core/index.d.ts src/core/TimeInputPolyFill.js src/core/TimeInputPolyFill.d.ts"
+		"clean": "del-cli index.js index.d.ts src/core/index.js src/core/index.d.ts src/core/TimeInputPolyFill.js src/core/TimeInputPolyFill.d.ts",
+		"pub-beta": "npm publish --access=public --tag=beta"
 	},
 	"eslintConfig": {
 		"extends": "react-app"
